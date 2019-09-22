@@ -1,0 +1,124 @@
+/*
+#1 color = #f65327;
+#2 color = #f04e22;
+*/
+
+a:hover,
+a:focus {
+    color: #f65327;
+}
+
+.circled {
+	background: #f65327;
+}
+
+.con1 > div, .con2 > div, .con3 > div { 
+	background-color: #f65327;
+}
+
+.scrollup:hover {
+	background: #f65327;
+}
+
+
+/* service */
+
+.service-icon span {
+	color: #f65327;
+}
+
+
+
+/* button */
+.btn-skin {
+  background-color: #f65327;
+  border-color: #f65327;
+}
+
+
+/* top */
+.top-area {
+	background: #f04e22;
+}
+
+/* menu */
+
+.navbar-custom ul.nav ul.dropdown-menu li a:hover {
+	color: #f04e22;
+}
+.navbar-custom.top-nav-collapse .nav li a:hover,
+.navbar-custom .nav li a:hover,
+.navbar-custom .nav li.active a,.navbar-custom.top-nav-collapse .nav li.active a  {
+    color: #f04e22;
+}
+
+
+.owl-theme .owl-controls .owl-page.active span,
+.owl-theme .owl-controls.clickable .owl-page:hover span {
+    background-color: #f65327;
+}
+
+
+.bg-skin {
+	background: #f65327;
+}
+
+.highlight-color {
+	background-color: #f65327;
+}
+.color {
+	color: #f65327;
+}
+
+/* pricing box  */
+.pricing-content.featured h2,.pricing-content.featured .price-bottom {
+	background-color:#f04e22;
+}
+.pricing-content.featured h3 {
+	background:#f65327;
+}
+
+
+
+/* team */
+.cbp-l-grid-team-name {
+    color: #f04e22;
+}
+
+.cbp-l-filters-button .cbp-filter-counter {
+	background-color: #f65327;
+}
+
+.cbp-l-filters-alignLeft .cbp-filter-item-active {
+    /* @editable properties */
+    background-color: #f65327;
+    border:1px solid #f65327;
+}
+
+.cbp-l-filters-dropdownWrap {
+    /* @editable properties */
+    width: 200px;
+    position: absolute;
+    right: 0;
+    background: #f65327;
+}
+.cbp-l-filters-button .cbp-filter-item.cbp-filter-item-active {
+    /* @editable properties */
+    background-color: #f65327;
+    border-color: #f65327;
+}
+.cbp-l-caption-buttonLeft,
+.cbp-l-caption-buttonRight {
+    /* @editable properties */
+    background-color: #f65327;
+}
+
+.cbp-l-caption-buttonLeft:hover,
+.cbp-l-caption-buttonRight:hover {
+    /* @editable properties */
+    background-color: #f04e22;
+}
+
+.form-control:focus {
+  border-color: #f04e22;
+}

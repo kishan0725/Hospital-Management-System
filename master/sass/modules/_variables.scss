@@ -1,0 +1,104 @@
+//  Default Colour Settings
+
+$primary: #007AFF;
+$lightPrimary: lighten($primary, 10%);
+$darkPrimary: darken($primary, 10%);
+$success: #5cb85c;
+$info: #46b8da;
+$warning: #eea236;
+$danger: #d43f3a;
+// Red
+$red: #C82E29;
+$lightRed: lighten($red, 10%);
+$darkRed: darken($red, 10%);
+// Orange
+$orange: #FF6600;
+$lightOrange: lighten($orange, 10%);
+$darkOrange: darken($orange, 10%);
+// Green
+$green: #1FBBA6;
+$lightGreen: lighten($green, 10%);
+$darkGreen: darken($green, 10%);
+// Blue
+$blue: #5F8295;
+$lightBlue: lighten($blue, 10%);
+$darkBlue: darken($blue, 10%);
+// Pink
+$pink: #DD5A82;
+$lightPink: lighten($pink, 10%);
+$darkPink: darken($pink, 10%);
+// Purple
+$purple: #804C75;
+$lightPurple: lighten($purple, 10%);
+$darkPurple: darken($purple, 10%);
+// Azure
+$azure: #0095C8;
+$lightAzure: lighten($azure, 5%);
+$darkAzure: darken($azure, 10%);
+// Beige
+$beige: #D2BD8E;
+$lightBeige: lighten($beige, 5%);
+$darkBeige: darken($beige, 10%);
+// Grey
+$grey: #c8c7cc;
+$lightGrey: lighten($grey, 18%);
+$darkGrey: darken($grey, 10%);
+// Yellow
+$yellow: #FFB848;
+$lightYellow: lighten($yellow, 10%);
+$darkYellow: darken($yellow, 10%);
+// Bricky
+$bricky: #894550;
+$lightBricky: lighten($bricky, 10%);
+$darkBricky: darken($bricky, 10%);
+
+$black: #2C2F3B; // Black
+$white: #ffffff; // White
+
+$border-default: #c8c7cc !default;
+
+$text-color: #8e8e93 !default;
+$text-dark: darken($text-color, 20%) !default;
+$text-light: lighten($text-color, 20%) !default;
+$link-color: $primary !default;
+
+$font-family-primary: "Raleway", sans-serif !default;
+$font-family-secondary: "Lato", sans-serif !default;
+$font-family-default: Helvetica, Arial, sans-serif !default;
+
+$font-size-base: 13px !default;
+$font-size-normal: 14px !default;
+$font-size-large: floor(($font-size-base * 1.25)) !default; // ~15px
+$font-size-extra-large: floor(($font-size-base * 1.35)) !default; // ~17px
+$font-size-small: ceil(($font-size-base * 0.85)) !default; // ~12px
+$font-size-extra-small: floor(($font-size-base * 0.85)) !default; // ~11px
+
+$h1-size-base: 36px !default;
+$h1-size-extra-large: floor(($h1-size-base * 1.40)) !default; // ~50px
+
+$header-height: 65px;
+$mobile-header-height: 50px;
+$sideBar-width: 260px;
+$sideBar-closed-width: 70px;
+$footer-height: 50px;
+$horizontal-menu-height: 40px;
+
+
+//  breakpoints
+
+// Extra small screen / phone
+$screen-xs-min: 480px !default;
+
+// Small screen / tablet
+$screen-sm-min: 768px !default;
+
+// Medium screen / desktop
+$screen-md-min: 992px !default;
+
+// Large screen / wide desktop
+$screen-lg-min: 1200px !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max: ($screen-sm-min - 1) !default;
+$screen-sm-max: ($screen-md-min - 1) !default;
+$screen-md-max: ($screen-lg-min - 1) !default;

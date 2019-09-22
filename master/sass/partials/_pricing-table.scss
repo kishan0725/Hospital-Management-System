@@ -1,0 +1,153 @@
+/* ---------------------------------------------------------------------- */
+/*  Pricing Tables
+/* ---------------------------------------------------------------------- */
+.pricing-table {
+    .plan {
+        border: none;
+        margin: 20px 0;
+        position: relative;
+        padding: 0;
+        list-style: none;
+        border: 1px solid lighten($grey, 10%);
+        border-bottom: none;
+        text-align: center;
+
+        li {
+            padding: 10px 15px;
+            color: $text-color;
+            border-bottom: 1px solid lighten($grey, 10%);
+
+            &.plan-name {
+                padding: 15px;
+                font-size: 18px;
+                line-height: 18px;
+                color: #fff;
+                background: lighten($grey,5%);
+                border-top: 0;
+                border-bottom: 0;
+            }
+
+            &.plan-price {
+                background: $grey;
+                color: $white;
+                font-size: 18px;
+                padding: 6px 20px;
+                border-bottom: none;
+
+                h3 {
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    font-size: 2em;
+                    padding: 30px 0;
+                    font-weight: 600;
+                    color: $white;
+
+                    .price-cents {
+                        font-size: 50%;
+                        vertical-align: super;
+                        margin-left: -10px;
+                    }
+
+                    .price-month {
+                        font-size: 30%;
+                        font-style: italic;
+                        margin-left: -20px;
+                        font-weight: 300;
+                        color: $white;
+                    }
+                }
+            }
+
+            &.plan-action {
+                margin-top: 10px;
+                border-top: 0;
+            }
+        }
+
+        &.featured {
+            -webkit-transform: scale(1.05);
+            -ms-transform: scale(1.05);
+            transform: scale(1.05);
+            box-shadow: 0 3px 25px -4px rgba(0, 0, 0, 0.9) !important;
+
+            .plan-name {
+                background: darken($grey, 20%);
+            }
+        }
+    }
+}
+
+.pricing-green {
+    .plan {
+        li {
+            strong {
+                color: $red;
+            }
+
+            &.plan-name {
+                background: lighten($green,5%);
+            }
+
+            &.plan-price {
+                background: $green;
+                color: $white;
+            }
+        }
+
+        &.featured {
+            .plan-name {
+                background: darken($green, 20%);
+            }
+        }
+    }
+}
+
+.pricing-blue {
+    .plan {
+        li {
+            strong {
+                color: $blue;
+            }
+
+            &.plan-name {
+                background: lighten($blue,5%);
+            }
+
+            &.plan-price {
+                background: $blue;
+                color: $white;
+            }
+        }
+
+        &.featured {
+            .plan-name {
+                background: darken($blue, 20%);
+            }
+        }
+    }
+}
+
+.pricing-red {
+    .plan {
+        li {
+            strong {
+                color: $red;
+            }
+
+            &.plan-name {
+                background: lighten($red,5%);
+            }
+
+            &.plan-price {
+                background: $red;
+                color: $white;
+            }
+        }
+
+        &.featured {
+            .plan-name {
+                background: darken($red, 20%);
+            }
+        }
+    }
+}

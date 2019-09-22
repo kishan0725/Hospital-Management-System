@@ -1,0 +1,297 @@
+/* ---------------------------------------------------------------------- */
+/*  Basic Elements & Classes
+/* ---------------------------------------------------------------------- */
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    color: $text-color;
+    direction: ltr;
+    overflow-x: hidden;
+    height: 100%;
+    font-family: $font-family-default;
+    font-size: $font-size-base;
+    padding: 0;
+    margin: 0;
+    background: lighten($grey, 18%);
+    -webkit-font-smoothing: antialiased !important;
+
+
+
+    &.bg_style_1 {
+        background: url("../images/bg.png") rgba(0, 0, 0, 0) !important;
+    }
+
+    &.bg_style_2 {
+        background: url("../images/bg_2.png") rgba(0, 0, 0, 0) !important;
+    }
+
+    &.bg_style_3 {
+        background: url("../images/bg_3.png") rgba(0, 0, 0, 0) !important;
+    }
+
+    &.bg_style_4 {
+        background: url("../images/bg_4.png") rgba(0, 0, 0, 0) !important;
+    }
+
+    &.bg_style_5 {
+        background: url("../images/bg_5.png") rgba(0, 0, 0, 0) !important;
+    }
+}
+
+::-moz-selection {
+    background: $blue;
+    text-shadow: none;
+    color: $white;
+}
+
+::selection {
+    background: $blue;
+    text-shadow: none;
+    color: $white;
+}
+
+a, a:focus, a:hover, a:active {
+    outline: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+button {
+    outline: 0 !important;
+}
+
+a {
+    color: $link-color;
+
+    &:hover, &:focus, &:active {
+        color: darken($link-color, 20%);
+    }
+}
+
+h1, h2 {
+    font-family: $font-family-primary;
+}
+
+h3, h4, h5 {
+    font-family: $font-family-default;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 300;
+    margin-top: 0;
+    color: $text-dark;
+
+    .text-bold &, &.text-bold, .text-bold {
+        font-weight: 600;
+    }
+}
+
+h5.over-title {
+    font-family: $font-family-secondary;
+    font-size: $font-size-large;
+}
+
+.mainTitle {
+    margin: 20px 0;
+
+    small {
+        color: $text-color;
+        font-size: $font-size-extra-large;
+        font-weight: 300;
+        letter-spacing: 0;
+        display: block;
+        margin: 10px 0;
+    }
+
+    i {
+        font-size: $font-size-extra-large;
+    }
+}
+
+.ct-callout {
+    border-color: #007AFF;
+    border-image: none;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 0 0 0 5px;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(255,255,255,0.4);
+}
+
+.main-wrapper {
+    position: relative;
+}
+
+.ajax-white-backdrop {
+    background-color: rgba($white,0.5);
+    display: none;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1049;
+}
+
+.ajax-white-backdrop:before {
+    background: #000;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+    top: 60px;
+    left: 50%;
+    margin-left: -20px;
+    content: "";
+    position: absolute;
+}
+
+.ajax-white-backdrop:after {
+    content: "\f110";
+    font-family: FontAwesome;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    top: 60px;
+    color: $white;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+
+.app-navbar-fixed {
+    @media (min-width: $screen-md-min) {
+        padding-top: $header-height;
+    }
+}
+
+#app {
+    height: auto;
+    min-height: 100%;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    .app-content {
+        height: 100%;
+
+        &:before, &:after {
+            content: " ";
+            display: table;
+        }
+
+        &:after {
+            clear: both;
+        }
+    }
+
+    @media (max-width: $screen-sm-max) {
+        width: 100%;
+
+        .app-content {
+            @include transition(transform 300ms ease 0s);
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        &.app-slide-off {
+            > .app-content {
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+                overflow: hidden;
+                z-index: 2;
+                position: absolute;
+                -webkit-transform: translate3d($sideBar-width, 0, 0);
+                transform: translate3d($sideBar-width, 0, 0);
+                @include transition(transform 300ms ease 0s);
+            }
+
+            > #off-sidebar {
+                -webkit-transform: translate3d($sideBar-width, 0, 0);
+                transform: translate3d($sideBar-width, 0, 0);
+                @include transition(transform 300ms ease 0s);
+            }
+        }
+
+        &.app-offsidebar-open {
+            > .app-content {
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+                overflow: hidden;
+                z-index: 2;
+                position: absolute;
+                -webkit-transform: translate3d(-$sideBar-width, 0, 0);
+                transform: translate3d(-$sideBar-width, 0, 0);
+                @include transition(transform 300ms ease 0s);
+            }
+        }
+    }
+}
+
+.app-content-loading {
+    background: #000;
+    border-radius: 10px;
+    height: 100px;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100px;
+    z-index: 1051;
+}
+
+.loading-spinner {
+    font-size: 50px;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: absolute;
+    top: 50%;
+}
+
+.well {
+    box-shadow: none;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color: $primary;
+    color: #fff;
+}
+
+.nav-pills > li > a {
+    border-radius: 10px;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.container-fullw {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+
+    @media (max-width: $screen-sm-min) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

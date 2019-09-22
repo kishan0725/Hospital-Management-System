@@ -1,0 +1,55 @@
+/* ---------------------------------------------------------------------- */
+/*  Nestable
+/* ---------------------------------------------------------------------- */
+.angular-ui-tree-handle {
+    background: $lightGrey;
+    border: 1px solid $border-default;
+    color: $text-color;
+    padding: 10px 10px;
+    font-size: $font-size-normal;
+    font-weight: normal !important;
+}
+
+.angular-ui-tree-handle:hover {
+    color: $text-dark;
+    background: lighten($grey, 13%);
+    border-color: darken($border-default, 13%);
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}
+
+.dd {
+    max-width: none !important;
+}
+
+.dd-item > button:before {
+    content: "\e649" !important;
+    font-family: "themify";
+    color: $primary;
+}
+
+.dd-item > button[data-action="collapse"]:before {
+    content: "\e64b" !important;
+}
+
+.dd-handle {
+    background: $lightGrey !important;
+    border: 1px solid $border-default !important;
+    color: $text-color !important;
+}
+
+.dd-handle:hover {
+    background: lighten($grey, 13%) !important;
+    border-color: darken($border-default, 13%) !important;
+}

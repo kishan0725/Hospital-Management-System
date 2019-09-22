@@ -1,0 +1,44 @@
+/* ---------------------------------------------------------------------- */
+/*  Main Content
+/* ---------------------------------------------------------------------- */
+.main-content {
+    min-height: 100%;
+    position: relative;
+
+    .container {
+        max-width: none !important;
+        width: 100% !important;
+        display: inline-block;
+    }
+
+    > .container {
+        padding-bottom: $footer-height;
+    }
+
+    @media (min-width: $screen-md-min) {
+        //margin-bottom: $footer-height;
+        margin-top: $header-height;
+        margin-left: $sideBar-width;
+
+        .app-navbar-fixed & {
+            margin-top: 0;
+
+            &:before, &:after {
+                content: " ";
+                display: table;
+            }
+
+            &:after {
+                clear: both;
+            }
+        }
+
+        .app-sidebar-closed & {
+            margin-left: $sideBar-closed-width;
+        }
+    }
+
+    @media (max-width: $screen-sm-max) {
+        padding-top: $header-height;
+    }
+}

@@ -1,0 +1,31 @@
+/* ---------------------------------------------------------------------- */
+/*  Tree
+/* ---------------------------------------------------------------------- */
+.box-tree {
+    .nav {
+        > li {
+            > a {
+                color: $text-color;
+                font-size: $font-size-normal;
+
+                &:hover, &:focus {
+                    color: $text-dark;
+                }
+
+                i {
+                    color: $primary;
+                }
+            }
+
+            &.active {
+                > a, > a:hover, a:focus {
+                    color: $white;
+
+                    i {
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,203 @@
+/* ---------------------------------------------------------------------- */
+/*  Chat
+/* ---------------------------------------------------------------------- */
+.discussion {
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block;
+
+    .other {
+        float: left;
+
+        .message:last-child {
+            .message-text {
+                border-radius: 16px 16px 16px 0;
+                float: left;
+            }
+
+            .message-avatar {
+                display: block !important;
+            }
+
+            .message-name {
+                display: none;
+            }
+        }
+
+        .message {
+            float: left;
+        }
+
+        .message:first-child {
+            .message-name {
+                display: block !important;
+            }
+        }
+
+        .message-text {
+            background-color: #e5e5ea;
+            color: $black;
+            padding-left: 22px;
+            margin-left: 32px;
+        }
+
+        .message-avatar {
+            left: 10px;
+        }
+    }
+
+    .self {
+        float: right;
+
+        .message:last-child {
+            .message-text {
+                border-radius: 16px 16px 0;
+                float: left;
+            }
+
+            .message-avatar {
+                display: block !important;
+            }
+
+            .message-name {
+                display: none;
+            }
+        }
+
+        .message {
+            float: right;
+        }
+
+        .message:first-child {
+            .message-name {
+                display: block !important;
+            }
+        }
+
+        .message-text {
+            background-color: #00d449;
+            color: #fff;
+            padding-right: 22px;
+            margin-right: 32px;
+        }
+
+        .message-avatar {
+            float: right;
+        }
+
+        .message-name {
+            margin-left: auto !important;
+            margin-right: 48px;
+            text-align: right;
+        }
+
+        .message-avatar {
+            right: 10px;
+        }
+    }
+
+    li {
+        position: relative;
+        margin: 0 0 10px 0;
+        width: 80%;
+
+        &.messages-date {
+            display: inline-block;
+            color: $text-color;
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1;
+            margin: 10px 0;
+            text-align: center;
+            width: 100% !important;
+        }
+    }
+
+    .message {
+        margin: 1px 10px 0 10px;
+        clear: both;
+    }
+
+    .message-name {
+        color: $text-color;
+        font-size: 12px;
+        line-height: 1;
+        margin-bottom: 2px;
+        margin-top: 7px;
+        margin-left: 48px;
+        display: none;
+    }
+
+    .message-text {
+        border-radius: 16px;
+        box-sizing: border-box;
+        font-size: 15px;
+        line-height: 1.2;
+        min-height: 30px;
+        min-width: 48px;
+        padding: 6px 16px 9px;
+    }
+
+    .message-avatar {
+        display: none;
+        position: absolute;
+        bottom: -5px;
+        height: 29px;
+        width: 29px;
+
+        img {
+            border-radius: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.message-bar {
+    position: relative;
+    background: lighten($grey, 18%);
+    height: 44px;
+    width: 100%;
+    display: table;
+
+    .message-inner {
+        height: 100%;
+        padding: 0 8px;
+        display: table-row;
+        width: 100%;
+    }
+
+    .message-area {
+        display: table-cell;
+    }
+
+    textarea {
+        background: #fff;
+        border: 1px solid $border-default;
+        border-radius: 5px;
+        box-shadow: none;
+        font-family: inherit;
+        height: 28px;
+        line-height: 20px;
+        margin: 8px 0;
+        padding: 3px 8px;
+        resize: none;
+        width: 100%;
+    }
+
+    .link {
+        padding: 0 10px;
+        line-height: 44px;
+        position: relative;
+        display: table-cell;
+        width: 30px;
+        vertical-align: middle;
+    }
+
+    a.icon-only {
+        color: $text-color;
+        font-size: 20px;
+        margin: 0;
+        margin-right: 8px;
+    }
+}

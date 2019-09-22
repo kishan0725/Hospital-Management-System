@@ -1,0 +1,44 @@
+/* ---------------------------------------------------------------------- */
+/*  Invoice
+/* ---------------------------------------------------------------------- */
+.invoice {
+    margin-bottom: 20px;
+}
+
+.invoice .invoice-logo {
+    margin-bottom: 20px;
+}
+
+.invoice table {
+    margin: 30px 0;
+}
+
+.invoice .invoice-logo p {
+    font-size: 20px;
+    line-height: 28px;
+    padding: 25px 0;
+    text-align: right;
+}
+
+.invoice .invoice-logo p small {
+    display: block;
+    font-size: 14px;
+}
+
+.invoice h4 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300 !important;
+}
+
+.invoice-details {
+    padding-top: 30px;
+}
+
+.invoice .invoice-block {
+    text-align: right;
+}
+
+.invoice .invoice-block .amounts {
+    font-size: 14px;
+    margin-top: 20px;
+}

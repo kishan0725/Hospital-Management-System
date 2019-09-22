@@ -1,0 +1,46 @@
+/* ---------------------------------------------------------------------- */
+/* Progress Bar
+/* ---------------------------------------------------------------------- */
+.progress {
+    box-shadow: none;
+}
+
+.progress.progress-xs {
+    height: 7px;
+}
+
+.progress.progress-sm {
+    height: 12px;
+}
+
+.progress.progress-lg {
+    height: 20px;
+}
+
+.progress.transparent-black {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    background-color: $primary;
+}
+
+.progress-bar-success {
+    background-color: $success;
+}
+
+.progress-bar-info {
+    background-color: $info;
+}
+
+.progress-bar-warning {
+    background-color: $warning;
+}
+
+.progress-bar-danger {
+    background-color: $danger;
+}
+
+.progress.vertical {
+    width: 60px !important;
+}

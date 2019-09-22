@@ -1,0 +1,306 @@
+/* ---------------------------------------------------------------------- */
+/*  Settings
+/* ---------------------------------------------------------------------- */
+.settings {
+    position: fixed !important;
+    right: -240px;
+    top: 120px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    @include transition (right 0.2s ease 0s);
+    border-left: 1px solid $border-default !important;
+    border-bottom: 1px solid $border-default !important;
+    width: 240px;
+    z-index: 1050;
+
+    &.active {
+        right: 0;
+    }
+
+    > .btn {
+        background: $white !important;
+        border-color: $border-default !important;
+        border-right-width: 0;
+        left: -44px;
+        padding: 10px 15px;
+        position: absolute;
+        top: 41px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+        &:hover, &:active, &:focus {
+            box-shadow: none !important;
+        }
+    }
+
+    &.panel {
+        border-radius: 0 !important;
+        border-top: none;
+        border-right: none;
+        background: $white;
+        border-color: $border-default !important;
+
+        .panel-heading {
+            border-top-width: 1px;
+            border-top-style: solid;
+            padding: 11px 15px;
+            background: lighten($grey, 15%);
+            border-color: $border-default;
+            border-radius: 0 !important;
+        }
+
+        .panel-body {
+            padding: 0;
+        }
+
+        .setting-box {
+            border-bottom: 1px solid $border-default;
+            padding: 11px 10px 10px;
+
+            .setting-title {
+                padding: 5px 0;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+
+.colors-row {
+    display: table;
+    height: 100%;
+    table-layout: fixed;
+    width: 100%;
+    padding-bottom: 0 !important;
+    padding-top: 5px !important;
+    border-bottom: none !important;
+}
+
+.color-theme {
+    display: table-cell;
+    height: 100%;
+    vertical-align: top;
+    padding-right: 5px;
+
+    &:last-child {
+        padding-right: 0;
+    }
+
+    .color-layout {
+        > label {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: block;
+            overflow: hidden;
+            position: relative;
+
+            .ti-check {
+                color: #fff;
+                display: block;
+                font-size: 12px;
+                height: 100%;
+                opacity: 0;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                z-index: 1;
+                background: rgba($black, 0.3);
+                padding: 10px;
+            }
+
+            > input[type="radio"] {
+                opacity: 0;
+                position: absolute;
+                visibility: hidden;
+
+                &:checked + .ti-check {
+                    opacity: 1 !important;
+                }
+            }
+
+            > .color {
+                display: block;
+                height: 18px;
+                position: relative;
+            }
+
+            > .split {
+                display: block;
+                position: relative;
+
+                &:before, &:after {
+                    content: " ";
+                    display: table;
+                }
+
+                &:after {
+                    clear: both;
+                }
+
+                > .color {
+                    display: block;
+                    height: 20px;
+                    position: relative;
+
+                    &:first-child {
+                        float: left;
+                        width: 30%;
+                    }
+
+                    &:last-child {
+                        float: right;
+                        width: 70%;
+                    }
+
+                    .element {
+                        position: absolute;
+                        height: 5px;
+                        width: 100%;
+                        top: 5px;
+                    }
+                }
+
+                &.header {
+                    > .color {
+                        height: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.theme-1 {
+    .th-header {
+        background: $white;
+    }
+
+    .th-collapse {
+        background: $white;
+    }
+
+    .th-sidebar {
+        background: $white;
+    }
+
+    .th-body {
+        background: #EFEFF4;
+    }
+
+    .element {
+        background: #007aff;
+    }
+}
+
+.theme-2 {
+    .th-header {
+        background: #22262E;
+    }
+
+    .th-collapse {
+        background: $white;
+    }
+
+    .th-sidebar {
+        background: #1B1E24;
+    }
+
+    .th-body {
+        background: #E5E9EC;
+    }
+
+    .element {
+        background: #D1351F;
+    }
+}
+
+.theme-3 {
+    .th-header {
+        background: #485058;
+    }
+
+    .th-collapse {
+        background: #485058;
+    }
+
+    .th-sidebar {
+        background: #788290;
+    }
+
+    .th-body {
+        background: #F0F3F4;
+    }
+
+    .element {
+        background: #1FBBA6;
+    }
+}
+
+.theme-4 {
+    .th-header {
+        background: #E7E7E7;
+    }
+
+    .th-collapse {
+        background: #F1F1F1;
+    }
+
+    .th-sidebar {
+        background: #F3F3F3;
+    }
+
+    .th-body {
+        background: #F8F8F8;
+    }
+
+    .element {
+        background: #00BDCC;
+    }
+}
+
+.theme-5 {
+    .th-header {
+        background: #2C3543;
+    }
+
+    .th-collapse {
+        background: #2C3543;
+    }
+
+    .th-sidebar {
+        background: #364150;
+    }
+
+    .th-body {
+        background: #F8F8F8;
+    }
+
+    .element {
+        background: #81B441;
+    }
+}
+
+.theme-6 {
+    .th-header {
+        background: #1C2B36;
+    }
+
+    .th-collapse {
+        background: $white;
+    }
+
+    .th-sidebar {
+        background: #1C2B36;
+    }
+
+    .th-body {
+        background: #F0F3F4;
+    }
+
+    .element {
+        background: #131E26;
+    }
+}

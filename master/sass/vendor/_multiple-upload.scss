@@ -1,0 +1,26 @@
+/* ---------------------------------------------------------------------- */
+/*  Multiple File Upload
+/* ---------------------------------------------------------------------- */
+.fileupload .uneditable-input {
+  white-space: nowrap;
+}
+.fileupload-new .input-group .btn-file {
+  -webkit-border-radius: 0 3px 3px 0 !important;
+  -moz-border-radius: 0 3px 3px 0 !important;
+  border-radius: 0 3px 3px 0 !important;
+}
+.fileinput-button {
+    overflow: hidden;
+    position: relative;
+}
+.fileinput-button input {
+    cursor: pointer;
+    direction: ltr;
+    font-size: 23px;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(-300px, 0px) scale(4);
+}

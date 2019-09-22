@@ -1,0 +1,254 @@
+/* ---------------------------------------------------------------------- */
+/*  OFF SIDEBAR
+/* ---------------------------------------------------------------------- */
+#off-sidebar {
+    bottom: 0;
+    position: fixed;
+    right: -$sideBar-width;
+    top: $header-height - 1;
+    @include transition (all 0.3s ease 0s !important);
+    width: $sideBar-width;
+    z-index: 1091;
+    background: $white;
+    border-left: 1px solid $border-default;
+    border-top: 1px solid $border-default;
+    overflow: hidden;
+
+    .tab-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 45px;
+    }
+
+    @media (max-width: $screen-sm-max) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 0;
+        -webkit-transform: translate3d($sideBar-width, 0, 0);
+        transform: translate3d($sideBar-width, 0, 0);
+        @include transition(transform 300ms ease 0s);
+    }
+
+    .tab-pane {
+        height: 100%;
+        padding: 0;
+    }
+
+    div[perfect-scrollbar] {
+        overflow: hidden !important;
+
+        .app-mobile & {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
+    }
+
+    @media (min-width: $screen-md-min) {
+        .app-offsidebar-open & {
+            right: 0;
+        }
+    }
+
+    @media (max-width: $screen-sm-max) {
+        .app-offsidebar-open & {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            @include transition(transform 300ms ease 0s);
+        }
+    }
+
+    .nav-tabs.nav-justified {
+        > li {
+            display: table-cell;
+            width: 1%;
+
+            &.active > a, &.active > a:hover, &.active > a:focus {
+                border-bottom-color: #fff;
+            }
+
+            > a {
+                border-bottom: 1px solid $border-default;
+                border-right: 1px solid $border-default;
+                border-left: none;
+                border-radius: 0;
+                border-top: none;
+
+                i {
+                    font-size: $font-size-extra-large;
+                }
+            }
+
+            &.active > a, &.active > a:hover,, &.active > a:focus {
+                color: $darkGrey;
+            }
+
+            &:first-child > a {
+                border-left: none !important;
+            }
+
+            &:last-child > a {
+                border-right: none !important;
+            }
+        }
+    }
+
+    .save-options {
+        padding: 10px;
+    }
+}
+
+#off-sidebar .sidebar-wrapper {
+    position: relative;
+    min-height: 100%;
+}
+
+#off-sidebar #users {
+    position: relative;
+    right: 0;
+    top: 0;
+    height: 100%;
+
+    .app-offsidebar-open & {
+        @include transition (right 0.3s ease 0s);
+    }
+
+    .app-slide-off & {
+        right: 0 !important;
+    }
+
+    &.chat-open {
+        right: $sideBar-width;
+    }
+}
+
+#off-sidebar #users {
+    .user-chat {
+        position: relative;
+        left: $sideBar-width;
+        top: 0;
+        height: 100%;
+    }
+
+    .chat-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 50px;
+    }
+}
+
+#off-sidebar .users-list {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+#off-sidebar .media-list .media {
+    border-bottom: 1px solid $border-default;
+    margin: 0;
+}
+
+#off-sidebar .media-list .media a {
+    padding: 10px;
+    display: block;
+}
+
+#off-sidebar .media-list .media a:hover {
+    background: lighten($grey, 15%);
+    text-decoration: none;
+}
+
+#off-sidebar .sidebar-title {
+    color: $darkGrey;
+    font-size: 11px;
+    margin: 15px 10px 10px 10px;
+    text-transform: uppercase;
+}
+
+#off-sidebar .sidebar-back {
+    position: relative;
+    text-decoration: none;
+    padding: 10px;
+
+    i {
+        display: inline-block;
+        font-size: 17px;
+        margin-right: -2px;
+        margin-top: 2px;
+        font-weight: 600;
+        vertical-align: top;
+    }
+
+    span {
+        font-size: 15px;
+        position: relative;
+    }
+}
+
+#off-sidebar .media-list .media .media-object {
+    border-radius: 50% !important;
+    float: left;
+    margin-right: 10px;
+    opacity: 0.8;
+    width: 40px;
+}
+
+#off-sidebar .media-list .media .user-label {
+    display: inline-block;
+    margin-top: 10px;
+    position: absolute;
+    right: 25px;
+}
+
+#off-sidebar .media-list .media .status-online {
+    line-height: 40px;
+    font-size: 6px;
+    position: absolute;
+    right: 10px;
+    display: inline-block;
+    color: $green;
+}
+
+#off-sidebar .media-list .media .media-heading {
+    color: $text-color !important;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+#off-sidebar .media-list .media .media-body span {
+    color: $grey;
+    display: block;
+    font-size: 12px;
+}
+
+#off-sidebar {
+    .sidebar-content {
+        height: 100%;
+        position: relative;
+    }
+}
+
+#off-sidebar .discussion .avatar img {
+    border-radius: 50% !important;
+    width: 40px;
+}
+
+#off-sidebar .discussion .messages {
+    margin-top: 10px;
+}
+
+#off-sidebar .discussion .messages p {
+    font-size: 12px;
+}
+
+#off-sidebar .message-bar {
+    position: absolute;
+    bottom: 0;
+}

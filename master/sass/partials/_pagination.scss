@@ -1,0 +1,183 @@
+/* ---------------------------------------------------------------------- */
+/*  Pagination
+/* ---------------------------------------------------------------------- */
+.pagination > li > a, .pagination > li > span {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: $primary;
+}
+
+.pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.pagination.squared {
+    border-radius: 0 !important;
+}
+
+.pagination.squared li:first-child a, .pagination.squared li:first-child > span {
+    border-bottom-left-radius: 0px !important;
+    border-left-width: 1px;
+    border-top-left-radius: 0px !important;
+}
+
+.pagination.squared li:last-child > a, .pagination.squared li:last-child > span {
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.pagination-blue {
+    li {
+        a {
+            background: $lightGrey;
+            border: none !important;
+            color: $text-color;
+            display: inline-block;
+            margin-right: 1px;
+
+            &:hover {
+                background: darken($lightGrey,6%);
+                color: darken($text-color, 30%);
+                cursor: pointer;
+            }
+        }
+
+        &:first-child {
+            a {
+                border: none !important;
+            }
+        }
+
+        &.disabled {
+            a {
+                background: $lightGrey;
+                @include opacity(0.2);
+
+                &:hover, &:focus {
+                    background: $lightGrey;
+                    @include opacity(0.2);
+                    cursor: default !important;
+                }
+            }
+        }
+
+        &.active {
+            a {
+                background: $blue !important;
+                border: none !important;
+                color: $white !important;
+                cursor: default !important;
+                @include opacity(1);
+            }
+        }
+
+        [class^="fa-"], [class*=" fa-"], [class*="ti-"] {
+            color: $blue;
+        }
+    }
+}
+
+.pagination-green {
+    li {
+        a {
+            background: $lightGrey;
+            border: none !important;
+            color: $text-color;
+            display: inline-block;
+            margin-right: 1px;
+
+            &:hover {
+                background: darken($lightGrey,6%);
+                color: darken($text-color, 30%);
+                cursor: pointer;
+            }
+        }
+
+        &:first-child {
+            a {
+                border: none !important;
+            }
+        }
+
+        &.disabled {
+            a {
+                background: $lightGrey;
+                @include opacity(0.2);
+
+                &:hover, &:focus {
+                    background: $lightGrey;
+                    @include opacity(0.2);
+                    cursor: default !important;
+                }
+            }
+        }
+
+        &.active {
+            a {
+                background: $green !important;
+                border: none !important;
+                color: $white !important;
+                cursor: default !important;
+                @include opacity(1);
+            }
+        }
+
+        [class^="fa-"], [class*=" fa-"], [class*="ti-"] {
+            color: $green;
+        }
+    }
+}
+
+.pagination-red {
+    li {
+        a {
+            background: $lightGrey;
+            border: none !important;
+            color: $text-color;
+            display: inline-block;
+            margin-right: 1px;
+
+            &:hover {
+                background: darken($lightGrey,6%);
+                color: darken($text-color, 30%);
+                cursor: pointer;
+            }
+        }
+
+        &:first-child {
+            a {
+                border: none !important;
+            }
+        }
+
+        &.disabled {
+            a {
+                background: $lightGrey;
+                @include opacity(0.2);
+
+                &:hover, &:focus {
+                    background: $lightGrey;
+                    @include opacity(0.2);
+                    cursor: default !important;
+                }
+            }
+        }
+
+        &.active {
+            a {
+                background: $red !important;
+                border: none !important;
+                color: $white !important;
+                cursor: default !important;
+                @include opacity(1);
+            }
+        }
+
+        [class^="fa-"], [class*=" fa-"], [class*="ti-"] {
+            color: $red;
+        }
+    }
+}

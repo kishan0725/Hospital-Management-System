@@ -1,0 +1,63 @@
+/* ---------------------------------------------------------------------- */
+/*  Labels and Badges
+/* ---------------------------------------------------------------------- */
+.badge {
+    background-color: $primary;
+}
+
+.badge-success {
+    background-color: #5CB85C;
+}
+
+.badge-success[href]:hover, .badge-success[href]:focus {
+    background-color: #449D44;
+}
+
+.badge-warning {
+    background-color: #F0AD4E;
+}
+
+.badge-warning[href]:hover, .badge-warning[href]:focus {
+    background-color: #EC971F;
+}
+
+.badge-info {
+    background-color: #5BC0DE;
+}
+
+.badge-info[href]:hover, .badge-info[href]:focus {
+    background-color: #31B0D5;
+}
+
+.badge-danger {
+    background-color: #D9534F;
+}
+
+.badge-danger[href]:hover, .badge-danger[href]:focus {
+    background-color: #C9302C;
+}
+
+.badge-new {
+    background-color: #007AFF;
+    border-radius: 12px 12px 12px 12px !important;
+    font-size: 11px !important;
+    font-weight: 300;
+    height: 18px;
+    padding: 3px 6px;
+    text-align: center;
+    text-shadow: none !important;
+    vertical-align: middle;
+}
+
+.label-default {
+    background-color: $primary;
+}
+
+.label {
+    font-size: 85% !important;
+    padding: 0.4em 0.6em !important;
+}
+
+.label-inverse, .badge-inverse {
+    background-color: #555555;
+}
