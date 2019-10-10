@@ -15,6 +15,7 @@ include('func1.php');
     <link rel="stylesheet" href="style.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
@@ -22,6 +23,29 @@ include('func1.php');
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+    <style >
+      .btn-outline-light:hover{
+        color: #25bef7;
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+      }
+    </style>
+
+  <style >
+    .bg-primary {
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #342ac1;
+    border-color: #007bff;
+}
+.text-primary {
+    color: #342ac1!important;
+}
+  </style>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
@@ -34,7 +58,7 @@ include('func1.php');
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="search.php">
       <input class="form-control mr-sm-2" type="text" placeholder="Enter contact number" aria-label="Search" name="contact">
-      <input type="submit" class="btn btn-outline-light my-2 my-sm-0 btn btn-outline-light" id="inputbtn" name="search_submit" value="Search">
+      <input type="submit" class="btn btn-outline-light" id="inputbtn" name="search_submit" value="Search">
     </form>
   </div>
 </nav>

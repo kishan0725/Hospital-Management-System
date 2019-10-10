@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php 
 $con=mysqli_connect("localhost","root","","myhmsdb");
+
 include('newfunc.php');
 
 if(isset($_POST['docsub']))
@@ -24,6 +25,7 @@ if(isset($_POST['docsub']))
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
@@ -36,6 +38,44 @@ if(isset($_POST['docsub']))
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+  <script >
+    var check = function() {
+  if (document.getElementById('dpassword').value ==
+    document.getElementById('cdpassword').value) {
+    document.getElementById('message').style.color = '#5dd05d';
+    document.getElementById('message').innerHTML = 'Matching';
+  } else {
+    document.getElementById('message').style.color = '#f55252';
+    document.getElementById('message').innerHTML = 'Not Matching';
+  }
+}
+
+    function alphaOnly(event) {
+  var key = event.keyCode;
+  return ((key >= 65 && key <= 90) || key == 8 || key == 32);
+};
+  </script>
+
+  <style >
+    .bg-primary {
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #342ac1;
+    border-color: #007bff;
+}
+.text-primary {
+    color: #342ac1!important;
+}
+
+.btn-primary{
+  background-color: #3c50c1;
+  border-color: #3c50c1;
+}
+  </style>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
@@ -315,9 +355,12 @@ if(isset($_POST['docsub']))
         <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
                   <div class="col-md-4"><label>Doctor Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control" name="doctor" required></div><br><br>
+                  <div class="col-md-8"><input type="text" class="form-control" name="doctor" onkeydown="return alphaOnly(event);" required></div><br><br>
                   <div class="col-md-4"><label>Password:</label></div>
-                  <div class="col-md-8"><input type="password" class="form-control"  name="dpassword" required></div><br><br>
+                  <div class="col-md-8"><input type="password" class="form-control"  onkeyup='check();' name="dpassword" id="dpassword"  required></div><br><br>
+                  <div class="col-md-4"><label>Confirm Password:</label></div>
+                  <div class="col-md-8"><input type="password" class="form-control" onkeyup='check();' name="cdpassword" id="cdpassword" required><span id='message'></span> </div><br><br>
+                   
                   <div class="col-md-4"><label>Email ID:</label></div>
                   <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
                   <div class="col-md-4"><label>Consultancy Fees:</label></div>

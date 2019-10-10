@@ -7,14 +7,21 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<style >
+     .form-control {
+    border-radius: 0.75rem;
+}
+</style>
+
 <script>
     var check = function() {
   if (document.getElementById('password').value ==
     document.getElementById('cpassword').value) {
-    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').style.color = '#5dd05d';
     document.getElementById('message').innerHTML = 'Matching';
   } else {
-    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').style.color = '#f55252';
     document.getElementById('message').innerHTML = 'Not Matching';
   }
 }
@@ -23,6 +30,15 @@ function alphaOnly(event) {
   var key = event.keyCode;
   return ((key >= 65 && key <= 90) || key == 8 || key == 32);
 };
+
+function checklen()
+{
+    var pass1 = document.getElementById("password");  
+    if(pass1.value.length<6){  
+        alert("Password must be at least 6 characters long. Try again!");  
+        return false;  
+  }  
+}
 
 </script>
 
@@ -33,12 +49,16 @@ function alphaOnly(event) {
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" >
     <div class="container">
 
-      <a class="navbar-brand js-scroll-trigger" href="#" style="margin-top: 10px;font-family: 'IBM Plex Sans', sans-serif;"><h4><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp GLOBAL HOSPITALS</h4></a>
+      <a class="navbar-brand js-scroll-trigger" href="#" style="margin-top: 10px;margin-left:-65px;font-family: 'IBM Plex Sans', sans-serif;"><h4><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp GLOBAL HOSPITALS</h4></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+          <li class="nav-item" style="margin-right: 40px;">
+            <a class="nav-link js-scroll-trigger" href="index.php" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>HOME</h6></a>
+          </li>
+  
           <li class="nav-item" style="margin-right: 40px;">
             <a class="nav-link js-scroll-trigger" href="services.html" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>ABOUT US</h6></a>
           </li>
@@ -53,14 +73,14 @@ function alphaOnly(event) {
 
 	
 
-<div class="container register">
+<div class="container register" style="font-family: 'IBM Plex Sans', sans-serif;">
                 <div class="row">
                     <div class="col-md-3 register-left" style="margin-top: 10%;right: 5%">
                         <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
                         <h3>Welcome</h3>
                        
                     </div>
-                    <div class="col-md-9 register-right" style="margin-top: 40px;">
+                    <div class="col-md-9 register-right" style="margin-top: 40px;left: 80px;">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist" style="width: 35%;">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Patient</a>
@@ -115,7 +135,7 @@ function alphaOnly(event) {
                                         <div class="form-group">
                                             <input type="password" class="form-control"  id="cpassword" placeholder="Confirm Password *" name="cpassword"  onkeyup='check();' required/><span id='message'></span>
                                         </div>
-                                        <input type="submit" class="btnRegister" name="patsub1" value="Register"/>
+                                        <input type="submit" class="btnRegister" name="patsub1" onclick="return checklen();" value="Register"/>
                                     </div>
 
                                 </div>

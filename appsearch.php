@@ -3,7 +3,9 @@
 <html>
 <head>
 	<title>Patient Details</title>
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
 </head>
 <body>
 <?php
@@ -24,7 +26,7 @@ if(isset($_POST['app_search_submit']))
       <th scope='col'>Email</th>
       <th scope='col'>Contact</th>
       <th scope='col'>Doctor Name</th>
-      <th scope='col'>Consultancy Fees/th>
+      <th scope='col'>Consultancy Fees</th>
       <th scope='col'>Appointment Date</th>
       <th scope='col'>Appointment Time</th>
     </tr>

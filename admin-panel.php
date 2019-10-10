@@ -37,6 +37,7 @@ if(isset($_POST['app-submit']))
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
@@ -58,6 +59,26 @@ if(isset($_POST['app-submit']))
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+  <style >
+    .bg-primary {
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #342ac1;
+    border-color: #007bff;
+}
+.text-primary {
+    color: #342ac1!important;
+}
+
+.btn-primary{
+  background-color: #3c50c1;
+  border-color: #3c50c1;
+}
+  </style>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
