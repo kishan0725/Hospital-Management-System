@@ -2,6 +2,15 @@
 <?php 
 include('func1.php');
 
+if(isset($_GET['cancel']))
+  {
+    $query=mysqli_query($con,"update appointmenttb set doctorStatus='0' where ID = '".$_GET['ID']."'");
+    if($query)
+    {
+      echo "<script>alert('Your appointment successfully cancelled');</script>";
+    }
+  }
+
 
 ?>
 <html lang="en">
@@ -17,6 +26,9 @@ include('func1.php');
     <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital </a>
@@ -114,10 +126,14 @@ include('func1.php');
                   <tr>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact</th>
                     <th scope="col">Appointment Date</th>
                     <th scope="col">Appointment Time</th>
+                    <th scope="col">Current Status</th>
+                    <th scope="col">Action</th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -125,26 +141,50 @@ include('func1.php');
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
                     $dname = $_SESSION['dname'];
-                    $query = "select fname,lname,email,contact,appdate,apptime from appointmenttb where doctor='$dname';";
+                    $query = "select ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
-                      $fname = $row['fname'];
-                      $lname = $row['lname'];
-                      $email = $row['email'];
-                      $contact = $row['contact'];
-                      $appdate = $row['appdate'];
-                      $apptime = $row['apptime'];
-                      echo "<tr>
-                        <td>$fname</td>
-                        <td>$lname</td>
-                        <td>$email</td>
-                        <td>$contact</td>
-                        <td>$appdate</td>
-                        <td>$apptime</td>
-                      </tr>";
+                      ?>
+                      <tr>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['gender'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                        <td><?php echo $row['contact'];?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
+                        <td>
+                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Active";
+                    }
+                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Cancelled by Patient";
                     }
 
-                  ?>
+                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+                    {
+                      echo "Cancelled by You";
+                    }
+                        ?></td>
+
+                     <td>
+                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                        { ?>
+
+													
+	                        <a href="doctor-panel.php?ID=<?php echo $row['ID']?>&cancel=update" 
+                              onClick="return confirm('Are you sure you want to cancel this appointment ?')"
+                              title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
+	                        <?php } else {
+
+                                echo "Cancelled";
+                                } ?>
+                        
+                        </td>
+                      </tr>
+                    <?php } ?>
                 </tbody>
               </table>
         <br>

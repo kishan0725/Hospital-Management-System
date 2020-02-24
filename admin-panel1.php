@@ -18,6 +18,22 @@ if(isset($_POST['docsub']))
   }
 }
 
+
+if(isset($_POST['docsub1']))
+{
+  $demail=$_POST['demail'];
+  $query="delete from doctb where email='$demail';";
+  $result=mysqli_query($con,$query);
+  if($result)
+    {
+      echo "<script>alert('Doctor removed successfully!');</script>";
+  }
+  else{
+    echo "<script>alert('Unable to delete!');</script>";
+  }
+}
+
+
 ?>
 <html lang="en">
   <head>
@@ -34,6 +50,8 @@ if(isset($_POST['docsub']))
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -61,6 +79,11 @@ if(isset($_POST['docsub']))
     .bg-primary {
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
 }
+
+.col-md-4{
+  max-width:20% !important;
+}
+
 .list-group-item.active {
     z-index: 2;
     color: #fff;
@@ -69,6 +92,14 @@ if(isset($_POST['docsub']))
 }
 .text-primary {
     color: #342ac1!important;
+}
+
+#cpass {
+  display: -webkit-box;
+}
+
+#list-app{
+  font-size:15px;
 }
 
 .btn-primary{
@@ -104,7 +135,8 @@ if(isset($_POST['docsub']))
       <a class="list-group-item list-group-item-action" href="#list-pat" id="list-pat-list"  role="tab" data-toggle="list" aria-controls="home">Patient List</a>
       <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list"  role="tab" data-toggle="list" aria-controls="home">Appointment Details</a>
       <a class="list-group-item list-group-item-action" href="#list-settings" id="list-adoc-list"  role="tab" data-toggle="list" aria-controls="home">Add Doctor</a>
-      <a class="list-group-item list-group-item-action" href="#list-mes" id="list-mes-list"  role="tab" data-toggle="list" aria-controls="home">Messages</a>
+      <a class="list-group-item list-group-item-action" href="#list-settings1" id="list-ddoc-list"  role="tab" data-toggle="list" aria-controls="home">Delete Doctor</a>
+      <a class="list-group-item list-group-item-action" href="#list-mes" id="list-mes-list"  role="tab" data-toggle="list" aria-controls="home">Queries</a>
       
     </div><br>
   </div>
@@ -174,8 +206,10 @@ if(isset($_POST['docsub']))
                       <h4 class="StepTitle" style="margin-top: 5%;">Manage Doctors</h4>
                     
                       <p class="cl-effect-1">
-                        <a href="#app-hist" onclick="clickDiv('#list-adoc-list')">
-                          Add Doctors
+                        <a href="#app-hist" onclick="clickDiv('#list-adoc-list')">Add Doctors</a>
+                        &nbsp|
+                        <a href="#app-hist" onclick="clickDiv('#list-ddoc-list')">
+                          Delete Doctors
                         </a>
                       </p>
                     </div>
@@ -256,6 +290,7 @@ if(isset($_POST['docsub']))
                   <tr>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact</th>
                     <th scope="col">Password</th>
@@ -270,6 +305,7 @@ if(isset($_POST['docsub']))
                     while ($row = mysqli_fetch_array($result)){
                       $fname = $row['fname'];
                       $lname = $row['lname'];
+                      $gender = $row['gender'];
                       $email = $row['email'];
                       $contact = $row['contact'];
                       $password = $row['password'];
@@ -277,6 +313,7 @@ if(isset($_POST['docsub']))
                       echo "<tr>
                         <td>$fname</td>
                         <td>$lname</td>
+                        <td>$gender</td>
                         <td>$email</td>
                         <td>$contact</td>
                         <td>$password</td>
@@ -307,12 +344,14 @@ if(isset($_POST['docsub']))
                   <tr>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact</th>
                     <th scope="col">Doctor Name</th>
                     <th scope="col">Consultancy Fees</th>
                     <th scope="col">Appointment Date</th>
                     <th scope="col">Appointment Time</th>
+                    <th scope="col">Appointment Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -333,12 +372,28 @@ if(isset($_POST['docsub']))
                       <tr>
                         <td><?php echo $row['fname'];?></td>
                         <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['gender'];?></td>
                         <td><?php echo $row['email'];?></td>
                         <td><?php echo $row['contact'];?></td>
                         <td><?php echo $row['doctor'];?></td>
                         <td><?php echo $row['docFees'];?></td>
                         <td><?php echo $row['appdate'];?></td>
                         <td><?php echo $row['apptime'];?></td>
+                        <td>
+                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Active";
+                    }
+                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Cancelled by Patient";
+                    }
+
+                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+                    {
+                      echo "Cancelled by Doctor";
+                    }
+                        ?></td>
                       </tr>
                     <?php } ?>
                 </tbody>
@@ -346,29 +401,50 @@ if(isset($_POST['docsub']))
         <br>
       </div>
 
+<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
 
-
-
-
-      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
         <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
                   <div class="col-md-4"><label>Doctor Name:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control" name="doctor" onkeydown="return alphaOnly(event);" required></div><br><br>
+                  <div class="col-md-4"><label>Specialization:</label></div>
+                  <div class="col-md-8">
+                   <select name="special" class="form-control" id="special" required="required">
+                      <option value="head" name="spec" disabled selected>Select Specialization</option>
+                      <option value="heart" name="spec" selected>Heart</option>
+                      <option value="homeo" name="spec" selected>Homeopathy</option>
+                      <option value="accu" name="spec" selected>Accupuncture</option>
+                    </select>
+                    </div><br><br>
+                  <div class="col-md-4"><label>Email ID:</label></div>
+                  <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
                   <div class="col-md-4"><label>Password:</label></div>
                   <div class="col-md-8"><input type="password" class="form-control"  onkeyup='check();' name="dpassword" id="dpassword"  required></div><br><br>
                   <div class="col-md-4"><label>Confirm Password:</label></div>
-                  <div class="col-md-8"><input type="password" class="form-control" onkeyup='check();' name="cdpassword" id="cdpassword" required><span id='message'></span> </div><br><br>
+                  <div class="col-md-8"  id='cpass'><input type="password" class="form-control" onkeyup='check();' name="cdpassword" id="cdpassword" required>&nbsp &nbsp<span id='message'></span> </div><br><br>
                    
-                  <div class="col-md-4"><label>Email ID:</label></div>
-                  <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
+                  
                   <div class="col-md-4"><label>Consultancy Fees:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control"  name="docFees" required></div><br><br>
                 </div>
           <input type="submit" name="docsub" value="Add Doctor" class="btn btn-primary">
         </form>
       </div>
+
+      <div class="tab-pane fade" id="list-settings1" role="tabpanel" aria-labelledby="list-settings1-list">
+        <form class="form-group" method="post" action="admin-panel1.php">
+          <div class="row">
+          
+                  <div class="col-md-4"><label>Email ID:</label></div>
+                  <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
+                  
+                </div>
+          <input type="submit" name="docsub1" value="Delete Doctor" class="btn btn-primary" onclick="confirm('do you really want to delete?')">
+        </form>
+      </div>
+
+
        <div class="tab-pane fade" id="list-attend" role="tabpanel" aria-labelledby="list-attend-list">...</div>
 
        <div class="tab-pane fade" id="list-mes" role="tabpanel" aria-labelledby="list-mes-list">

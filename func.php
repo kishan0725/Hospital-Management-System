@@ -12,13 +12,18 @@ if(isset($_POST['patsub'])){
       $_SESSION['username'] = $row['fname']." ".$row['lname'];
       $_SESSION['fname'] = $row['fname'];
       $_SESSION['lname'] = $row['lname'];
+      $_SESSION['gender'] = $row['gender'];
       $_SESSION['contact'] = $row['contact'];
       $_SESSION['email'] = $row['email'];
     }
 		header("Location:admin-panel.php");
 	}
-	else
-		header("Location:error.php");
+  else {
+    echo("<script>alert('Invalid Username or Password. Try Again!');
+          window.location.href = 'index1.php';</script>");
+    // header("Location:error.php");
+  }
+		
 }
 if(isset($_POST['update_data']))
 {
@@ -42,7 +47,6 @@ function display_docs()
 	{
 		$name=$row['name'];
     $cost=$row['docFees'];
-		# echo'<option value="" disabled selected>Select Doctor</option>';
 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
 	}
 }

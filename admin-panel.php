@@ -5,6 +5,7 @@ $con=mysqli_connect("localhost","root","","myhmsdb");
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $fname = $_SESSION['fname'];
+$gender = $_SESSION['gender'];
 $lname = $_SESSION['lname'];
 $contact = $_SESSION['contact'];
 
@@ -14,6 +15,7 @@ if(isset($_POST['app-submit']))
   $email = $_SESSION['email'];
   $fname = $_SESSION['fname'];
   $lname = $_SESSION['lname'];
+  $gender = $_SESSION['gender'];
   $contact = $_SESSION['contact'];
   $doctor=$_POST['doctor'];
   $email=$_SESSION['email'];
@@ -22,13 +24,39 @@ if(isset($_POST['app-submit']))
 
   $appdate=$_POST['appdate'];
   $apptime=$_POST['apptime'];
+  
 
-  $query=mysqli_query($con,"insert into appointmenttb(fname,lname,email,contact,doctor,docFees,appdate,apptime) values('$fname','$lname','$email','$contact','$doctor','$docFees','$appdate','$apptime')");
+  $query=mysqli_query($con,"insert into appointmenttb(fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values('$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
   if($query)
   {
     echo "<script>alert('Your appointment successfully booked');</script>";
   }
 }
+
+if(isset($_GET['cancel']))
+  {
+    $query=mysqli_query($con,"update appointmenttb set userStatus='0' where ID = '".$_GET['ID']."'");
+    if($query)
+    {
+      echo "<script>alert('Your appointment successfully cancelled');</script>";
+    }
+  }
+
+// if(isset($_POST['userAction'])){
+//   $userStatus = 0;
+//   $doctorStatus = 1;
+//   $doctor=$_POST['doctor'];
+//   $appdate=$_POST['appdate'];
+//   $apptime=$_POST['apptime'];
+//   if (($userStatus == 0) & ($doctorStatus == 1))
+//     $currentStatus = "Cancelled by you";
+//   $query="update appointmenttb set userStatus='$userStatus',doctorStatus='$doctorStatus',currentStatus='$currentStatus' where doctor='$doctor' and appdate='$appdate' and apptime='$apptime';";
+//   $result=mysqli_query($con,$query);
+//   if($result)
+//     echo("<script>alert('Appointment cancelled!');
+//     </script>");
+//     //window.location.href = 'admin-panel.php';
+// }
 
 ?>
 <html lang="en">
@@ -53,6 +81,9 @@ if(isset($_POST['app-submit']))
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital </a>
@@ -175,14 +206,11 @@ if(isset($_POST['app-submit']))
                   <div class="col-md-4"><label for="doctor">Doctors:</label></div>
                   <div class="col-md-8">
                    <select name="doctor" class="form-control" id="doctor" required="required">
-                     <!-- <option value="Dr. Punam Shaw">Dr. Punam Shaw</option>
-                      <option value="Dr. Ashok Goyal">Dr. Ashok Goyal</option> -->
                       <option value="" disabled selected>Select Doctor</option>
                       <?php display_docs();?>
                     </select>
                     <script>
               document.getElementById('doctor').onchange = function updateFees(e) {
-                console.log(e);
                 document.getElementById('docFees').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
               };
             </script>
@@ -194,7 +222,7 @@ if(isset($_POST['app-submit']))
                               </label></div>
                               <div class="col-md-8">
                               <!-- <div id="docFees">Select a doctor</div> -->
-                              <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly"></input>
+                              <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly"/>
                   </div><br><br>
 
                   <div class="col-md-4"><label>Date</label></div>
@@ -226,6 +254,8 @@ if(isset($_POST['app-submit']))
                     <th scope="col">Consultancy Fees</th>
                     <th scope="col">Appointment Date</th>
                     <th scope="col">Appointment Time</th>
+                    <th scope="col">Current Status</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -234,7 +264,7 @@ if(isset($_POST['app-submit']))
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
 
-                    $query = "select doctor,docFees,appdate,apptime from appointmenttb where fname ='$fname' and lname='$lname';";
+                    $query = "select ID,doctor,docFees,appdate,apptime,userStatus,doctorStatus from appointmenttb where fname ='$fname' and lname='$lname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
               
@@ -248,6 +278,37 @@ if(isset($_POST['app-submit']))
                         <td><?php echo $row['docFees'];?></td>
                         <td><?php echo $row['appdate'];?></td>
                         <td><?php echo $row['apptime'];?></td>
+                        
+                          <td>
+                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Active";
+                    }
+                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+                    {
+                      echo "Cancelled by You";
+                    }
+
+                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+                    {
+                      echo "Cancelled by Doctor";
+                    }
+                        ?></td>
+
+                        <td>
+                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                        { ?>
+
+													
+	                        <a href="admin-panel.php?ID=<?php echo $row['ID']?>&cancel=update" 
+                              onClick="return confirm('Are you sure you want to cancel this appointment ?')"
+                              title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
+	                        <?php } else {
+
+                                echo "Cancelled";
+                                } ?>
+                        
+                        </td>
                       </tr>
                     <?php } ?>
                 </tbody>
