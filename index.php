@@ -22,7 +22,7 @@
   if (document.getElementById('password').value ==
     document.getElementById('cpassword').value) {
     document.getElementById('message').style.color = '#5dd05d';
-    document.getElementById('message').innerHTML = 'Matching';
+    document.getElementById('message').innerHTML = 'Matched';
   } else {
     document.getElementById('message').style.color = '#f55252';
     document.getElementById('message').innerHTML = 'Not Matching';
@@ -84,7 +84,7 @@ function checklen()
                        
                     </div>
                     <div class="col-md-9 register-right" style="margin-top: 40px;left: 80px;">
-                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist" style="width: 35%;">
+                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist" style="width: 40%;">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Patient</a>
                             </li>
@@ -92,7 +92,7 @@ function checklen()
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Doctor</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Receptionist</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">

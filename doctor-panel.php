@@ -11,6 +11,25 @@ if(isset($_GET['cancel']))
     }
   }
 
+  if(isset($_GET['prescribe'])){
+    $doctor = $_SESSION['dname'];
+    $pid = $_GET['pid'];
+    $ID = $_GET['ID'];
+    $appdate = $_GET['appdate'];
+    $apptime = $_GET['apptime'];
+    $disease = $_GET['disease'];
+    $allergy = $_GET['allergy'];
+    $prescription = $_GET['prescription'];
+    $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$dname',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
+    if($query)
+    {
+      echo "<script>alert('Prescribed successfully!');</script>";
+    }
+    else{
+      echo "<script>alert('Unable to process your request. Try again!');</script>";
+    }
+  }
+
 
 ?>
 <html lang="en">
@@ -83,10 +102,11 @@ if(isset($_GET['cancel']))
    <div class="container-fluid" style="margin-top:50px;">
     <h3 style = "margin-left: 40%; padding-bottom: 20px;font-family:'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $_SESSION['dname'] ?>  </h3>
     <div class="row">
-  <div class="col-md-4" style="max-width:25%;margin-top: 3%;">
+  <div class="col-md-4" style="max-width:18%;margin-top: 3%;">
     <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" href="#list-dash"  role="tab"    aria-controls="home" data-toggle="list">Dashboard</a>
+      <a class="list-group-item list-group-item-action active" href="#list-dash" role="tab" aria-controls="home" data-toggle="list">Dashboard</a>
       <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list" role="tab" data-toggle="list" aria-controls="home">Appointments</a>
+      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home"> Prescribe</a>
       
     </div><br>
   </div>
@@ -96,7 +116,8 @@ if(isset($_GET['cancel']))
         
               <div class="container-fluid container-fullw bg-white" >
               <div class="row">
-               <div class="col-sm-4" style="left: 30%">
+
+               <div class="col-sm-4" style="left: 10%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list fa-stack-1x fa-inverse"></i> </span>
@@ -114,6 +135,22 @@ if(isset($_GET['cancel']))
                     </div>
                   </div>
                 </div>
+
+                <div class="col-sm-4" style="left: 15%">
+                  <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body">
+                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
+                      <h4 class="StepTitle" style="margin-top: 5%;"> Prescriptions</h4>
+                        
+                      <p class="links cl-effect-1">
+                        <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
+                          Prescription List
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>    
+
              </div>
            </div>
          </div>
@@ -124,6 +161,8 @@ if(isset($_GET['cancel']))
               <table class="table table-hover">
                 <thead>
                   <tr>
+                    <th scope="col">Patient ID</th>
+                    <th scope="col">Appointment ID</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Gender</th>
@@ -133,6 +172,7 @@ if(isset($_GET['cancel']))
                     <th scope="col">Appointment Time</th>
                     <th scope="col">Current Status</th>
                     <th scope="col">Action</th>
+                    <th scope="col">Prescribe</th>
 
                   </tr>
                 </thead>
@@ -141,11 +181,13 @@ if(isset($_GET['cancel']))
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
                     $dname = $_SESSION['dname'];
-                    $query = "select ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
+                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       ?>
                       <tr>
+                      <td><?php echo $row['pid'];?></td>
+                        <td><?php echo $row['ID'];?></td>
                         <td><?php echo $row['fname'];?></td>
                         <td><?php echo $row['lname'];?></td>
                         <td><?php echo $row['gender'];?></td>
@@ -183,11 +225,52 @@ if(isset($_GET['cancel']))
                                 } ?>
                         
                         </td>
-                      </tr>
+
+                        <td>
+
+                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                        { ?>
+
+                        <a href="doctor-panel.php#list-pres?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
+                        onclick="clickDiv('#list-pres-list')" title="prescribe">
+                        <button class="btn btn-success">Prescibe</button></a>
+                        <?php } else {
+
+                            echo "-";
+                            } ?>
+                        
+                        </td>
+
+
+                      </tr></a>
                     <?php } ?>
                 </tbody>
               </table>
         <br>
+      </div>
+
+      <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
+        <form class="form-group" name="prescribeform" method="get" action="doctor-panel.php">
+          <div class="row">
+                  <div class="col-md-4"><label>Disease:</label></div>
+                  <div class="col-md-8">
+                  <!-- <input type="text" class="form-control" name="disease" required> -->
+                  <textarea id="disease" cols="86" rows ="5" name="disease" required></textarea>
+                  </div><br><br>
+                  
+                  <div class="col-md-4"><label>Allergies:</label></div>
+                  <div class="col-md-8">
+                  <!-- <input type="text"  class="form-control" name="allergy" required> -->
+                  <textarea id="allergy" cols="86" rows ="5" name="allergy" required></textarea>
+                  </div><br><br>
+                  <div class="col-md-4"><label>Prescription:</label></div>
+                  <div class="col-md-8">
+                  <!-- <input type="text" class="form-control"  name="prescription"  required> -->
+                  <textarea id="prescription" cols="86" rows ="10" name="prescription" required></textarea>
+                  </div><br><br>
+                  
+          <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary">
+        </form>
       </div>
 
 

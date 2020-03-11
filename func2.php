@@ -21,6 +21,13 @@ if(isset($_POST['patsub1'])){
         $_SESSION['email'] = $_POST['email'];
         header("Location:admin-panel.php");
     } 
+
+    $query1 = "select * from patreg;";
+    $result1 = mysqli_query($con,$query);
+    if($result1){
+      $_SESSION['pid'] = $row['pid'];
+    }
+
   }
   else{
     header("Location:error1.php");

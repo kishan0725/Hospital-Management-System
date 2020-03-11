@@ -412,9 +412,10 @@ if(isset($_POST['docsub1']))
                   <div class="col-md-8">
                    <select name="special" class="form-control" id="special" required="required">
                       <option value="head" name="spec" disabled selected>Select Specialization</option>
-                      <option value="heart" name="spec" selected>Heart</option>
-                      <option value="homeo" name="spec" selected>Homeopathy</option>
-                      <option value="accu" name="spec" selected>Accupuncture</option>
+                      <option value="heart" name="spec">General</option>
+                      <option value="homeo" name="spec">Cardiologist</option>
+                      <option value="accu" name="spec">Neurologist</option>
+                      <option value="accu" name="spec">Pediatrician</option>
                     </select>
                     </div><br><br>
                   <div class="col-md-4"><label>Email ID:</label></div>

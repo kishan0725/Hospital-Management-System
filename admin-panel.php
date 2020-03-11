@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <?php 
+include('func.php');  
 include('newfunc.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
+$pid = $_SESSION['pid'];
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $fname = $_SESSION['fname'];
@@ -11,6 +13,7 @@ $contact = $_SESSION['contact'];
 
 if(isset($_POST['app-submit']))
 {
+  $pid = $_SESSION['pid'];
   $username = $_SESSION['username'];
   $email = $_SESSION['email'];
   $fname = $_SESSION['fname'];
@@ -26,10 +29,14 @@ if(isset($_POST['app-submit']))
   $apptime=$_POST['apptime'];
   
 
-  $query=mysqli_query($con,"insert into appointmenttb(fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values('$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+  $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+
   if($query)
   {
     echo "<script>alert('Your appointment successfully booked');</script>";
+  }
+  else{
+    echo "<script>alert('Unable to process your request. Please try again!');</script>";
   }
 }
 
@@ -129,13 +136,15 @@ if(isset($_GET['cancel']))
   </style>
   <body style="padding-top:50px;">
    <div class="container-fluid" style="margin-top:50px;">
-    <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $username ?> </h3>
+    <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $username ?> 
+   </h3>
     <div class="row">
   <div class="col-md-4" style="max-width:25%; margin-top: 3%">
     <div class="list-group" id="list-tab" role="tablist">
       <a class="list-group-item list-group-item-action active" id="list-dash-list" data-toggle="list" href="#list-dash" role="tab" aria-controls="home">Dashboard</a>
       <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Book Appointment</a>
       <a class="list-group-item list-group-item-action" href="#app-hist" id="list-pat-list" role="tab" data-toggle="list" aria-controls="home">Appointment History</a>
+      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home">Prescriptions</a>
       
     </div><br>
   </div>
@@ -146,7 +155,7 @@ if(isset($_GET['cancel']))
       <div class="tab-pane fade  show active" id="list-dash" role="tabpanel" aria-labelledby="list-dash-list">
         <div class="container-fluid container-fullw bg-white" >
               <div class="row">
-               <div class="col-sm-4" style="left: 10%">
+               <div class="col-sm-4" style="left: 5%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
@@ -165,7 +174,7 @@ if(isset($_GET['cancel']))
                   </div>
                 </div>
 
-                <div class="col-sm-4" style="left: 15%">
+                <div class="col-sm-4" style="left: 10%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
@@ -179,8 +188,24 @@ if(isset($_GET['cancel']))
                     </div>
                   </div>
                 </div>
+                </div>
+
+                <div class="col-sm-4" style="left: 20%;margin-top:5%">
+                  <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body" >
+                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
+                      <h4 class="StepTitle" style="margin-top: 5%;">Prescriptions</h2>
+                    
+                      <p class="cl-effect-1">
+                        <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
+                          View Prescription List
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 
-              </div>
+         
             </div>
           </div>
 
@@ -203,6 +228,20 @@ if(isset($_GET['cancel']))
                   <div class="col-md-8"><input type="text"  class="form-control" name="email"></div><br><br>
                   <div class="col-md-4"><label>Contact Number:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control"  name="contact"></div><br><br> -->
+                  
+                  <div class="col-md-4"><label for="spec">Specialization:</label></div>
+                  <div class="col-md-8">
+                   <select name="spec" class="form-control" id="spec">
+                      <option value="" disabled selected>Select Specialization</option>
+                      <?php display_specs();?>
+                    </select>
+                    <script>
+              document.getElementById('spec').onchange = function updateFees(e) {
+                document.getElementById('doctor').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
+              };
+            </script>
+                  </div><br><br>
+                  
                   <div class="col-md-4"><label for="doctor">Doctors:</label></div>
                   <div class="col-md-8">
                    <select name="doctor" class="form-control" id="doctor" required="required">
@@ -309,6 +348,49 @@ if(isset($_GET['cancel']))
                                 } ?>
                         
                         </td>
+                      </tr>
+                    <?php } ?>
+                </tbody>
+              </table>
+        <br>
+      </div>
+
+
+
+      <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
+        
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">Doctor Name</th>
+                    <th scope="col">Appointment ID</th>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Appointment Time</th>
+                    <th scope="col">Diseases</th>
+                    <th scope="col">Allergies</th>
+                    <th scope="col">Prescriptions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+
+                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    global $con;
+
+                    $query = "select doctor,ID,appdate,apptime,disease,allergy,prescription from prestb where fname ='$fname' and lname='$lname' and pid='$pid';";
+                    $result = mysqli_query($con,$query);
+                    while ($row = mysqli_fetch_array($result)){
+                  ?>
+                      <tr>
+                        <td><?php echo $row['doctor'];?></td>
+                        <td><?php echo $row['ID'];?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
+                        <td><?php echo $row['disease'];?></td>
+                        <td><?php echo $row['allergy'];?></td>
+                        <td><?php echo $row['prescription'];?></td>
+                    
                       </tr>
                     <?php } ?>
                 </tbody>

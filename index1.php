@@ -91,7 +91,7 @@ include("header.php");
                 </div>
                 <div class="row">
                  <div class="col-md-4"  style="padding-left: 160px;margin-top: 10%">
-                    <input type="submit" id="inputbtn" name="patsub" value="Login" class="btn btn-primary"></div>           
+                    <center><input type="submit" id="inputbtn" name="patsub" value="Login" class="btn btn-primary"></center></div>           
                  <!--  <div class="col-md-8" style="margin-top: 10%">
                     <a href="index.php" class="btn btn-primary">Back</a></div> -->
                 </div>

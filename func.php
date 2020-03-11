@@ -9,6 +9,7 @@ if(isset($_POST['patsub'])){
 	if(mysqli_num_rows($result)==1)
 	{
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+      $_SESSION['pid'] = $row['pid'];
       $_SESSION['username'] = $row['fname']." ".$row['lname'];
       $_SESSION['fname'] = $row['fname'];
       $_SESSION['lname'] = $row['lname'];
@@ -38,18 +39,18 @@ if(isset($_POST['update_data']))
 
 
 
-function display_docs()
-{
-	global $con;
-	$query="select * from doctb";
-	$result=mysqli_query($con,$query);
-	while($row=mysqli_fetch_array($result))
-	{
-		$name=$row['name'];
-    $cost=$row['docFees'];
-		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
-	}
-}
+// function display_docs()
+// {
+// 	global $con;
+// 	$query="select * from doctb";
+// 	$result=mysqli_query($con,$query);
+// 	while($row=mysqli_fetch_array($result))
+// 	{
+// 		$name=$row['name'];
+//     $cost=$row['docFees'];
+// 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
+// 	}
+// }
 
 if(isset($_POST['doc_sub']))
 {

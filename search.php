@@ -1,8 +1,10 @@
 <?php
+session_start();
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['search_submit'])){
   $contact=$_POST['contact'];
- $query="select * from appointmenttb where contact='$contact';";
+  $docname = $_SESSION['dname'];
+ $query="select * from appointmenttb where contact='$contact' and doctor='$docname';";
  $result=mysqli_query($con,$query);
  echo '<!DOCTYPE html>
 <html lang="en">
