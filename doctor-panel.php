@@ -107,7 +107,7 @@ if(isset($_GET['cancel']))
     <div class="list-group" id="list-tab" role="tablist">
       <a class="list-group-item list-group-item-action active" href="#list-dash" role="tab" aria-controls="home" data-toggle="list">Dashboard</a>
       <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list" role="tab" data-toggle="list" aria-controls="home">Appointments</a>
-      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home"> Prescribe</a>
+      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home"> Prescription List</a>
       
     </div><br>
   </div>
@@ -232,7 +232,7 @@ if(isset($_GET['cancel']))
                         <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                         { ?>
 
-                        <a href="prescribe.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
+                        <a href="prescribe.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
                         tooltip-placement="top" tooltip="Remove" title="prescribe">
                         <button class="btn btn-success">Prescibe</button></a>
                         <?php } else {
@@ -250,28 +250,58 @@ if(isset($_GET['cancel']))
         <br>
       </div>
 
+      
+
       <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
-        <form class="form-group" name="prescribeform" method="get" action="doctor-panel.php">
-          <div class="row">
-                  <div class="col-md-4"><label>Disease:</label></div>
-                  <div class="col-md-8">
-                  <!-- <input type="text" class="form-control" name="disease" required> -->
-                  <textarea id="disease" cols="86" rows ="5" name="disease" required></textarea>
-                  </div><br><br>
-                  
-                  <div class="col-md-4"><label>Allergies:</label></div>
-                  <div class="col-md-8">
-                  <!-- <input type="text"  class="form-control" name="allergy" required> -->
-                  <textarea id="allergy" cols="86" rows ="5" name="allergy" required></textarea>
-                  </div><br><br>
-                  <div class="col-md-4"><label>Prescription:</label></div>
-                  <div class="col-md-8">
-                  <!-- <input type="text" class="form-control"  name="prescription"  required> -->
-                  <textarea id="prescription" cols="86" rows ="10" name="prescription" required></textarea>
-                  </div><br><br>
-                  
-          <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary">
-        </form>
+        <table class="table table-hover">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">Patient ID</th>
+                    
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Appointment ID</th>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Appointment Time</th>
+                    <th scope="col">Disease</th>
+                    <th scope="col">Allergy</th>
+                    <th scope="col">Prescribe</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+
+                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    global $con;
+
+                    $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from prestb where doctor='$doctor';";
+                    
+                    $result = mysqli_query($con,$query);
+                    if(!$result){
+                      echo mysqli_error($con);
+                    }
+                    
+
+                    while ($row = mysqli_fetch_array($result)){
+                  ?>
+                      <tr>
+                        <td><?php echo $row['pid'];?></td>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['ID'];?></td>
+                        
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
+                        <td><?php echo $row['disease'];?></td>
+                        <td><?php echo $row['allergy'];?></td>
+                        <td><?php echo $row['prescription'];?></td>
+                    
+                      </tr>
+                    <?php }
+                    ?>
+                </tbody>
+              </table>
       </div>
 
 

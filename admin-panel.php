@@ -135,6 +135,7 @@ if(isset($_GET['cancel']))
     #inputbtn:hover{cursor:pointer;}
   </style>
   <body style="padding-top:50px;">
+  
    <div class="container-fluid" style="margin-top:50px;">
     <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $username ?> 
    </h3>
@@ -233,7 +234,7 @@ if(isset($_GET['cancel']))
                   <div class="col-md-8">
                    <select name="spec" class="form-control" id="spec">
                       <option value="" disabled selected>Select Specialization</option>
-                      <?php display_specs();?>
+                      <?php display_specs();?> 
                     </select>
                     <script>
               document.getElementById('spec').onchange = function updateFees(e) {
@@ -378,8 +379,15 @@ if(isset($_GET['cancel']))
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
 
-                    $query = "select doctor,ID,appdate,apptime,disease,allergy,prescription from prestb where fname ='$fname' and lname='$lname' and pid='$pid';";
+                    $query = "select doctor,ID,appdate,apptime,disease,allergy,prescription from prestb where pid='$pid';";
+                    // purila doctor field save pannalaya?
+                    // indha patient oda pid ku prescribe assign aagala..
                     $result = mysqli_query($con,$query);
+                    if(!$result){
+                      echo mysqli_error($con);
+                    }
+                    
+
                     while ($row = mysqli_fetch_array($result)){
                   ?>
                       <tr>
@@ -392,7 +400,8 @@ if(isset($_GET['cancel']))
                         <td><?php echo $row['prescription'];?></td>
                     
                       </tr>
-                    <?php } ?>
+                    <?php }
+                    ?>
                 </tbody>
               </table>
         <br>

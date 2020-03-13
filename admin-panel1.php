@@ -126,7 +126,7 @@ if(isset($_POST['docsub1']))
   </style>
   <body style="padding-top:50px;">
    <div class="container-fluid" style="margin-top:50px;">
-    <h3 style = "margin-left: 40%; padding-bottom: 20px;font-family: 'IBM Plex Sans', sans-serif;"> WELCOME ADMIN </h3>
+    <h3 style = "margin-left: 40%; padding-bottom: 20px;font-family: 'IBM Plex Sans', sans-serif;"> WELCOME RECEPTIONIST </h3>
     <div class="row">
   <div class="col-md-4" style="max-width:25%;margin-top: 3%;">
     <div class="list-group" id="list-tab" role="tablist">
@@ -134,6 +134,7 @@ if(isset($_POST['docsub1']))
       <a class="list-group-item list-group-item-action" href="#list-doc" id="list-doc-list"  role="tab"    aria-controls="home" data-toggle="list">Doctor List</a>
       <a class="list-group-item list-group-item-action" href="#list-pat" id="list-pat-list"  role="tab" data-toggle="list" aria-controls="home">Patient List</a>
       <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list"  role="tab" data-toggle="list" aria-controls="home">Appointment Details</a>
+      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list"  role="tab" data-toggle="list" aria-controls="home">Prescription List</a>
       <a class="list-group-item list-group-item-action" href="#list-settings" id="list-adoc-list"  role="tab" data-toggle="list" aria-controls="home">Add Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-settings1" id="list-ddoc-list"  role="tab" data-toggle="list" aria-controls="home">Delete Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-mes" id="list-mes-list"  role="tab" data-toggle="list" aria-controls="home">Queries</a>
@@ -148,7 +149,7 @@ if(isset($_POST['docsub1']))
       <div class="tab-pane fade show active" id="list-dash" role="tabpanel" aria-labelledby="list-dash-list">
         <div class="container-fluid container-fullw bg-white" >
               <div class="row">
-               <div class="col-sm-4" style="left: 10%">
+               <div class="col-sm-4" style="left: 5%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
@@ -167,7 +168,7 @@ if(isset($_POST['docsub1']))
                   </div>
                 </div>
 
-                <div class="col-sm-4" style="left: 15%">
+                <div class="col-sm-4" style="left: 10%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
@@ -181,9 +182,9 @@ if(isset($_POST['docsub1']))
                     </div>
                   </div>
                 </div>
-              </div>
+              
 
-                <div class="col-sm-4" style="left: 10%;margin-top: 5%;">
+                <div class="col-sm-4" style="left: 12%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
@@ -197,9 +198,26 @@ if(isset($_POST['docsub1']))
                     </div>
                   </div>
                 </div>
+                </div>
+
+                <div class="row">
+                <div class="col-sm-4" style="left: 20%;margin-top: 5%;">
+                  <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body" >
+                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
+                      <h4 class="StepTitle" style="margin-top: 5%;">Prescription List</h4>
+                    
+                      <p class="cl-effect-1">
+                        <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
+                          View Prescriptions
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
 
-                <div class="col-sm-4" style="left: 50%;margin-top: -15%">
+                <div class="col-sm-4" style="left: 24%;margin-top: 5%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
@@ -215,7 +233,9 @@ if(isset($_POST['docsub1']))
                     </div>
                   </div>
                 </div>
-             
+                </div>
+                        
+
       
                 
               </div>
@@ -243,8 +263,9 @@ if(isset($_POST['docsub1']))
                 <thead>
                   <tr>
                     <th scope="col">Doctor Name</th>
-                    <th scope="col">Password</th>
+                    <th scope="col">Specialization</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Password</th>
                     <th scope="col">Fees</th>
                   </tr>
                 </thead>
@@ -256,14 +277,16 @@ if(isset($_POST['docsub1']))
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       $username = $row['username'];
-                      $password = $row['password'];
+                      $spec = $row['spec'];
                       $email = $row['email'];
+                      $password = $row['password'];
                       $docFees = $row['docFees'];
                       
                       echo "<tr>
                         <td>$username</td>
-                        <td>$password</td>
+                        <td>$spec</td>
                         <td>$email</td>
+                        <td>$password</td>
                         <td>$docFees</td>
                       </tr>";
                     }
@@ -288,6 +311,7 @@ if(isset($_POST['docsub1']))
               <table class="table table-hover">
                 <thead>
                   <tr>
+                  <th scope="col">Patient ID</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Gender</th>
@@ -303,6 +327,7 @@ if(isset($_POST['docsub1']))
                     $query = "select * from patreg";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
+                      $pid = $row['pid'];
                       $fname = $row['fname'];
                       $lname = $row['lname'];
                       $gender = $row['gender'];
@@ -311,6 +336,7 @@ if(isset($_POST['docsub1']))
                       $password = $row['password'];
                       
                       echo "<tr>
+                        <td>$pid</td>
                         <td>$fname</td>
                         <td>$lname</td>
                         <td>$gender</td>
@@ -324,6 +350,71 @@ if(isset($_POST['docsub1']))
                 </tbody>
               </table>
         <br>
+      </div>
+
+
+      <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
+
+       <div class="col-md-8">
+  
+        <div class="row">
+        
+    
+        
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                  <th scope="col">Doctor</th>
+                    <th scope="col">Patient ID</th>
+                    <th scope="col">Appointment ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Appointment Time</th>
+                    <th scope="col">Disease</th>
+                    <th scope="col">Allergy</th>
+                    <th scope="col">Prescription</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    global $con;
+                    $query = "select * from prestb";
+                    $result = mysqli_query($con,$query);
+                    while ($row = mysqli_fetch_array($result)){
+                      $doctor = $row['doctor'];
+                      $pid = $row['pid'];
+                      $ID = $row['ID'];
+                      $fname = $row['fname'];
+                      $lname = $row['lname'];
+                      $appdate = $row['appdate'];
+                      $apptime = $row['apptime'];
+                      $disease = $row['disease'];
+                      $allergy = $row['allergy'];
+                      $pres = $row['prescription'];
+
+                      
+                      echo "<tr>
+                        <td>$doctor</td>
+                        <td>$pid</td>
+                        <td>$ID</td>
+                        <td>$fname</td>
+                        <td>$lname</td>
+                        <td>$appdate</td>
+                        <td>$apptime</td>
+                        <td>$disease</td>
+                        <td>$allergy</td>
+                        <td>$pres</td>
+                      </tr>";
+                    }
+
+                  ?>
+                </tbody>
+              </table>
+        <br>
+      </div>
+      </div>
       </div>
 
 
@@ -342,6 +433,8 @@ if(isset($_POST['docsub1']))
               <table class="table table-hover">
                 <thead>
                   <tr>
+                  <th scope="col">Appointment ID</th>
+                  <th scope="col">Patient ID</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Gender</th>
@@ -363,13 +456,10 @@ if(isset($_POST['docsub1']))
                     $query = "select * from appointmenttb;";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
-              
-                      #$fname = $row['fname'];
-                      #$lname = $row['lname'];
-                      #$email = $row['email'];
-                      #$contact = $row['contact'];
                   ?>
                       <tr>
+                        <td><?php echo $row['ID'];?></td>
+                        <td><?php echo $row['pid'];?></td>
                         <td><?php echo $row['fname'];?></td>
                         <td><?php echo $row['lname'];?></td>
                         <td><?php echo $row['gender'];?></td>

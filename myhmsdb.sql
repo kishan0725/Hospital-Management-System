@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2020 at 01:09 AM
+-- Generation Time: Mar 13, 2020 at 05:25 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -74,7 +74,9 @@ INSERT INTO `appointmenttb` (`pid`, `ID`, `fname`, `lname`, `gender`, `email`, `
 (4, 5, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Dinesh', 700, '2020-02-28', '12:00:00', 1, 1),
 (4, 6, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Ganesh', 550, '2020-02-26', '15:00:00', 0, 1),
 (2, 8, 'Alia', 'Bhatt', 'Female', 'alia@gmail.com', '8976897689', 'Ganesh', 550, '2020-03-21', '10:00:00', 1, 1),
-(5, 9, 'Gautam', 'Shankararam', 'Male', 'gautam@gmail.com', '9070897653', 'Ganesh', 550, '2020-03-19', '20:00:00', 1, 0);
+(5, 9, 'Gautam', 'Shankararam', 'Male', 'gautam@gmail.com', '9070897653', 'Ganesh', 550, '2020-03-19', '20:00:00', 1, 0),
+(4, 10, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Ganesh', 550, '0000-00-00', '14:00:00', 1, 0),
+(4, 11, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Dinesh', 700, '2020-03-27', '15:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -175,6 +177,8 @@ CREATE TABLE `prestb` (
   `doctor` varchar(50) NOT NULL,
   `pid` int(11) NOT NULL,
   `ID` int(11) NOT NULL,
+  `fname` varchar(50) NOT NULL,
+  `lname` varchar(50) NOT NULL,
   `appdate` date NOT NULL,
   `apptime` time NOT NULL,
   `disease` varchar(250) NOT NULL,
@@ -186,9 +190,9 @@ CREATE TABLE `prestb` (
 -- Dumping data for table `prestb`
 --
 
-INSERT INTO `prestb` (`doctor`, `pid`, `ID`, `appdate`, `apptime`, `disease`, `allergy`, `prescription`) VALUES
-('Ganesh', 0, 0, '0000-00-00', '00:00:00', 'cold', 'nothing', 'tablet'),
-('Ganesh', 0, 0, '0000-00-00', '00:00:00', 'cough', 'nothing', 'take a syrup');
+INSERT INTO `prestb` (`doctor`, `pid`, `ID`, `fname`, `lname`, `appdate`, `apptime`, `disease`, `allergy`, `prescription`) VALUES
+('Dinesh', 4, 11, 'Kishan', 'Lal', '2020-03-27', '15:00:00', 'Cough', 'Nothing', 'Just take a teaspoon of Benadryl every night'),
+('Dinesh', 4, 11, 'Kishan', 'Lal', '2020-03-27', '15:00:00', 'Cold', 'Nothing', 'Include every morning also');
 
 --
 -- Indexes for dumped tables
@@ -214,7 +218,7 @@ ALTER TABLE `patreg`
 -- AUTO_INCREMENT for table `appointmenttb`
 --
 ALTER TABLE `appointmenttb`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `patreg`
