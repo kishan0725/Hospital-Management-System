@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <?php 
 include('func1.php');
-
+$con=mysqli_connect("localhost","root","","myhmsdb");
+$doctor = $_SESSION['dname'];
 if(isset($_GET['cancel']))
   {
     $query=mysqli_query($con,"update appointmenttb set doctorStatus='0' where ID = '".$_GET['ID']."'");
@@ -11,24 +12,24 @@ if(isset($_GET['cancel']))
     }
   }
 
-  if(isset($_GET['prescribe'])){
-    $doctor = $_SESSION['dname'];
-    $pid = $_GET['pid'];
-    $ID = $_GET['ID'];
-    $appdate = $_GET['appdate'];
-    $apptime = $_GET['apptime'];
-    $disease = $_GET['disease'];
-    $allergy = $_GET['allergy'];
-    $prescription = $_GET['prescription'];
-    $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$dname',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
-    if($query)
-    {
-      echo "<script>alert('Prescribed successfully!');</script>";
-    }
-    else{
-      echo "<script>alert('Unable to process your request. Try again!');</script>";
-    }
-  }
+  // if(isset($_GET['prescribe'])){
+    
+  //   $pid = $_GET['pid'];
+  //   $ID = $_GET['ID'];
+  //   $appdate = $_GET['appdate'];
+  //   $apptime = $_GET['apptime'];
+  //   $disease = $_GET['disease'];
+  //   $allergy = $_GET['allergy'];
+  //   $prescription = $_GET['prescription'];
+  //   $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$doctor',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
+  //   if($query)
+  //   {
+  //     echo "<script>alert('Prescribed successfully!');</script>";
+  //   }
+  //   else{
+  //     echo "<script>alert('Unable to process your request. Try again!');</script>";
+  //   }
+  // }
 
 
 ?>
@@ -231,8 +232,8 @@ if(isset($_GET['cancel']))
                         <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                         { ?>
 
-                        <a href="doctor-panel.php#list-pres?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
-                        onclick="clickDiv('#list-pres-list')" title="prescribe">
+                        <a href="prescribe.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
+                        tooltip-placement="top" tooltip="Remove" title="prescribe">
                         <button class="btn btn-success">Prescibe</button></a>
                         <?php } else {
 
