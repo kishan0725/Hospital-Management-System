@@ -3,13 +3,17 @@
 include('func.php');  
 include('newfunc.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
-$pid = $_SESSION['pid'];
-$username = $_SESSION['username'];
-$email = $_SESSION['email'];
-$fname = $_SESSION['fname'];
-$gender = $_SESSION['gender'];
-$lname = $_SESSION['lname'];
-$contact = $_SESSION['contact'];
+
+
+  $pid = $_SESSION['pid'];
+  $username = $_SESSION['username'];
+  $email = $_SESSION['email'];
+  $fname = $_SESSION['fname'];
+  $gender = $_SESSION['gender'];
+  $lname = $_SESSION['lname'];
+  $contact = $_SESSION['contact'];
+
+
 
 if(isset($_POST['app-submit']))
 {
@@ -49,21 +53,79 @@ if(isset($_GET['cancel']))
     }
   }
 
-// if(isset($_POST['userAction'])){
-//   $userStatus = 0;
-//   $doctorStatus = 1;
-//   $doctor=$_POST['doctor'];
-//   $appdate=$_POST['appdate'];
-//   $apptime=$_POST['apptime'];
-//   if (($userStatus == 0) & ($doctorStatus == 1))
-//     $currentStatus = "Cancelled by you";
-//   $query="update appointmenttb set userStatus='$userStatus',doctorStatus='$doctorStatus',currentStatus='$currentStatus' where doctor='$doctor' and appdate='$appdate' and apptime='$apptime';";
-//   $result=mysqli_query($con,$query);
-//   if($result)
-//     echo("<script>alert('Appointment cancelled!');
-//     </script>");
-//     //window.location.href = 'admin-panel.php';
-// }
+
+
+
+function generate_bill(){
+  $con=mysqli_connect("localhost","root","","myhmsdb");
+  $pid = $_SESSION['pid'];
+  $output='';
+  $query=mysqli_query($con,"select p.pid,p.ID,p.fname,p.lname,p.doctor,p.appdate,p.apptime,p.disease,p.allergy,p.prescription,a.docFees from prestb p inner join appointmenttb a on p.ID=a.ID and p.pid = '$pid' and p.ID = '".$_GET['ID']."'");
+  while($row = mysqli_fetch_array($query)){
+    $output .= '
+    <label> Patient ID : </label>'.$row["pid"].'<br/><br/>
+    <label> Appointment ID : </label>'.$row["ID"].'<br/><br/>
+    <label> Patient Name : </label>'.$row["fname"].' '.$row["lname"].'<br/><br/>
+    <label> Doctor Name : </label>'.$row["doctor"].'<br/><br/>
+    <label> Appointment Date : </label>'.$row["appdate"].'<br/><br/>
+    <label> Appointment Time : </label>'.$row["apptime"].'<br/><br/>
+    <label> Disease : </label>'.$row["disease"].'<br/><br/>
+    <label> Allergies : </label>'.$row["allergy"].'<br/><br/>
+    <label> Prescription : </label>'.$row["prescription"].'<br/><br/>
+    <label> Fees Paid : </label>'.$row["docFees"].'<br/>
+    
+    ';
+
+  }
+
+  return $output;
+}
+
+
+if(isset($_GET["generate_bill"])){
+  require_once("TCPDF/tcpdf.php");
+  $obj_pdf = new TCPDF('P',PDF_UNIT,PDF_PAGE_FORMAT,true,'UTF-8',false);
+  $obj_pdf -> SetCreator(PDF_CREATOR);
+  $obj_pdf -> SetTitle("Generate Bill");
+  $obj_pdf -> SetHeaderData('','',PDF_HEADER_TITLE,PDF_HEADER_STRING);
+  $obj_pdf -> SetHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+  $obj_pdf -> SetFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+  $obj_pdf -> SetDefaultMonospacedFont('helvetica');
+  $obj_pdf -> SetFooterMargin(PDF_MARGIN_FOOTER);
+  $obj_pdf -> SetMargins(PDF_MARGIN_LEFT,'5',PDF_MARGIN_RIGHT);
+  $obj_pdf -> SetPrintHeader(false);
+  $obj_pdf -> SetPrintFooter(false);
+  $obj_pdf -> SetAutoPageBreak(TRUE, 10);
+  $obj_pdf -> SetFont('helvetica','',12);
+  $obj_pdf -> AddPage();
+
+  $content = '';
+
+  $content .= '
+      <br/>
+      <h2 align ="center"> Global Hospitals</h2></br>
+      <h3 align ="center"> Bill</h3>
+      
+
+  ';
+ 
+  $content .= generate_bill();
+  $obj_pdf -> writeHTML($content);
+  ob_end_clean();
+  $obj_pdf -> Output("bill.pdf",'I');
+
+}
+
+function get_specs(){
+  $con=mysqli_connect("localhost","root","","myhmsdb");
+  $query=mysqli_query($con,"select username,spec from doctb");
+  $docarray = array();
+    while($row =mysqli_fetch_assoc($query))
+    {
+        $docarray[] = $row;
+    }
+    return json_encode($docarray);
+}
 
 ?>
 <html lang="en">
@@ -229,23 +291,189 @@ if(isset($_GET['cancel']))
                   <div class="col-md-8"><input type="text"  class="form-control" name="email"></div><br><br>
                   <div class="col-md-4"><label>Contact Number:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control"  name="contact"></div><br><br> -->
-                  
-                  <div class="col-md-4"><label for="spec">Specialization:</label></div>
+                  <!-- <?php
+
+                        $con=mysqli_connect("localhost","root","","myhmsdb");
+                        $query=mysqli_query($con,"select username,spec from doctb");
+                        $docarray = array();
+                          while($row =mysqli_fetch_assoc($query))
+                          {
+                              $docarray[] = $row;
+                          }
+                          echo json_encode($docarray);
+
+                  ?> -->
+                  <!-- <div class="col-md-4"><label for="spec">Specialization:</label></div>
                   <div class="col-md-8">
                    <select name="spec" class="form-control" id="spec">
                       <option value="" disabled selected>Select Specialization</option>
-                      <?php display_specs();?> 
-                    </select>
-                    <script>
-              document.getElementById('spec').onchange = function updateFees(e) {
-                document.getElementById('doctor').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
+                      
+                    </select> -->
+
+                    <div class="col-md-4">
+                          <label for="spec">Specialization:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <select name="spec" class="form-control" id="spec">
+                              <option value="" disabled selected>Select Specialization</option>
+                              <?php 
+                              display_specs();
+                              ?>
+                          </select>
+                        </div>
+
+                        <br><br>
+
+                        <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+                                <div class="col-md-8">
+                                    <select name="doctor" class="form-control" id="doctor1" required="required">
+                                      <option value="" disabled selected>Select Doctor</option>
+                                      <?php 
+                                       display_docs();
+                                      ?>
+                                    </select>
+                                </div>
+                                <br><br>
+
+                                <script>
+                                  document.getElementById("spec").onchange = function updateSpecs(event) {
+                                      var selected = document.querySelector(`[data-value=${this.value}]`).getAttribute("value");
+                                      console.log(selected);
+
+                                      var options = document.getElementById("doctor1").querySelectorAll("option");
+
+                                      for (i = 0; i < options.length; i++) {
+                                        var currentOption = options[i];
+                                        var category = options[i].getAttribute("data-spec");
+
+                                        if (category == selected) {
+                                          currentOption.style.display = "block";
+                                        } else {
+                                          currentOption.style.display = "none";
+                                        }
+                                      }
+                                    }
+                                </script>
+
+                        
+                    <!-- <script>
+                    let data = 
+                
+              document.getElementById('spec').onchange = function updateSpecs(e) {
+                let values = data.filter(obj => obj.spec == this.value).map(o => o.username);   
+                document.getElementById('doctor1').value = document.querySelector(`[value=${values}]`).getAttribute('data-value');
+              };
+            </script> -->
+
+            <!-- <script>
+                    document.getElementById('spec').onchange = function foo() {
+                    let spec = this.value;   
+                    let docs = [...document.getElementById('doctor').options];
+                    docs.forEach((el, ind, arr)=>{
+                      arr[ind].setAttribute("style","");
+                      if (el.getAttribute("data-spec") != spec ) {
+                        arr[ind].setAttribute("style","display: none");
+                      }
+                    });
+                  };
+            </script>  -->
+
+
+<!-- <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+     <div class="col-md-8">
+        <select name="doctor" class="form-control" id="doctor" required="required">
+           <option value="" disabled selected>Select Doctor</option>
+           <option value="ashok" data-spec="General">Ashok</option>
+           <option value="arun" data-spec="Cardiologist">Arun</option>
+           <option value="Dinesh" data-spec="General">Dinesh</option>
+           <option value="Ganesh" data-spec="Pediatrician">Ganesh</option>
+           <option value="Kumar" data-spec="Pediatrician">Kumar</option>
+           <option value="Amit" data-spec="Cardiologist">Amit</option>
+           <option value="Abbis" data-spec="Neurologist">Abbis</option>
+          
+        </select>
+        <script>
+              document.getElementById('doctor').onchange = function updateFees(e) {
+                document.getElementById('docFees').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
               };
             </script>
-                  </div><br><br>
+      </div><br/><br/> -->
+
+      <script>
+              document.getElementById('doctor1').onchange = function updateFees(e) {
+                var selection = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
+                document.getElementById('docFees').value = selection;
+              };
+            </script>
+
+      <!-- <div class="col-md-4">
+  <label for="spec">Specialization:</label>
+</div>
+      <div class="col-md-8">
+         <select name="spec" class="form-control" id="spec">
+           <option value="" disabled selected>Select Specialization</option>
+           <option value="General">General</option>
+           <option value="Cardiologist">Cardiologist</option>
+           <option value="Pediatrician">Pediatrician</option>
+           <option value="Neurologist">Neurologist</option>
+         </select>
+      <script>
+          document.getElementById('spec').onchange = function foo() {
+            let spec = this.value;   
+            let docs = [...document.getElementById('doctor').options];
+            docs.forEach((el, ind, arr)=>{
+              arr[ind].setAttribute("style","");
+              if (el.getAttribute("data-spec") != spec ) {
+                arr[ind].setAttribute("style","display: none");
+              }
+            });
+          };
+
+      </script>
+       </div><br/><br/>
+
+      <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+     <div class="col-md-8">
+        <select name="doctor" class="form-control" id="doctor" required="required">
+           <option value="" disabled selected>Select Doctor</option>
+           <option value="Ashok" data-spec="General">Ashok</option>
+           <option value="arun" data-spec="Cardiologist">arun</option>
+           <option value="Dinesh" data-spec="General">Dinesh</option>
+           <option value="Ganesh" data-spec="Pediatrician">Ganesh</option>
+           <option value="Kumar" data-spec="Pediatrician">Kumar</option>
+           <option value="Amit" data-spec="Cardiologist">Amit</option>
+           <option value="Abbis" data-spec="Neurologist">Abbis</option>
+        </select>
+      </div><br/><br/> -->
+
+
+      <!-- <script>
+          document.getElementById("spec").onchange = function(event) {
+              var selected = this.innerHTML;
+
+              var options = document.getElementById("doctor1").querySelectorAll("option");
+
+              for (i = 0; i < options.length; i++) {
+                var currentOption = options[i];
+                var category = options[i].getAttribute("data-value");
+
+                if (category == selected) {
+                  currentOption.style.display = "block";
+                } else {
+                  currentOption.style.display = "none";
+                }
+              }
+            }
+</script> -->
+
+
+
+
                   
-                  <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+                  
+                  <!-- <div class="col-md-4"><label for="doctor">Doctors:</label></div>
                   <div class="col-md-8">
-                   <select name="doctor" class="form-control" id="doctor" required="required">
+                   <select name="doctor" class="form-control" id="doctor1" required="required">
                       <option value="" disabled selected>Select Doctor</option>
                       <?php display_docs();?>
                     </select>
@@ -254,7 +482,7 @@ if(isset($_GET['cancel']))
                 document.getElementById('docFees').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
               };
             </script>
-                  </div><br><br>
+                  </div><br><br> -->
 
                   
                   <div class="col-md-4"><label for="consultancyfees">
@@ -371,6 +599,7 @@ if(isset($_GET['cancel']))
                     <th scope="col">Diseases</th>
                     <th scope="col">Allergies</th>
                     <th scope="col">Prescriptions</th>
+                    <th scope="col">Bill Payment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -380,8 +609,7 @@ if(isset($_GET['cancel']))
                     global $con;
 
                     $query = "select doctor,ID,appdate,apptime,disease,allergy,prescription from prestb where pid='$pid';";
-                    // purila doctor field save pannalaya?
-                    // indha patient oda pid ku prescribe assign aagala..
+                    
                     $result = mysqli_query($con,$query);
                     if(!$result){
                       echo mysqli_error($con);
@@ -398,6 +626,20 @@ if(isset($_GET['cancel']))
                         <td><?php echo $row['disease'];?></td>
                         <td><?php echo $row['allergy'];?></td>
                         <td><?php echo $row['prescription'];?></td>
+                        <td>
+                          <form method="get">
+                          <!-- <a href="admin-panel.php?ID=" 
+                              onClick=""
+                              title="Pay Bill" tooltip-placement="top" tooltip="Remove"><button class="btn btn-success">Pay</button>
+                              </a></td> -->
+
+                              <a href="admin-panel.php?ID=<?php echo $row['ID']?>">
+                              <input type ="hidden" name="ID" value="<?php echo $row['ID']?>"/>
+                              <input type = "submit" name ="generate_bill" class = "btn btn-success" value="Pay Bill"/>
+                              </a>
+                              </td>
+                              </form>
+
                     
                       </tr>
                     <?php }

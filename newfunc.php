@@ -24,6 +24,20 @@ if(isset($_POST['update_data']))
  if($result)
   header("Location:updated.php");
 }
+
+// function display_docs()
+// {
+//  global $con;
+//  $query="select * from doctb";
+//  $result=mysqli_query($con,$query);
+//  while($row=mysqli_fetch_array($result))
+//  {
+//   $username=$row['username'];
+//   $price=$row['docFees'];
+//   echo '<option value="' .$username. '" data-value="'.$price.'">'.$username.'</option>';
+//  }
+// }
+
 function display_docs()
 {
  global $con;
@@ -33,21 +47,48 @@ function display_docs()
  {
   $username=$row['username'];
   $price=$row['docFees'];
-  echo '<option value="' .$username. '" data-value="'.$price.'">'.$username.'</option>';
+  $spec=$row['spec'];
+  echo '<option value="' .$username. '" data-value="'.$price.'" data-spec="'.$spec.'">'.$username.'</option>';
  }
 }
 
 function display_specs() {
   global $con;
-  $query="select distinct(spec) from doctb";
+  $query="select * from doctb";
   $result=mysqli_query($con,$query);
   while($row=mysqli_fetch_array($result))
   {
     $spec=$row['spec'];
     $username=$row['username'];
-    echo '<option value="' .$spec. '" data-value="'.$username.'">'.$spec.'</option>';
+    echo '<option value="' .$username. '" data-value="'.$spec.'">'.$spec.'</option>';
   }
 }
+
+// function display_docs()
+// {
+//  global $con;
+//  $query = "select * from doctb";
+//  $result = mysqli_query($con,$query);
+//  while( $row = mysqli_fetch_array($result) )
+//  {
+//   $username = $row['username'];
+//   $price = $row['docFees'];
+//   $spec = $row['spec'];
+//   echo '<option value="' .$username. '" data-value="'.$price.'" data-spec="'.$spec.'">'.$username.'</option>';
+//  }
+// }
+
+// function display_specs() {
+//   global $con;
+//   $query = "select distinct(spec) from doctb";
+//   $result = mysqli_query($con,$query);
+//   while($row = mysqli_fetch_array($result))
+//   {
+//     $spec = $row['spec'];
+//     $username = $row['username'];
+//     echo '<option value = "' .$spec. '">'.$spec.'</option>';
+//   }
+// }
 
 
 if(isset($_POST['doc_sub']))
