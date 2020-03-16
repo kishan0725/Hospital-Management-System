@@ -9,8 +9,9 @@ if(isset($_POST['docsub']))
   $doctor=$_POST['doctor'];
   $dpassword=$_POST['dpassword'];
   $demail=$_POST['demail'];
+  $spec=$_POST['special'];
   $docFees=$_POST['docFees'];
-  $query="insert into doctb(username,password,email,docFees)values('$doctor','$dpassword','$demail','$docFees')";
+  $query="insert into doctb(username,password,email,spec,docFees)values('$doctor','$dpassword','$demail','$spec','$docFees')";
   $result=mysqli_query($con,$query);
   if($result)
     {
@@ -62,7 +63,7 @@ if(isset($_POST['docsub1']))
   if (document.getElementById('dpassword').value ==
     document.getElementById('cdpassword').value) {
     document.getElementById('message').style.color = '#5dd05d';
-    document.getElementById('message').innerHTML = 'Matching';
+    document.getElementById('message').innerHTML = 'Matched';
   } else {
     document.getElementById('message').style.color = '#f55252';
     document.getElementById('message').innerHTML = 'Not Matching';
@@ -149,7 +150,7 @@ if(isset($_POST['docsub1']))
       <div class="tab-pane fade show active" id="list-dash" role="tabpanel" aria-labelledby="list-dash-list">
         <div class="container-fluid container-fullw bg-white" >
               <div class="row">
-               <div class="col-sm-4" style="left: 5%">
+               <div class="col-sm-4">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
@@ -168,7 +169,7 @@ if(isset($_POST['docsub1']))
                   </div>
                 </div>
 
-                <div class="col-sm-4" style="left: 10%">
+                <div class="col-sm-4" style="left: -3%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
@@ -184,7 +185,7 @@ if(isset($_POST['docsub1']))
                 </div>
               
 
-                <div class="col-sm-4" style="left: 12%">
+                <div class="col-sm-4">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
@@ -201,7 +202,7 @@ if(isset($_POST['docsub1']))
                 </div>
 
                 <div class="row">
-                <div class="col-sm-4" style="left: 20%;margin-top: 5%;">
+                <div class="col-sm-4" style="left: 13%;margin-top: 5%;">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
@@ -217,7 +218,7 @@ if(isset($_POST['docsub1']))
                 </div>
 
 
-                <div class="col-sm-4" style="left: 24%;margin-top: 5%">
+                <div class="col-sm-4" style="left: 18%;margin-top: 5%">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
@@ -502,10 +503,10 @@ if(isset($_POST['docsub1']))
                   <div class="col-md-8">
                    <select name="special" class="form-control" id="special" required="required">
                       <option value="head" name="spec" disabled selected>Select Specialization</option>
-                      <option value="heart" name="spec">General</option>
-                      <option value="homeo" name="spec">Cardiologist</option>
-                      <option value="accu" name="spec">Neurologist</option>
-                      <option value="accu" name="spec">Pediatrician</option>
+                      <option value="General" name="spec">General</option>
+                      <option value="Cardiologist" name="spec">Cardiologist</option>
+                      <option value="Neurologist" name="spec">Neurologist</option>
+                      <option value="Pediatrician" name="spec">Pediatrician</option>
                     </select>
                     </div><br><br>
                   <div class="col-md-4"><label>Email ID:</label></div>

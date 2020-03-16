@@ -77,12 +77,13 @@ function generate_bill(){
     ';
 
   }
-
+  
   return $output;
 }
 
 
 if(isset($_GET["generate_bill"])){
+  echo "<script>alert('Bill paid successfully!');</script>";
   require_once("TCPDF/tcpdf.php");
   $obj_pdf = new TCPDF('P',PDF_UNIT,PDF_PAGE_FORMAT,true,'UTF-8',false);
   $obj_pdf -> SetCreator(PDF_CREATOR);
@@ -283,14 +284,7 @@ function get_specs(){
               <center><h4>Create an appointment</h4></center><br>
               <form class="form-group" method="post" action="admin-panel.php">
                 <div class="row">
-                  <!--<div class="col-md-4"><label>First Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control" name="fname"></div><br><br>
-                  <div class="col-md-4"><label>Last Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control"  name="lname"></div><br><br>
-                  <div class="col-md-4"><label>Email id:</label></div>
-                  <div class="col-md-8"><input type="text"  class="form-control" name="email"></div><br><br>
-                  <div class="col-md-4"><label>Contact Number:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control"  name="contact"></div><br><br> -->
+                  
                   <!-- <?php
 
                         $con=mysqli_connect("localhost","root","","myhmsdb");
@@ -303,12 +297,7 @@ function get_specs(){
                           echo json_encode($docarray);
 
                   ?> -->
-                  <!-- <div class="col-md-4"><label for="spec">Specialization:</label></div>
-                  <div class="col-md-8">
-                   <select name="spec" class="form-control" id="spec">
-                      <option value="" disabled selected>Select Specialization</option>
-                      
-                    </select> -->
+        
 
                     <div class="col-md-4">
                           <label for="spec">Specialization:</label>
@@ -324,18 +313,53 @@ function get_specs(){
 
                         <br><br>
 
-                        <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+                        <script>
+                      document.getElementById('spec').onchange = function foo() {
+                        let spec = this.value;   
+                        console.log(spec)
+                        let docs = [...document.getElementById('doctor').options];
+                        
+                        docs.forEach((el, ind, arr)=>{
+                          arr[ind].setAttribute("style","");
+                          if (el.getAttribute("data-spec") != spec ) {
+                            arr[ind].setAttribute("style","display: none");
+                          }
+                        });
+                      };
+
+                  </script>
+
+              <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+                <div class="col-md-8">
+                    <select name="doctor" class="form-control" id="doctor" required="required">
+                      <option value="" disabled selected>Select Doctor</option>
+                
+                      <?php display_docs(); ?>
+                    </select>
+                  </div><br/><br/> 
+
+
+                        <script>
+              document.getElementById('doctor').onchange = function updateFees(e) {
+                var selection = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
+                document.getElementById('docFees').value = selection;
+              };
+            </script>
+
+                  
+                  
+
+                  
+                        <!-- <div class="col-md-4"><label for="doctor">Doctors:</label></div>
                                 <div class="col-md-8">
                                     <select name="doctor" class="form-control" id="doctor1" required="required">
                                       <option value="" disabled selected>Select Doctor</option>
-                                      <?php 
-                                       display_docs();
-                                      ?>
+                                      
                                     </select>
                                 </div>
-                                <br><br>
+                                <br><br> -->
 
-                                <script>
+                                <!-- <script>
                                   document.getElementById("spec").onchange = function updateSpecs(event) {
                                       var selected = document.querySelector(`[data-value=${this.value}]`).getAttribute("value");
                                       console.log(selected);
@@ -353,7 +377,7 @@ function get_specs(){
                                         }
                                       }
                                     }
-                                </script>
+                                </script> -->
 
                         
                     <!-- <script>
@@ -365,124 +389,6 @@ function get_specs(){
               };
             </script> -->
 
-            <!-- <script>
-                    document.getElementById('spec').onchange = function foo() {
-                    let spec = this.value;   
-                    let docs = [...document.getElementById('doctor').options];
-                    docs.forEach((el, ind, arr)=>{
-                      arr[ind].setAttribute("style","");
-                      if (el.getAttribute("data-spec") != spec ) {
-                        arr[ind].setAttribute("style","display: none");
-                      }
-                    });
-                  };
-            </script>  -->
-
-
-<!-- <div class="col-md-4"><label for="doctor">Doctors:</label></div>
-     <div class="col-md-8">
-        <select name="doctor" class="form-control" id="doctor" required="required">
-           <option value="" disabled selected>Select Doctor</option>
-           <option value="ashok" data-spec="General">Ashok</option>
-           <option value="arun" data-spec="Cardiologist">Arun</option>
-           <option value="Dinesh" data-spec="General">Dinesh</option>
-           <option value="Ganesh" data-spec="Pediatrician">Ganesh</option>
-           <option value="Kumar" data-spec="Pediatrician">Kumar</option>
-           <option value="Amit" data-spec="Cardiologist">Amit</option>
-           <option value="Abbis" data-spec="Neurologist">Abbis</option>
-          
-        </select>
-        <script>
-              document.getElementById('doctor').onchange = function updateFees(e) {
-                document.getElementById('docFees').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
-              };
-            </script>
-      </div><br/><br/> -->
-
-      <script>
-              document.getElementById('doctor1').onchange = function updateFees(e) {
-                var selection = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
-                document.getElementById('docFees').value = selection;
-              };
-            </script>
-
-      <!-- <div class="col-md-4">
-  <label for="spec">Specialization:</label>
-</div>
-      <div class="col-md-8">
-         <select name="spec" class="form-control" id="spec">
-           <option value="" disabled selected>Select Specialization</option>
-           <option value="General">General</option>
-           <option value="Cardiologist">Cardiologist</option>
-           <option value="Pediatrician">Pediatrician</option>
-           <option value="Neurologist">Neurologist</option>
-         </select>
-      <script>
-          document.getElementById('spec').onchange = function foo() {
-            let spec = this.value;   
-            let docs = [...document.getElementById('doctor').options];
-            docs.forEach((el, ind, arr)=>{
-              arr[ind].setAttribute("style","");
-              if (el.getAttribute("data-spec") != spec ) {
-                arr[ind].setAttribute("style","display: none");
-              }
-            });
-          };
-
-      </script>
-       </div><br/><br/>
-
-      <div class="col-md-4"><label for="doctor">Doctors:</label></div>
-     <div class="col-md-8">
-        <select name="doctor" class="form-control" id="doctor" required="required">
-           <option value="" disabled selected>Select Doctor</option>
-           <option value="Ashok" data-spec="General">Ashok</option>
-           <option value="arun" data-spec="Cardiologist">arun</option>
-           <option value="Dinesh" data-spec="General">Dinesh</option>
-           <option value="Ganesh" data-spec="Pediatrician">Ganesh</option>
-           <option value="Kumar" data-spec="Pediatrician">Kumar</option>
-           <option value="Amit" data-spec="Cardiologist">Amit</option>
-           <option value="Abbis" data-spec="Neurologist">Abbis</option>
-        </select>
-      </div><br/><br/> -->
-
-
-      <!-- <script>
-          document.getElementById("spec").onchange = function(event) {
-              var selected = this.innerHTML;
-
-              var options = document.getElementById("doctor1").querySelectorAll("option");
-
-              for (i = 0; i < options.length; i++) {
-                var currentOption = options[i];
-                var category = options[i].getAttribute("data-value");
-
-                if (category == selected) {
-                  currentOption.style.display = "block";
-                } else {
-                  currentOption.style.display = "none";
-                }
-              }
-            }
-</script> -->
-
-
-
-
-                  
-                  
-                  <!-- <div class="col-md-4"><label for="doctor">Doctors:</label></div>
-                  <div class="col-md-8">
-                   <select name="doctor" class="form-control" id="doctor1" required="required">
-                      <option value="" disabled selected>Select Doctor</option>
-                      <?php display_docs();?>
-                    </select>
-                    <script>
-              document.getElementById('doctor').onchange = function updateFees(e) {
-                document.getElementById('docFees').value = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
-              };
-            </script>
-                  </div><br><br> -->
 
                   
                   <div class="col-md-4"><label for="consultancyfees">
