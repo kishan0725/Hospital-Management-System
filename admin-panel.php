@@ -83,7 +83,6 @@ function generate_bill(){
 
 
 if(isset($_GET["generate_bill"])){
-  echo "<script>alert('Bill paid successfully!');</script>";
   require_once("TCPDF/tcpdf.php");
   $obj_pdf = new TCPDF('P',PDF_UNIT,PDF_PAGE_FORMAT,true,'UTF-8',false);
   $obj_pdf -> SetCreator(PDF_CREATOR);
@@ -541,7 +540,7 @@ function get_specs(){
 
                               <a href="admin-panel.php?ID=<?php echo $row['ID']?>">
                               <input type ="hidden" name="ID" value="<?php echo $row['ID']?>"/>
-                              <input type = "submit" name ="generate_bill" class = "btn btn-success" value="Pay Bill"/>
+                              <input type = "submit" onclick="alert('Bill Paid Successfully');" name ="generate_bill" class = "btn btn-success" value="Pay Bill"/>
                               </a>
                               </td>
                               </form>
