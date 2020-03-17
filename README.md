@@ -1,4 +1,4 @@
-# Hospital Mamagement System
+# Hospital Management System
 Hospital Management System using MySQL, Php and Bootstrap
 
 [![fork this repo](http://githubbadges.com/fork.svg?user=kishan0725&repo=Hospital-Management-System)](http://github.com/kishan0725/Hospital-Management-System/fork)
