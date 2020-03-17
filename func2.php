@@ -23,7 +23,7 @@ if(isset($_POST['patsub1'])){
     } 
 
     $query1 = "select * from patreg;";
-    $result1 = mysqli_query($con,$query);
+    $result1 = mysqli_query($con,$query1);
     if($result1){
       $_SESSION['pid'] = $row['pid'];
     }
