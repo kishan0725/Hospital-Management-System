@@ -1,6 +1,8 @@
 # Hospital Mamagement System
 Hospital Management System using MySQL, Php and Bootstrap
 
+[![fork this repo](http://githubbadges.com/fork.svg?user=kishan0725&repo=Hospital-Management-System)](http://github.com/kishan0725/Hospital-Management-System/fork)
+
 Video Demo : [Hospital Management System - Youtube](https://www.youtube.com/watch?v=W2XGSM5i9P8)
 
 ## FRONT END TOOLS
