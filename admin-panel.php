@@ -32,16 +32,33 @@ if(isset($_POST['app-submit']))
   $appdate=$_POST['appdate'];
   $apptime=$_POST['apptime'];
   
+  $cur_date = date("Y-m-d");
+  date_default_timezone_set('Asia/Kolkata');
+  $cur_time = date("H:i:s");
+  $apptime1 = strtotime($apptime);
+  $appdate1 = strtotime($appdate);
+  if(date("H:i:s",$apptime1)>$cur_time and date("Y-m-d",$appdate1)>$cur_date){
+      $check_query = mysqli_query($con,"select apptime from appointmenttb where doctor='$doctor' and appdate='$appdate' and apptime='$apptime'");
 
-  $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+        if(mysqli_num_rows($check_query)==0){
+          $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
 
-  if($query)
-  {
-    echo "<script>alert('Your appointment successfully booked');</script>";
+          if($query)
+          {
+            echo "<script>alert('Your appointment successfully booked');</script>";
+          }
+          else{
+            echo "<script>alert('Unable to process your request. Please try again!');</script>";
+          }
+      }
+      else{
+        echo "<script>alert('We are sorry to inform that the doctor is not available in this time or date. Please choose different time or date!');</script>";
+      }
   }
   else{
-    echo "<script>alert('Unable to process your request. Please try again!');</script>";
+      echo "<script>alert('Select a time or date in the future!');</script>";
   }
+  
 }
 
 if(isset($_GET['cancel']))
@@ -52,6 +69,7 @@ if(isset($_GET['cancel']))
       echo "<script>alert('Your appointment successfully cancelled');</script>";
     }
   }
+
 
 
 
@@ -398,12 +416,21 @@ function get_specs(){
                               <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly"/>
                   </div><br><br>
 
-                  <div class="col-md-4"><label>Date</label></div>
+                  <div class="col-md-4"><label>Appointment Date</label></div>
                   <div class="col-md-8"><input type="date" class="form-control datepicker" name="appdate"></div><br><br>
 
-                  <div class="col-md-4"><label>Time</label></div>
+                  <div class="col-md-4"><label>Appointment Time</label></div>
                   <div class="col-md-8">
-                    <input type="time" class="form-control" name="apptime">
+                    <!-- <input type="time" class="form-control" name="apptime"> -->
+                    <select name="apptime" class="form-control" id="apptime" required="required">
+                      <option value="" disabled selected>Select Time</option>
+                      <option value="08:00:00">8:00 AM</option>
+                      <option value="10:00:00">10:00 AM</option>
+                      <option value="12:00:00">12:00 PM</option>
+                      <option value="14:00:00">2:00 PM</option>
+                      <option value="16:00:00">4:00 PM</option>
+                    </select>
+
                   </div><br><br>
 
                   <div class="col-md-4">
