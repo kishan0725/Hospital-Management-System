@@ -135,12 +135,12 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
                   <!-- <input type="text" class="form-control"  name="prescription"  required> -->
                   <textarea id="prescription" cols="86" rows ="10" name="prescription" required></textarea>
                   </div><br><br><br>
-                  <input type="hidden" name="fname" value="<? echo $fname ?>" />
-                  <input type="hidden" name="lname" value="<? echo $lname ?>" />
-                  <input type="hidden" name="appdate" value="<? echo $appdate ?>" />
-                  <input type="hidden" name="apptime" value="<? echo $apptime ?>" />
-                  <input type="hidden" name="pid" value="<? echo $pid ?>" />
-                  <input type="hidden" name="ID" value="<? echo $ID ?>" />
+                  <input type="hidden" name="fname" value="<?php echo $fname ?>" />
+                  <input type="hidden" name="lname" value="<?php echo $lname ?>" />
+                  <input type="hidden" name="appdate" value="<?php echo $appdate ?>" />
+                  <input type="hidden" name="apptime" value="<?php echo $apptime ?>" />
+                  <input type="hidden" name="pid" value="<?php echo $pid ?>" />
+                  <input type="hidden" name="ID" value="<?php echo $ID ?>" />
                   <br><br><br><br>
           <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary" style="margin-left: 40pc;">
           
