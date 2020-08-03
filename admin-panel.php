@@ -31,13 +31,14 @@ if(isset($_POST['app-submit']))
 
   $appdate=$_POST['appdate'];
   $apptime=$_POST['apptime'];
-  
   $cur_date = date("Y-m-d");
   date_default_timezone_set('Asia/Kolkata');
   $cur_time = date("H:i:s");
   $apptime1 = strtotime($apptime);
   $appdate1 = strtotime($appdate);
-  if(date("H:i:s",$apptime1)>$cur_time and date("Y-m-d",$appdate1)>$cur_date){
+	
+  if(date("Y-m-d",$appdate1)>=$cur_date){
+    if((date("Y-m-d",$appdate1)==$cur_date and date("H:i:s",$apptime1)>$cur_time) or date("Y-m-d",$appdate1)>$cur_date) {
       $check_query = mysqli_query($con,"select apptime from appointmenttb where doctor='$doctor' and appdate='$appdate' and apptime='$apptime'");
 
         if(mysqli_num_rows($check_query)==0){
@@ -54,6 +55,10 @@ if(isset($_POST['app-submit']))
       else{
         echo "<script>alert('We are sorry to inform that the doctor is not available in this time or date. Please choose different time or date!');</script>";
       }
+    }
+    else{
+      echo "<script>alert('Select a time or date in the future!');</script>";
+    }
   }
   else{
       echo "<script>alert('Select a time or date in the future!');</script>";
