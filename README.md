@@ -118,6 +118,7 @@ In real-time, the doctors will have thousands of appointments. It will be easier
    
    &nbsp; &nbsp; &nbsp; This module is the heart of our project where an admin can see the list of all patients. Doctors and appointments and the feedback/queries received from the ‘Contact’ page. Also admin can add doctor too. 
   &nbsp; &nbsp; &nbsp; Login into admin account can be done by toggling into admin tab of the Home page. Fig 1.13 shows the login page for admin.
+  &nbsp; &nbsp; &nbsp; `username`: admin, `password`: admin123
 
 ![image](https://user-images.githubusercontent.com/36665975/66570795-e961e800-eb8b-11e9-94e2-79940ff1d45e.png)
 
