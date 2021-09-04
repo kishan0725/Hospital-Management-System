@@ -8,13 +8,13 @@ include 'db_connect.php';
 		$save_log= $conn->query("INSERT INTO attendance (log_type,email) values('$type','".$emp['email']."')");
 		$employee = ucwords($emp['username'].' '.$emp['spec']);
 		if($type == 1){
-			$log = ' time in this morning';
+			$log = ' time';
 		}elseif($type == 2){
-			$log = ' time out this morning';
+			$log = ' time';
 		}elseif($type == 3){
-			$log = ' time in this afternoon';
+			$log = ' time';
 		}elseif($type == 4){
-			$log = ' time out this afternoon';
+			$log = ' time';
 		}
 		if($save_log){
 				$data['status'] = 1;
