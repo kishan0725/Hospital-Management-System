@@ -48,23 +48,9 @@ include("header.php");
             <a class="nav-link js-scroll-trigger" href="services.html" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>ABOUT US</h6></a>
           </li>
 
-          <li class="nav-item" style="margin-right: 40px;">
+          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="contact.html" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>CONTACT</h6></a>
           </li>
-
-          <li class="nav-item" style="margin-right: 40px;">
-            <a class="nav-link js-scroll-trigger" href="EARS/index.php" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>ATTENDENCE</h6></a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="dropdown" style="margin-right: 40px;">
-      <button class="btn btn-primary" style="color: white;font-family: 'IBM Plex Sans', sans-serif;" data-toggle="dropdown">LOGIN
-      <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><a href="index.php">PATIENT</a></li>
-          <li style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><a href="ldoctor.php">DOCTOR</a></li>
-          <li style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><a href="lreciptionist.php">ADMIN</a></li>
         </ul>
       </div>
     </div>
@@ -95,30 +81,31 @@ include("header.php");
               <center>
                 <i class="fa fa-hospital-o fa-3x" aria-hidden="true" style="color:#0062cc"></i>
                 <br>
-              <h3 style="margin-top: 10%">Patient Login</h3><br>
-              <form class="form-group" method="POST" action="func.php">
-                <div class="row" style="margin-top: 10%">
-                  <div class="col-md-4"><label>Email-ID: </label></div>
-                  <div class="col-md-8"><input type="text" name="email" class="form-control" placeholder="enter email ID" required/></div><br><br>
-                  <div class="col-md-4" style="margin-top: 8%"><label>Password: </label></div>
-                  <div class="col-md-8" style="margin-top: 8%"><input type="password" class="form-control" name="password2" placeholder="enter password" required/></div><br><br><br>
-                  <a class="col-md-8" style="margin-top: 8%" href="index1.php">New Patient? Sign Up Here. </a>
-                </div>
-                <div class="row">
                 
-                 <div class="col-md-4"  style="padding-left: 160px;margin-top: 10%">
-                    <center><input type="submit" id="inputbtn" name="patsub" value="Login" class="btn btn-primary"></center></div>           
-                 <!--  <div class="col-md-8" style="margin-top: 10%">
-                    <a href="index.php" class="btn btn-primary">Back</a></div> -->
-                </div>
-              </form>
-            </center>
+              <h3 style="margin-top: 10%">Login as Admin</h3><br>
+                                <form method="post" action="func3.php">
+                                <div class="row register-form">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="User Name *" name="username1" onkeydown="return alphaOnly(event);" required/>
+                                        </div>
+                                        
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password *" name="password2" required/>
+                                        </div>
+                                        
+                                        <input type="submit" class="btn btn-primary" name="adsub" value="Login"/>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
             </div>
           </div>
         </div>
-
-
-      </div>
     </div>
 
 

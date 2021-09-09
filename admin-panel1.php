@@ -139,6 +139,7 @@ if(isset($_POST['docsub1']))
       <a class="list-group-item list-group-item-action" href="#list-settings" id="list-adoc-list"  role="tab" data-toggle="list" aria-controls="home">Add Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-settings1" id="list-ddoc-list"  role="tab" data-toggle="list" aria-controls="home">Delete Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-mes" id="list-mes-list"  role="tab" data-toggle="list" aria-controls="home">Queries</a>
+      <a class="list-group-item list-group-item-action" href="#list-att" id="list-att-list"  role="tab" data-toggle="list" aria-controls="home">Attendence</a>
       
     </div><br>
   </div>
@@ -585,9 +586,56 @@ if(isset($_POST['docsub1']))
         <br>
       </div>
 
+      <div class="tab-pane fade" id="list-att" role="tabpanel" aria-labelledby="list-att-list">
 
-
+         <div class="col-md-8">
+      <form class="form-group" action="messearch.php" method="post">
+        <div class="row">
+        <div class="col-md-10"><input type="text" name="mes_contact" placeholder="Enter Contact" class = "form-control"></div>
+        <div class="col-md-2"><input type="submit" name="mes_search_submit" class="btn btn-primary" value="Search"></div></div>
+      </form>
     </div>
+        
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">LOG TYPE</th>
+                    <th scope="col">START TIME</th>
+                    <th scope="col">END TIME</th>
+                    <th scope="col">EMAIL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+
+                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    global $con;
+
+                    $query = "select * from attendance;";
+                    $result = mysqli_query($con,$query);
+                    while ($row = mysqli_fetch_array($result)){
+              
+                      #$id = $row['id'];
+                      #$log_type = $row['log_type'];
+                      #$datetime_log = $row['datetime_log'];
+                      #$date_updated = $row['date_updated'];
+                      #$email = $row['email'];
+                  ?>
+                      <tr>
+                        <td><?php echo $row['id'];?></td>
+                        <td><?php echo $row['log_type'];?></td>
+                        <td><?php echo $row['datetime_log'];?></td>
+                        <td><?php echo $row['date_updated'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                      </tr>
+                    <?php } ?>
+                </tbody>
+              </table>
+        <br>
+      </div>
+      </div>
+      </div>
   </div>
 </div>
    </div>
