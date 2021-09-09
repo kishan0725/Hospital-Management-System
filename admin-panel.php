@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <?php 
+// send email
+require_once 'submit.php';
+
 include('func.php');  
 include('newfunc.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
@@ -317,8 +320,12 @@ function get_specs(){
                               $docarray[] = $row;
                           }
                           echo json_encode($docarray);
-
                   ?> -->
+
+                  <!-- Display submission status -->
+                  <?php if(!empty($statusMsg)){ ?>
+                      <p class="statusMsg <?php echo !empty($msgClass)?$msgClass:''; ?>"><?php echo $statusMsg; ?></p>
+                  <?php } ?>
         
 
                     <div class="col-md-4">
@@ -422,7 +429,7 @@ function get_specs(){
                   </div><br><br>
 
                   <div class="col-md-4"><label>Appointment Date</label></div>
-                  <div class="col-md-8"><input type="date" class="form-control datepicker" name="appdate"></div><br><br>
+                  <div class="col-md-8"><input type="date" class="form-control datepicker" name="appdate" value="<?php echo !empty($postData['ad'])?$postData['ad']:''; ?></div><br><br>
 
                   <div class="col-md-4"><label>Appointment Time</label></div>
                   <div class="col-md-8">
@@ -439,7 +446,7 @@ function get_specs(){
                   </div><br><br>
 
                   <div class="col-md-4">
-                    <input type="submit" name="app-submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
+                    <button name="app-submit"  class="btn btn-primary" id="inputbtn">Create new entry</button>
                   </div>
                   <div class="col-md-8"></div>                  
                 </div>

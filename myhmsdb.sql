@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Mar 16, 2020 at 02:34 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Sep 04, 2021 at 08:20 AM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 8.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -78,7 +77,49 @@ INSERT INTO `appointmenttb` (`pid`, `ID`, `fname`, `lname`, `gender`, `email`, `
 (4, 10, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Ganesh', 550, '0000-00-00', '14:00:00', 1, 0),
 (4, 11, 'Kishan', 'Lal', 'Male', 'kishansmart0@gmail.com', '8838489464', 'Dinesh', 700, '2020-03-27', '15:00:00', 1, 1),
 (9, 12, 'William', 'Blake', 'Male', 'william@gmail.com', '8683619153', 'Kumar', 800, '2020-03-26', '12:00:00', 1, 1),
-(9, 13, 'William', 'Blake', 'Male', 'william@gmail.com', '8683619153', 'Tiwary', 450, '2020-03-26', '14:00:00', 1, 1);
+(9, 13, 'William', 'Blake', 'Male', 'william@gmail.com', '8683619153', 'Tiwary', 450, '2020-03-26', '14:00:00', 1, 1),
+(1, 14, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'ashok', 500, '2021-09-09', '08:00:00', 0, 1),
+(1, 15, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'ashok', 500, '2021-09-25', '00:00:00', 0, 1),
+(1, 16, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Amit', 1000, '2021-09-23', '00:00:00', 1, 1),
+(1, 17, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Tiwary', 450, '2021-09-14', '14:00:00', 1, 1),
+(1, 18, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Abbis', 1500, '2021-09-28', '12:00:00', 1, 1),
+(1, 19, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'arun', 600, '2021-09-15', '14:00:00', 1, 1),
+(1, 20, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Amit', 1000, '2021-09-14', '10:00:00', 1, 1),
+(1, 21, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Abbis', 1500, '2021-09-05', '14:00:00', 1, 1),
+(1, 22, 'Ram', 'Kumar', 'Male', 'ram@gmail.com', '9876543210', 'Abbis', 1500, '2021-09-12', '12:00:00', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` int(11) NOT NULL,
+  `log_type` tinyint(1) NOT NULL COMMENT '1 = AM IN,2 = AM out, 3= PM IN, 4= PM out\r\n',
+  `datetime_log` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `email` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `log_type`, `datetime_log`, `date_updated`, `email`) VALUES
+(6, 1, '2021-09-03 20:12:24', '2021-09-03 20:12:24', NULL),
+(7, 2, '2021-09-03 20:13:05', '2021-09-03 20:13:05', NULL),
+(8, 1, '2021-09-04 11:01:42', '2021-09-04 11:01:42', NULL),
+(9, 1, '2021-09-04 11:07:38', '2021-09-04 11:07:38', NULL),
+(10, 1, '2021-09-04 11:09:01', '2021-09-04 11:09:01', NULL),
+(11, 1, '2021-09-04 11:09:09', '2021-09-04 11:09:09', NULL),
+(12, 1, '2021-09-04 11:41:55', '2021-09-04 11:41:55', 'abbis@gmail.com'),
+(13, 1, '2021-09-04 11:44:09', '2021-09-04 11:44:09', 'dinesh@gmail.com'),
+(14, 1, '2021-09-04 11:49:06', '2021-09-04 11:49:06', 'dinesh@gmail.com'),
+(15, 1, '2021-09-04 11:49:39', '2021-09-04 11:49:39', 'dinesh@gmail.com'),
+(16, 1, '2021-09-04 11:50:57', '2021-09-04 11:50:57', 'ganesh@gmail.com'),
+(17, 1, '2021-09-04 12:06:00', '2021-09-04 12:06:00', 'ganesh@gmail.com'),
+(18, 1, '2021-09-04 12:06:20', '2021-09-04 12:06:20', 'ashok@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -210,6 +251,12 @@ ALTER TABLE `appointmenttb`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `patreg`
 --
 ALTER TABLE `patreg`
@@ -223,7 +270,13 @@ ALTER TABLE `patreg`
 -- AUTO_INCREMENT for table `appointmenttb`
 --
 ALTER TABLE `appointmenttb`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `patreg`
