@@ -1,6 +1,19 @@
 <!DOCTYPE html>
-<?php 
-$con=mysqli_connect("localhost","root","","myhmsdb");
+<?php
+
+session_start();
+if (!isset($_SESSION['username'])) {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-type: application/json');
+    $response_array['status'] = '401';
+    $response_array['message'] = 'not authenticated';
+    echo json_encode($response_array);
+  }else{
+    echo("<script>alert('You are not allowed!');window.location.href = 'index.php';</script>");
+  }
+}
+
+$con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
 
 include('newfunc.php');
 
@@ -139,7 +152,7 @@ if(isset($_POST['docsub1']))
       <a class="list-group-item list-group-item-action" href="#list-settings" id="list-adoc-list"  role="tab" data-toggle="list" aria-controls="home">Add Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-settings1" id="list-ddoc-list"  role="tab" data-toggle="list" aria-controls="home">Delete Doctor</a>
       <a class="list-group-item list-group-item-action" href="#list-mes" id="list-mes-list"  role="tab" data-toggle="list" aria-controls="home">Queries</a>
-      
+
     </div><br>
   </div>
   <div class="col-md-8" style="margin-top: 3%;">
@@ -159,7 +172,7 @@ if(isset($_POST['docsub1']))
                         function clickDiv(id) {
                           document.querySelector(id).click();
                         }
-                      </script> 
+                      </script>
                       <p class="links cl-effect-1">
                         <a href="#list-doc" onclick="clickDiv('#list-doc-list')">
                           View Doctors
@@ -174,7 +187,7 @@ if(isset($_POST['docsub1']))
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
                       <h4 class="StepTitle" style="margin-top: 5%;">Patient List</h4>
-                      
+
                       <p class="cl-effect-1">
                         <a href="#app-hist" onclick="clickDiv('#list-pat-list')">
                           View Patients
@@ -183,14 +196,14 @@ if(isset($_POST['docsub1']))
                     </div>
                   </div>
                 </div>
-              
+
 
                 <div class="col-sm-4">
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
                       <h4 class="StepTitle" style="margin-top: 5%;">Appointment Details</h4>
-                    
+
                       <p class="cl-effect-1">
                         <a href="#app-hist" onclick="clickDiv('#list-app-list')">
                           View Appointments
@@ -207,7 +220,7 @@ if(isset($_POST['docsub1']))
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
                       <h4 class="StepTitle" style="margin-top: 5%;">Prescription List</h4>
-                    
+
                       <p class="cl-effect-1">
                         <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
                           View Prescriptions
@@ -223,7 +236,7 @@ if(isset($_POST['docsub1']))
                     <div class="panel-body" >
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
                       <h4 class="StepTitle" style="margin-top: 5%;">Manage Doctors</h4>
-                    
+
                       <p class="cl-effect-1">
                         <a href="#app-hist" onclick="clickDiv('#list-adoc-list')">Add Doctors</a>
                         &nbsp|
@@ -235,15 +248,15 @@ if(isset($_POST['docsub1']))
                   </div>
                 </div>
                 </div>
-                        
 
-      
-                
+
+
+
               </div>
             </div>
-      
-                
-      
+
+
+
 
 
 
@@ -251,7 +264,7 @@ if(isset($_POST['docsub1']))
 
 
       <div class="tab-pane fade" id="list-doc" role="tabpanel" aria-labelledby="list-home-list">
-              
+
 
               <div class="col-md-8">
       <form class="form-group" action="doctorsearch.php" method="post">
@@ -271,8 +284,8 @@ if(isset($_POST['docsub1']))
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                  <?php
+                    $con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
                     global $con;
                     $query = "select * from doctb";
                     $result = mysqli_query($con,$query);
@@ -282,7 +295,7 @@ if(isset($_POST['docsub1']))
                       $email = $row['email'];
                       $password = $row['password'];
                       $docFees = $row['docFees'];
-                      
+
                       echo "<tr>
                         <td>$username</td>
                         <td>$spec</td>
@@ -297,7 +310,7 @@ if(isset($_POST['docsub1']))
               </table>
         <br>
       </div>
-    
+
 
     <div class="tab-pane fade" id="list-pat" role="tabpanel" aria-labelledby="list-pat-list">
 
@@ -308,7 +321,7 @@ if(isset($_POST['docsub1']))
         <div class="col-md-2"><input type="submit" name="patient_search_submit" class="btn btn-primary" value="Search"></div></div>
       </form>
     </div>
-        
+
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -322,8 +335,8 @@ if(isset($_POST['docsub1']))
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                  <?php
+                    $con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
                     global $con;
                     $query = "select * from patreg";
                     $result = mysqli_query($con,$query);
@@ -335,7 +348,7 @@ if(isset($_POST['docsub1']))
                       $email = $row['email'];
                       $contact = $row['contact'];
                       $password = $row['password'];
-                      
+
                       echo "<tr>
                         <td>$pid</td>
                         <td>$fname</td>
@@ -357,11 +370,11 @@ if(isset($_POST['docsub1']))
       <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
 
        <div class="col-md-8">
-  
+
         <div class="row">
-        
-    
-        
+
+
+
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -378,8 +391,8 @@ if(isset($_POST['docsub1']))
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                  <?php
+                    $con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
                     global $con;
                     $query = "select * from prestb";
                     $result = mysqli_query($con,$query);
@@ -395,7 +408,7 @@ if(isset($_POST['docsub1']))
                       $allergy = $row['allergy'];
                       $pres = $row['prescription'];
 
-                      
+
                       echo "<tr>
                         <td>$doctor</td>
                         <td>$pid</td>
@@ -430,7 +443,7 @@ if(isset($_POST['docsub1']))
         <div class="col-md-2"><input type="submit" name="app_search_submit" class="btn btn-primary" value="Search"></div></div>
       </form>
     </div>
-        
+
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -449,9 +462,9 @@ if(isset($_POST['docsub1']))
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
+                  <?php
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
                     global $con;
 
                     $query = "select * from appointmenttb;";
@@ -471,16 +484,16 @@ if(isset($_POST['docsub1']))
                         <td><?php echo $row['appdate'];?></td>
                         <td><?php echo $row['apptime'];?></td>
                         <td>
-                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))
                     {
                       echo "Active";
                     }
-                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))
                     {
                       echo "Cancelled by Patient";
                     }
 
-                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))
                     {
                       echo "Cancelled by Doctor";
                     }
@@ -515,8 +528,8 @@ if(isset($_POST['docsub1']))
                   <div class="col-md-8"><input type="password" class="form-control"  onkeyup='check();' name="dpassword" id="dpassword"  required></div><br><br>
                   <div class="col-md-4"><label>Confirm Password:</label></div>
                   <div class="col-md-8"  id='cpass'><input type="password" class="form-control" onkeyup='check();' name="cdpassword" id="cdpassword" required>&nbsp &nbsp<span id='message'></span> </div><br><br>
-                   
-                  
+
+
                   <div class="col-md-4"><label>Consultancy Fees:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control"  name="docFees" required></div><br><br>
                 </div>
@@ -527,10 +540,10 @@ if(isset($_POST['docsub1']))
       <div class="tab-pane fade" id="list-settings1" role="tabpanel" aria-labelledby="list-settings1-list">
         <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
-          
+
                   <div class="col-md-4"><label>Email ID:</label></div>
                   <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
-                  
+
                 </div>
           <input type="submit" name="docsub1" value="Delete Doctor" class="btn btn-primary" onclick="confirm('do you really want to delete?')">
         </form>
@@ -548,7 +561,7 @@ if(isset($_POST['docsub1']))
         <div class="col-md-2"><input type="submit" name="mes_search_submit" class="btn btn-primary" value="Search"></div></div>
       </form>
     </div>
-        
+
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -559,15 +572,15 @@ if(isset($_POST['docsub1']))
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
+                  <?php
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
                     global $con;
 
                     $query = "select * from contact;";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
-              
+
                       #$fname = $row['fname'];
                       #$lname = $row['lname'];
                       #$email = $row['email'];

@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <?php
+
+session_start();
+if (!isset($_SESSION['dname'])) {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-type: application/json');
+    $response_array['status'] = '401';
+    $response_array['message'] = 'not authenticated';
+    echo json_encode($response_array);
+  }else{
+    echo("<script>alert('You are not allowed!');window.location.href = 'index.php';</script>");
+  }
+}
+
 include('func1.php');
 $pid='';
 $ID='';
@@ -29,7 +42,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
   $pid = $_POST['pid'];
   $ID = $_POST['ID'];
   $prescription = $_POST['prescription'];
-  
+
   $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,fname,lname,appdate,apptime,disease,allergy,prescription) values ('$doctor','$pid','$ID','$fname','$lname','$appdate','$apptime','$disease','$allergy','$prescription')");
     if($query)
     {
@@ -57,13 +70,13 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
     <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
     <!-- Bootstrap CSS -->
-    
+
         <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital </a>
@@ -95,7 +108,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
         <a class="nav-link" href="logout1.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
-        
+
       </li>
        <li class="nav-item">
        <a class="nav-link" href="doctor-panel.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Back</a>
@@ -117,14 +130,14 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
 
    <div class="tab-pane" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
         <form class="form-group" name="prescribeform" method="post" action="prescribe.php">
-        
+
           <div class="row">
                   <div class="col-md-4"><label>Disease:</label></div>
                   <div class="col-md-8">
                   <!-- <input type="text" class="form-control" name="disease" required> -->
                   <textarea id="disease" cols="86" rows ="5" name="disease" required></textarea>
                   </div><br><br><br>
-                  
+
                   <div class="col-md-4"><label>Allergies:</label></div>
                   <div class="col-md-8">
                   <!-- <input type="text"  class="form-control" name="allergy" required> -->
@@ -143,12 +156,9 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
                   <input type="hidden" name="ID" value="<?php echo $ID ?>" />
                   <br><br><br><br>
           <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary" style="margin-left: 40pc;">
-          
+
         </form>
         <br>
-        
-      </div>
-      </div>
-      
 
-  
+      </div>
+      </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
 if(isset($_POST['patsub1'])){
 	$fname=$_POST['fname'];
   $lname=$_POST['lname'];
@@ -20,7 +20,7 @@ if(isset($_POST['patsub1'])){
         $_SESSION['contact'] = $_POST['contact'];
         $_SESSION['email'] = $_POST['email'];
         header("Location:admin-panel.php");
-    } 
+    }
 
     $query1 = "select * from patreg;";
     $result1 = mysqli_query($con,$query1);
@@ -119,7 +119,7 @@ function display_admin_panel(){
     </div><br>
   </div>
 
-  
+
 
 
 
@@ -167,7 +167,7 @@ function display_admin_panel(){
                   <div class="col-md-4">
                     <input type="submit" name="entry_submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
                   </div>
-                  <div class="col-md-8"></div>                  
+                  <div class="col-md-8"></div>
                 </div>
               </form>
             </div>

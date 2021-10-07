@@ -1,0 +1,36 @@
+version: '3.2'
+services:
+  mysql:
+    image: mysql:5.7
+    command: mysqld --general-log=1 --general-log-file=/var/log/mysql/general-log.log
+    container_name: hospital-db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: hospital
+      MYSQL_USER: usr_hospital
+      MYSQL_PASSWORD: changeme
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+          test: "cat /var/log/mysql/general-log.log | grep \"root@localhost on  using Socket\""
+          interval: 1s
+          retries: 120
+  hms:
+    build: .
+    image: hms
+    container_name: hms
+    ports:
+      - 80:80
+    environment:
+      DB_SERVER: host.docker.internal
+      DB_NAME: hospital
+      DB_USER: usr_hospital
+      DB_PASS: changeme
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  mynetwork:
+    driver: bridge
