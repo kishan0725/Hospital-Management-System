@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
 if(isset($_POST['docsub1'])){
 	$dname=$_POST['username3'];
 	$dpass=$_POST['password3'];
@@ -9,9 +9,9 @@ if(isset($_POST['docsub1'])){
 	if(mysqli_num_rows($result)==1)
 	{
     while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-    
+
 		      $_SESSION['dname']=$row['username'];
-      
+
     }
 		header("Location:doctor-panel.php");
 	}
@@ -23,7 +23,7 @@ if(isset($_POST['docsub1'])){
 }
 
 
-// if(isset($_POST['update_data']))  
+// if(isset($_POST['update_data']))
 //   $result=mysqli_query($con,$query);
 //   if(mysqli_num_rows($result)==1)
 //   {
@@ -32,7 +32,7 @@ if(isset($_POST['docsub1'])){
 //   }
 //   else
 //     header("Location:error2.php");
-  
+
 
 
 
@@ -110,7 +110,7 @@ function display_admin_panel(){
     </div><br>
   </div>
 
-  
+
 
 
 
@@ -158,7 +158,7 @@ function display_admin_panel(){
                   <div class="col-md-4">
                     <input type="submit" name="entry_submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
                   </div>
-                  <div class="col-md-8"></div>                  
+                  <div class="col-md-8"></div>
                 </div>
               </form>
             </div>

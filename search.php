@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect(getenv('DB_SERVER'),getenv('DB_USER'),getenv('DB_PASS'),getenv('DB_NAME'));
 if(isset($_POST['search_submit'])){
   $contact=$_POST['contact'];
   $docname = $_SESSION['dname'];
@@ -48,7 +48,7 @@ if(isset($_POST['search_submit'])){
       <td>'.$apptime.'</td>
     </tr>';
   }
-echo '</tbody></table></div> 
+echo '</tbody></table></div>
 <div><a href="doctor-panel.php" class="btn btn-light">Go Back</a></div>
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
