@@ -2,7 +2,8 @@
 <?php 
 include('func.php');  
 include('newfunc.php');
-$con=mysqli_connect("localhost","root","","myhmsdb");
+include('connect.php');
+
 
 
   $pid = $_SESSION['pid'];
@@ -418,7 +419,7 @@ function get_specs(){
                               </label></div>
                               <div class="col-md-8">
                               <!-- <div id="docFees">Select a doctor</div> -->
-                              <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly"/>
+                              <input class="form-control" type="text" name="docFees" id="docFees" readonly/>
                   </div><br><br>
 
                   <div class="col-md-4"><label>Appointment Date</label></div>
