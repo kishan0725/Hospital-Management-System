@@ -1,4 +1,8 @@
 <?php
+
+// To simplify the db connection we should use the config 
+// as include to where we will need to connect to the database
+
 define('DB_SERVER','localhost');
 define('DB_USER','root');
 define('DB_PASS' ,'');

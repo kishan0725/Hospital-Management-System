@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <?php 
-include('func.php');  
-include('newfunc.php');
-$con=mysqli_connect("localhost","root","","myhmsdb");
 
+include ("include/config.php"); // database connection
+
+include('func.php');  
+
+include('newfunc.php');
 
   $pid = $_SESSION['pid'];
   $username = $_SESSION['username'];

@@ -1,6 +1,8 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+
+include ("include/config.php"); // database connection
+
 if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
 	$password=$_POST['password2'];

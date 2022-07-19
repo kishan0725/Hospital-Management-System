@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php 
-$con=mysqli_connect("localhost","root","","myhmsdb");
+
+include ("include/config.php"); // database connection
 
 include('newfunc.php');
 
