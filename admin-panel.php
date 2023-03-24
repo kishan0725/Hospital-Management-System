@@ -35,15 +35,21 @@ if (isset($_POST['app-submit'])) {
   $cur_time = date("H:i:s");
   $apptime1 = strtotime($apptime);
   $appdate1 = strtotime($appdate);
+  $userStatus = 1;
+  $doctorStatus = 1;
 
   if (date("Y-m-d", $appdate1) >= $cur_date) {
     if ((date("Y-m-d", $appdate1) == $cur_date and date("H:i:s", $apptime1) > $cur_time) or date("Y-m-d", $appdate1) > $cur_date) {
-      $check_query = mysqli_query($con, "select apptime from appointmenttb where doctor='$doctor' and appdate='$appdate' and apptime='$apptime'");
+      $check_query = mysqli_prepare($con, "select apptime from appointmenttb where doctor=? and appdate=? and apptime=?");
+      mysqli_stmt_bind_param($check_query, "sss", $doctor, $appdate, $apptime);
+      mysqli_stmt_execute($check_query);
+      $check_result = mysqli_stmt_get_result($check_query);
 
-      if (mysqli_num_rows($check_query) == 0) {
-        $query = mysqli_query($con, "insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
-
-        if ($query) {
+      if (mysqli_stmt_num_rows($check_query) == 0) {
+        $query = mysqli_prepare($con, "INSERT INTO appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+        mysqli_stmt_bind_param($query, "isssssssssii", $pid, $fname, $lname, $gender, $email, $contact, $doctor, $docFees, $appdate, $apptime, $userStatus, $doctorStatus);
+        mysqli_stmt_execute($query);
+        if (mysqli_stmt_affected_rows($query) > 0) {
           echo "<script>alert('Your appointment successfully booked');</script>";
         } else {
           echo "<script>alert('Unable to process your request. Please try again!');</script>";
