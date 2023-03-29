@@ -67,9 +67,17 @@ if (isset($_POST['app-submit'])) {
 }
 
 if (isset($_GET['cancel'])) {
-  $query = mysqli_query($con, "update appointmenttb set userStatus='0' where ID = '" . $_GET['ID'] . "'");
-  if ($query) {
+  $appointment_id = mysqli_real_escape_string($con, $_GET['ID']);
+  $query = mysqli_prepare($con, "UPDATE appointmenttb SET userStatus = '0' WHERE ID = ?");
+  mysqli_stmt_bind_param($query, "i", $appointment_id);
+  mysqli_stmt_execute($query);
+  $rows_affected = mysqli_stmt_affected_rows($query);
+  mysqli_stmt_close($query);
+
+  if ($rows_affected > 0) {
     echo "<script>alert('Your appointment successfully cancelled');</script>";
+  } else {
+    echo "<script>alert('Unable to process your request. Please try again!');</script>";
   }
 }
 
