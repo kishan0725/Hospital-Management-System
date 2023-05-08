@@ -29,15 +29,23 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
   $pid = $_POST['pid'];
   $ID = $_POST['ID'];
   $prescription = $_POST['prescription'];
-  
-  $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,fname,lname,appdate,apptime,disease,allergy,prescription) values ('$doctor','$pid','$ID','$fname','$lname','$appdate','$apptime','$disease','$allergy','$prescription')");
-    if($query)
-    {
-      echo "<script>alert('Prescribed successfully!');</script>";
-    }
-    else{
-      echo "<script>alert('Unable to process your request. Try again!');</script>";
-    }
+
+  // create a prepared statement
+  $stmt = $con->prepare("INSERT INTO prestb(doctor,pid,ID,fname,lname,appdate,apptime,disease,allergy,prescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+  // bind parameters with types
+  $stmt->bind_param("ssssssssss", $doctor, $pid, $ID, $fname, $lname, $appdate, $apptime, $disease, $allergy, $prescription);
+
+  // execute the statement
+  if ($stmt->execute()) {
+    echo "<script>alert('Prescribed successfully!');</script>";
+  } else {
+    echo  "<script>alert('Unable to process your request. Try again!');</script>";
+  }
+
+  // close the statement and connection
+  $stmt->close();
+  $con->close();
   // else{
   //   echo "<script>alert('GET is not working!');</script>";
   // }initial

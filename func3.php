@@ -2,19 +2,32 @@
 session_start();
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['adsub'])){
-	$username=$_POST['username1'];
-	$password=$_POST['password2'];
-	$query="select * from admintb where username='$username' and password='$password';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
-	{
-		$_SESSION['username']=$username;
-		header("Location:admin-panel1.php");
-	}
-	else
-		// header("Location:error2.php");
-		echo("<script>alert('Invalid Username or Password. Try Again!');
+    $username = $_POST['username1'];
+    $password = $_POST['password2'];
+
+    // prepare the query with placeholders for parameters
+    $query = "SELECT * FROM admintb WHERE username=? AND password=?";
+    $stmt = mysqli_prepare($con, $query);
+
+    // bind parameters to the query
+    mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+
+    // execute the query
+    mysqli_stmt_execute($stmt);
+
+    // fetch the result
+    $result = mysqli_stmt_get_result($stmt);
+
+    if(mysqli_num_rows($result) == 1) {
+        $_SESSION['username'] = $username;
+        header("Location:admin-panel1.php");
+    } else {
+        echo("<script>alert('Invalid Username or Password. Try Again!');
           window.location.href = 'index.php';</script>");
+    }
+
+    // close the statement
+    mysqli_stmt_close($stmt);
 }
 if(isset($_POST['update_data']))
 {
