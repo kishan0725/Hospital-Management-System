@@ -8,11 +8,12 @@ if(isset($_POST['docsub1'])){
 	$result=mysqli_query($con,$query);
 	if(mysqli_num_rows($result)==1)
 	{
-    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+    // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
     
-		      $_SESSION['dname']=$row['username'];
+		  //     $_SESSION['dname']=$row['username'];
       
-    }
+    // }
+		$_SESSION['dname']=$dname;
 		header("Location:doctor-panel.php");
 	}
 	else{
