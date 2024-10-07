@@ -9,7 +9,16 @@ if(isset($_POST['patsub1'])){
   $contact=$_POST['contact'];
 	$password=$_POST['password'];
   $cpassword=$_POST['cpassword'];
-  if($password==$cpassword){
+
+  $query_by_email ="select * from patreg where email='$email';";
+	$result=mysqli_query($con,$query_by_email);
+  $patient = mysqli_fetch_array($result,MYSQLI_ASSOC);
+  if (mysqli_num_rows($result) != 0) 
+  {
+    echo("<script>alert('A user with the given email already exists. Try Again!');
+          window.location.href = 'index1.php';</script>");
+  }
+  else if($password==$cpassword){
   	$query="insert into patreg(fname,lname,gender,email,contact,password,cpassword) values ('$fname','$lname','$gender','$email','$contact','$password','$cpassword');";
     $result=mysqli_query($con,$query);
     if($result){
