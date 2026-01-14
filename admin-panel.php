@@ -42,7 +42,9 @@ if(isset($_POST['app-submit']))
       $check_query = mysqli_query($con,"select apptime from appointmenttb where doctor='$doctor' and appdate='$appdate' and apptime='$apptime'");
 
         if(mysqli_num_rows($check_query)==0){
-          $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+          $query = mysqli_query($con, 
+  "INSERT INTO appointmenttb(pid, fname, lname, gender, email, contact, doctor, docFees, appdate, apptime, userStatus, doctorStatus)
+   VALUES('$pid', '$fname', '$lname', '$gender', '$email', '$contact', '$doctor', '$docFees', '$appdate', '$apptime', '1', '1')");
 
           if($query)
           {
@@ -201,7 +203,97 @@ function get_specs(){
   background-color: #3c50c1;
   border-color: #3c50c1;
 }
-  </style>
+
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f7fa;
+    }
+
+    h3 {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .list-group-item {
+        border: 1px solid #dee2e6;
+        transition: background-color 0.2s ease;
+        font-weight: 500;
+    }
+
+    .list-group-item:hover {
+        background-color: #e9f1ff;
+        color: #007bff;
+    }
+
+    .list-group-item.active {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .panel {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease;
+        background-color: #ffffff;
+        padding: 15px;
+    }
+
+    .panel:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .StepTitle {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .btn {
+        background-color: #007bff;
+        color: white !important;
+        border: none;
+        padding: 6px 12px;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+        color: white;
+        text-decoration: none;
+    }
+
+    .container-fullw {
+        padding: 20px 30px;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .fa-stack {
+        font-size: 1.5rem;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+    }
+
+    .no-radius {
+        border-radius: 10px !important;
+    }
+</style>
+
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
@@ -225,71 +317,163 @@ function get_specs(){
     <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $username ?> 
    </h3>
     <div class="row">
-  <div class="col-md-4" style="max-width:25%; margin-top: 3%">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" id="list-dash-list" data-toggle="list" href="#list-dash" role="tab" aria-controls="home">Dashboard</a>
-      <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Book Appointment</a>
-      <a class="list-group-item list-group-item-action" href="#app-hist" id="list-pat-list" role="tab" data-toggle="list" aria-controls="home">Appointment History</a>
-      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home">Prescriptions</a>
-      
-    </div><br>
+    <div class="col-md-4" style="max-width:25%; margin-top: 3%">
+  <div class="list-group" id="list-tab" role="tablist">
+    <a class="list-group-item list-group-item-action active" id="list-dash-list" data-toggle="list" href="#list-dash" role="tab" aria-controls="home">Dashboard</a>
+    <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Book Appointment</a>
+    <a class="list-group-item list-group-item-action" href="#app-hist" id="list-pat-list" role="tab" data-toggle="list" aria-controls="home">Appointment History</a>
+    <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home">Prescriptions</a>
+    <a class="list-group-item list-group-item-action" href="#order-medicine" id="order-medicine-list" data-toggle="list" role="tab" aria-controls="order-medicine">Order Medicine</a>
+    <a class="list-group-item list-group-item-action" href="health-tracker.php">My Health Data</a>
+
+    
   </div>
-  <div class="col-md-8" style="margin-top: 3%;">
-    <div class="tab-content" id="nav-tabContent" style="width: 950px;">
+  <br>
+</div>
 
+  </div><div class="col-md-8" style="margin-top: 3%;">
+  <div class="tab-content" id="nav-tabContent" style="width: 100%;">
+    <div class="tab-pane fade show active" id="list-dash" role="tabpanel" aria-labelledby="list-dash-list">
+      <div class="container-fluid container-fullw bg-white">
+        <div class="row text-center">
 
-      <div class="tab-pane fade  show active" id="list-dash" role="tabpanel" aria-labelledby="list-dash-list">
-        <div class="container-fluid container-fullw bg-white" >
-              <div class="row">
-               <div class="col-sm-4" style="left: 5%">
-                  <div class="panel panel-white no-radius text-center">
-                    <div class="panel-body">
-                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-                      <h4 class="StepTitle" style="margin-top: 5%;"> Book My Appointment</h4>
-                      <script>
-                        function clickDiv(id) {
-                          document.querySelector(id).click();
-                        }
-                      </script>                      
-                      <p class="links cl-effect-1">
-                        <a href="#list-home" onclick="clickDiv('#list-home-list')">
-                          Book Appointment
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          <!-- Book Appointment -->
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">Book My Appointment</h4>
+                <script>
+                  function clickDiv(id) {
+                    document.querySelector(id).click();
+                  }
+                </script>
+                <p class="links cl-effect-1">
+                  <a href="#list-home" onclick="clickDiv('#list-home-list')">Book Appointment</a>
+                </p>
+              </div>
+            </div>
+          </div>
 
-                <div class="col-sm-4" style="left: 10%">
-                  <div class="panel panel-white no-radius text-center">
-                    <div class="panel-body" >
-                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
-                      <h4 class="StepTitle" style="margin-top: 5%;">My Appointments</h2>
-                    
-                      <p class="cl-effect-1">
-                        <a href="#app-hist" onclick="clickDiv('#list-pat-list')">
-                          View Appointment History
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                </div>
+          <!-- My Appointments -->
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">My Appointments</h4>
+                <p class="cl-effect-1">
+                  <a href="#app-hist" onclick="clickDiv('#list-pat-list')">View Appointment History</a>
+                </p>
+              </div>
+            </div>
+          </div>
 
-                <div class="col-sm-4" style="left: 20%;margin-top:5%">
-                  <div class="panel panel-white no-radius text-center">
-                    <div class="panel-body" >
-                      <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
-                      <h4 class="StepTitle" style="margin-top: 5%;">Prescriptions</h2>
-                    
-                      <p class="cl-effect-1">
-                        <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
-                          View Prescription List
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          <!-- Prescriptions -->
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">Prescriptions</h4>
+                <p class="cl-effect-1">
+                  <a href="#list-pres" onclick="clickDiv('#list-pres-list')">View Prescription List</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Medicine -->
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">Medicine</h4>
+                <p class="cl-effect-1">
+                  <a href="order-medicine.html" class="btn btn-primary mt-2">Order Medicine</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">Medicine</h4>
+                <p class="cl-effect-1">
+                <a href="view-orders.php" class="btn btn-primary">Show My Orders</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3">Ambulance</h4>
+                <p class="cl-effect-1">
+                <a href="book-ambulance.php" class="btn">Book Ambulance</a>
+
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-3">
+            <div class="panel panel-white no-radius">
+              <div class="panel-body">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-square fa-stack-2x text-primary"></i>
+                  <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="StepTitle mt-3"> Show Ambulance</h4>
+                <p class="cl-effect-1">
+                <a href="show-ambulance-bookings.php" class="btn">Show Booking Ambulance</a>
+
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Health Tracker -->
+<div class="col-sm-3">
+  <div class="panel panel-white no-radius">
+    <div class="panel-body">
+      <span class="fa-stack fa-2x">
+        <i class="fa fa-square fa-stack-2x text-primary"></i>
+        <i class="fa fa-heartbeat fa-stack-1x fa-inverse"></i>
+      </span>
+      <h4 class="StepTitle mt-3">Health Tracker</h4>
+      <p class="cl-effect-1">
+        <a href="health-tracker.php" class="btn">Track Health</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+         
+
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </div> <!-- end tab-pane -->
+  </div> <!-- end tab-content -->
+</div>
+
                 
          
             </div>
