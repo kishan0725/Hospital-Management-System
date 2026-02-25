@@ -1,0 +1,20 @@
+# Cho phép truy cập file ảnh
+
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+Order Allow,Deny
+Allow from all
+</FilesMatch>
+
+# Không cho phép thực thi PHP file
+
+<FilesMatch "\.php$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+# Bảo vệ tệp cấu hình
+
+<Files "\*.conf">
+Order Allow,Deny
+Deny from all
+</Files>
