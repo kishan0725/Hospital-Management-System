@@ -1,72 +1,161 @@
 <?php
 
-// FIXED: session_start() must be called before anything SESSION-related.
-// It was commented out before, meaning sessions never worked at all.
+// ── Session Setup ──────────────────────────────────────────────────────────
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'httponly' => true,   // JavaScript cannot steal the session cookie
+        'httponly' => true,
         'samesite' => 'Strict'
     ]);
     session_start();
 }
 
-/**
- * Checks if the user is logged in.
- * If not, redirects to the login page and STOPS execution.
- */
+// ── Auth Check ─────────────────────────────────────────────────────────────
 function check_login(): void
 {
-    // FIXED: Use isset() first — accessing $_SESSION['login'] directly
-    // when it doesn't exist causes a PHP warning.
     if (!isset($_SESSION['login']) || empty($_SESSION['login'])) {
-        // FIXED: Use a simple relative redirect instead of
-        // building the URL manually (which can break on subfolders).
         header("Location: user-login.php");
-
-        // FIXED: exit() MUST come after header redirect.
-        // Without it, PHP keeps running the rest of the page
-        // even though the browser is being redirected away.
         exit();
     }
 }
 
-/**
- * Returns the DB connection.
- * Centralizing this means you only update credentials in one place.
- */
+// ── Database Connection ────────────────────────────────────────────────────
 function get_db_connection(): mysqli
 {
     $con = mysqli_connect("localhost", "root", "", "myhmsdb");
     if (!$con) {
-        // Don't expose raw DB errors to the browser in production
         error_log("DB connection failed: " . mysqli_connect_error());
         die("A server error occurred. Please try again later.");
     }
     return $con;
 }
 
-function display_specs(): void
-{
+// ── Add Doctor ─────────────────────────────────────────────────────────────
+
+function add_doctor(
+    string $username,
+    string $password,
+    string $email,
+    string $spec,
+    string $docFees
+): bool {
     $con = get_db_connection();
 
-    $result = mysqli_query($con, "SELECT DISTINCT spec FROM doctb");
-    while ($row = mysqli_fetch_array($result)) {
-        $spec = htmlspecialchars($row['spec']); 
-        echo '<option data-value="' . $spec . '">' . $spec . '</option>';
+    // FIXED: password should be hashed, never stored as plain text.
+    // password_hash() is a one-way scramble — even if DB is stolen,
+    // passwords are unreadable.
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+    // Prepare: send query STRUCTURE first, no data yet
+    $stmt = mysqli_prepare(
+        $con,
+        "INSERT INTO doctb (username, password, email, spec, docFees)
+         VALUES (?, ?, ?, ?, ?)"
+    );
+
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($con));
+        return false;
     }
+
+    // Bind: attach data SEPARATELY — "sssss" means 5 strings
+    // s = string, i = integer, d = double, b = blob
+    mysqli_stmt_bind_param($stmt, "sssss",
+        $username,
+        $hashedPassword,
+        $email,
+        $spec,
+        $docFees
+    );
+
+    // Execute: DB processes them safely
+    $success = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close($con);
+
+    return $success;
 }
 
-function display_docs(): void
+// ── Delete Doctor ──────────────────────────────────────────────────────────
+
+function delete_doctor(string $email): bool
 {
     $con = get_db_connection();
-    $result = mysqli_query($con, "SELECT * FROM doctb");
+
+    $stmt = mysqli_prepare(
+        $con,
+        "DELETE FROM doctb WHERE email = ?"
+    );
+
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($con));
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    $success = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close($con);
+
+    return $success;
+}
+
+// ── Update Appointment Payment ─────────────────────────────────────────────
+function update_payment_status(string $contact, string $status): bool
+{
+    $con = get_db_connection();
+
+    $stmt = mysqli_prepare(
+        $con,
+        "UPDATE appointmenttb SET payment = ? WHERE contact = ?"
+    );
+
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($con));
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $status, $contact);
+    $success = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close($con);
+
+    return $success;
+}
+
+// ── Display Specializations ────────────────────────────────────────────────
+// No user input here so no injection risk, but we still
+// escape output with htmlspecialchars() to prevent XSS
+function display_specs(): void
+{
+    $con    = get_db_connection();
+    $result = mysqli_query($con, "SELECT DISTINCT spec FROM doctb");
+
     while ($row = mysqli_fetch_array($result)) {
-        $username = htmlspecialchars($row['username']); 
-        $price    = htmlspecialchars($row['docFees']);
-        $spec     = htmlspecialchars($row['spec']);
-        echo '<option value="' . $username . '" data-value="' . $price . '" data-spec="' . $spec . '">'
+        $spec = htmlspecialchars($row['spec'], ENT_QUOTES, 'UTF-8');
+        echo '<option data-value="' . $spec . '">' . $spec . '</option>';
+    }
+
+    mysqli_close($con);
+}
+
+// ── Display Doctors ────────────────────────────────────────────────────────
+function display_docs(): void
+{
+    $con    = get_db_connection();
+    $result = mysqli_query($con, "SELECT * FROM doctb");
+
+    while ($row = mysqli_fetch_array($result)) {
+        $username = htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8');
+        $price    = htmlspecialchars($row['docFees'],  ENT_QUOTES, 'UTF-8');
+        $spec     = htmlspecialchars($row['spec'],     ENT_QUOTES, 'UTF-8');
+
+        echo '<option value="'  . $username . '"'
+           . ' data-value="'   . $price    . '"'
+           . ' data-spec="'    . $spec     . '">'
            . $username . '</option>';
     }
+
+    mysqli_close($con);
 }
