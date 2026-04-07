@@ -4,15 +4,23 @@ $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['adsub'])){
 	$username=$_POST['username1'];
 	$password=$_POST['password2'];
-	$query="select * from admintb where username='$username' and password='$password';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
+
+  // FIXED: SELECT by username only, then verify the hash separately.
+  // FIXED: prepared statement.
+  $stmt = mysqli_prepare($con, "SELECT * FROM admintb WHERE username = ?");
+  mysqli_stmt_bind_param($stmt, "s", $username);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  $row    = mysqli_fetch_assoc($result);
+  mysqli_stmt_close($stmt);
+
+	if($row && password_verify($password, $row['password']))
 	{
-		$_SESSION['username']=$username;
+		$_SESSION['username'] = $row['username'];
 		header("Location:receptionist_dashboard.php");
+    exit();
 	}
 	else
-		// header("Location:error_admin_login.php");
 		echo("<script>alert('Invalid Username or Password. Try Again!');
           window.location.href = 'register.php';</script>");
 }

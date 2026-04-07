@@ -3,26 +3,31 @@ session_start();
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
-	$password=$_POST['password2'];
-	$query="select * from patreg where email='$email' and password='$password';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
+	$inputPassword=$_POST['password2'];
+
+
+  $stmt = mysqli_prepare($con, "SELECT * FROM patreg WHERE email = ?");
+  mysqli_stmt_bind_param($stmt, "s", $email);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  $row    = mysqli_fetch_assoc($result);
+  mysqli_stmt_close($stmt);
+
+	if($row && password_verify($inputPassword, $row['password']))
 	{
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-      $_SESSION['pid'] = $row['pid'];
-      $_SESSION['username'] = $row['fname']." ".$row['lname'];
-      $_SESSION['fname'] = $row['fname'];
-      $_SESSION['lname'] = $row['lname'];
-      $_SESSION['gender'] = $row['gender'];
-      $_SESSION['contact'] = $row['contact'];
-      $_SESSION['email'] = $row['email'];
-    }
+    $_SESSION['pid']      = $row['pid'];
+    $_SESSION['username'] = $row['fname']." ".$row['lname'];
+    $_SESSION['fname']    = $row['fname'];
+    $_SESSION['lname']    = $row['lname'];
+    $_SESSION['gender']   = $row['gender'];
+    $_SESSION['contact']  = $row['contact'];
+    $_SESSION['email']    = $row['email'];
 		header("Location:patient_dashboard.php");
+    exit();
 	}
   else {
     echo("<script>alert('Invalid Username or Password. Try Again!');
           window.location.href = 'patient_login.php';</script>");
-    // header("Location:error_patient_login.php");
   }
 		
 }
@@ -38,19 +43,6 @@ if(isset($_POST['update_data']))
 
 
 
-
-// function display_docs()
-// {
-// 	global $con;
-// 	$query="select * from doctb";
-// 	$result=mysqli_query($con,$query);
-// 	while($row=mysqli_fetch_array($result))
-// 	{
-// 		$name=$row['name'];
-//     $cost=$row['docFees'];
-// 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
-// 	}
-// }
 
 if(isset($_POST['doc_sub']))
 {
