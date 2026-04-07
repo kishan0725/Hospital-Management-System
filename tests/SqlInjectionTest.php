@@ -1,6 +1,4 @@
 <?php
-// tests/SqlInjectionTest.php
-
 use PHPUnit\Framework\TestCase;
 
 class SqlInjectionTest extends TestCase
