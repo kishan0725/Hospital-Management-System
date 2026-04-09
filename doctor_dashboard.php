@@ -13,10 +13,6 @@ if(isset($_GET['cancel']))
     $appointmentID = $_GET['ID'];
     $dname         = $_SESSION['dname'];
 
-    // FIXED: IDOR — WHERE now requires both the appointment ID AND the session
-    // doctor's username. Supplying another doctor's appointment ID matches 0
-    // rows and cancels nothing.
-    // FIXED: prepared statement — no raw GET input in the query string.
     $stmt = mysqli_prepare($con,
         "UPDATE appointmenttb SET doctorStatus = '0'
          WHERE ID = ? AND doctor = ?"

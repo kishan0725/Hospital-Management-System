@@ -5,21 +5,15 @@ if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
 	$inputPassword=$_POST['password2'];
 
-  // FIXED: SELECT by email only — never put the password in the WHERE clause.
-  // Putting the password in WHERE leaks whether the account exists AND is
-  // trivially bypassed with SQL injection (' OR '1'='1).
-  // FIXED: prepared statement — no raw user input in the query string.
-  $stmt = mysqli_prepare($con, "SELECT * FROM patreg WHERE email = ?");
+
   mysqli_stmt_bind_param($stmt, "s", $email);
   mysqli_stmt_execute($stmt);
   $result = mysqli_stmt_get_result($stmt);
   $row    = mysqli_fetch_assoc($result);
   mysqli_stmt_close($stmt);
 
-  // FIXED: password_verify() does the constant-time comparison against the
-  // stored bcrypt hash. It returns false if the account doesn't exist ($row
-  // is null/false) or if the password is wrong — same error message either
-  // way so we don't reveal which one failed.
+
+
 	if($row && password_verify($inputPassword, $row['password']))
 	{
     $_SESSION['pid']      = $row['pid'];
@@ -49,29 +43,26 @@ if(isset($_POST['patsub'])){
 
 
 
-// function display_docs()
-// {
-// 	global $con;
-// 	$query="select * from doctb";
-// 	$result=mysqli_query($con,$query);
-// 	while($row=mysqli_fetch_array($result))
-// 	{
-// 		$name=$row['name'];
-//     $cost=$row['docFees'];
-// 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
-// 	}
-// }
-
-if(isset($_POST['doc_sub']))
+if (isset($_POST['doc_sub']))
 {
-	$doctor=$_POST['doctor'];
-  $dpassword=$_POST['dpassword'];
-  $demail=$_POST['demail'];
-  $docFees=$_POST['docFees'];
-	$query="insert into doctb(username,password,email,docFees)values('$doctor','$dpassword','$demail','$docFees')";
-	$result=mysqli_query($con,$query);
-	if($result)
-		header("Location:adddoc.php");
+    $doctor    = $_POST['doctor'];
+    $dpassword = $_POST['dpassword'];
+    $demail    = $_POST['demail'];
+    $docFees   = $_POST['docFees'];
+
+    // FIXED: hash before storing
+    $hashedPassword = password_hash($dpassword, PASSWORD_BCRYPT);
+
+
+    $stmt = mysqli_prepare($con,
+        "INSERT INTO doctb (username, password, email, docFees) VALUES (?, ?, ?, ?)"
+    );
+    mysqli_stmt_bind_param($stmt, "ssss", $doctor, $hashedPassword, $demail, $docFees);
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($result)
+        header("Location: adddoc.php");
 }
 function display_admin_panel(){
 	echo '<!DOCTYPE html>
