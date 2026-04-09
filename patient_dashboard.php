@@ -67,13 +67,30 @@ if(isset($_POST['app-submit']))
 }
 
 if(isset($_GET['cancel']))
-  {
-    $query=mysqli_query($con,"update appointmenttb set userStatus='0' where ID = '".$_GET['ID']."'");
-    if($query)
-    {
-      echo "<script>alert('Your appointment successfully cancelled');</script>";
+{
+    $appointmentID = $_GET['ID'];
+    $pid           = $_SESSION['pid'];
+
+    // FIXED: IDOR — the WHERE clause now requires BOTH the appointment ID
+    // AND the session patient's pid to match. A patient supplying someone
+    // else's appointment ID will match 0 rows and cancel nothing.
+    // FIXED: prepared statement — no raw GET input in the query string.
+    $stmt = mysqli_prepare($con,
+        "UPDATE appointmenttb SET userStatus = '0'
+         WHERE ID = ? AND pid = ?"
+    );
+    mysqli_stmt_bind_param($stmt, "si", $appointmentID, $pid);
+    mysqli_stmt_execute($stmt);
+    $affected = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+
+    if($affected > 0) {
+        echo "<script>alert('Your appointment successfully cancelled');</script>";
+    } else {
+        // Either the ID doesn't exist or it belongs to a different patient
+        echo "<script>alert('Cancellation failed: appointment not found.');</script>";
     }
-  }
+}
 
 
 

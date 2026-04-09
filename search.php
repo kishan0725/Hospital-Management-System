@@ -33,12 +33,13 @@ if(isset($_POST['search_submit'])){
   <tbody>
   ';
   while($row=mysqli_fetch_array($result)){
-    $fname=$row['fname'];
-    $lname=$row['lname'];
-    $email=$row['email'];
-    $contact=$row['contact'];
-    $appdate=$row['appdate'];
-    $apptime=$row['apptime'];
+    // FIXED: every DB value escaped before output to prevent stored XSS
+    $fname   = htmlspecialchars($row['fname'],   ENT_QUOTES, 'UTF-8');
+    $lname   = htmlspecialchars($row['lname'],   ENT_QUOTES, 'UTF-8');
+    $email   = htmlspecialchars($row['email'],   ENT_QUOTES, 'UTF-8');
+    $contact = htmlspecialchars($row['contact'], ENT_QUOTES, 'UTF-8');
+    $appdate = htmlspecialchars($row['appdate'], ENT_QUOTES, 'UTF-8');
+    $apptime = htmlspecialchars($row['apptime'], ENT_QUOTES, 'UTF-8');
     echo '<tr>
       <td>'.$fname.'</td>
       <td>'.$lname.'</td>

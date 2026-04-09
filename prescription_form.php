@@ -112,7 +112,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
 
 <body style="padding-top:50px;">
    <div class="container-fluid" style="margin-top:50px;">
-    <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo $doctor ?>
+    <h3 style = "margin-left: 40%;  padding-bottom: 20px; font-family: 'IBM Plex Sans', sans-serif;"> Welcome &nbsp<?php echo htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8') ?>
    </h3>
 
    <div class="tab-pane" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
@@ -135,12 +135,12 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
                   <!-- <input type="text" class="form-control"  name="prescription"  required> -->
                   <textarea id="prescription" cols="86" rows ="10" name="prescription" required></textarea>
                   </div><br><br><br>
-                  <input type="hidden" name="fname" value="<?php echo $fname ?>" />
-                  <input type="hidden" name="lname" value="<?php echo $lname ?>" />
-                  <input type="hidden" name="appdate" value="<?php echo $appdate ?>" />
-                  <input type="hidden" name="apptime" value="<?php echo $apptime ?>" />
-                  <input type="hidden" name="pid" value="<?php echo $pid ?>" />
-                  <input type="hidden" name="ID" value="<?php echo $ID ?>" />
+                  <input type="hidden" name="fname"   value="<?php echo htmlspecialchars($fname,   ENT_QUOTES, 'UTF-8') ?>" />
+                  <input type="hidden" name="lname"   value="<?php echo htmlspecialchars($lname,   ENT_QUOTES, 'UTF-8') ?>" />
+                  <input type="hidden" name="appdate" value="<?php echo htmlspecialchars($appdate, ENT_QUOTES, 'UTF-8') ?>" />
+                  <input type="hidden" name="apptime" value="<?php echo htmlspecialchars($apptime, ENT_QUOTES, 'UTF-8') ?>" />
+                  <input type="hidden" name="pid"     value="<?php echo htmlspecialchars($pid,     ENT_QUOTES, 'UTF-8') ?>" />
+                  <input type="hidden" name="ID"      value="<?php echo htmlspecialchars($ID,      ENT_QUOTES, 'UTF-8') ?>" />
                   <br><br><br><br>
           <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary" style="margin-left: 40pc;">
           
@@ -149,6 +149,3 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
         
       </div>
       </div>
-      
-
-  

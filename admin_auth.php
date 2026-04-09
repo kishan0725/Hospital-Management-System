@@ -26,15 +26,34 @@ if(isset($_POST['adsub'])){
 }
 if(isset($_POST['update_data']))
 {
-	$contact=$_POST['contact'];
-	$status=$_POST['status'];
-	$query="update appointmenttb set payment='$status' where contact='$contact';";
-	$result=mysqli_query($con,$query);
-	if($result)
-		header("Location:updated.php");
+    // FIXED: role check — only a logged-in admin/receptionist may update
+    // payment status. Without this, any unauthenticated POST to this file
+    // could change payment records.
+    if(empty($_SESSION['username'])) {
+        header("Location: register.php");
+        exit();
+    }
+
+    $contact = $_POST['contact'];
+    $status  = $_POST['status'];
+
+    // Whitelist the only two valid status values so arbitrary strings
+    // can never be written into the payment column.
+    $allowed = ['paid', 'pay later'];
+    if(!in_array(strtolower($status), $allowed, true)) {
+        die("Invalid payment status.");
+    }
+
+    // FIXED: prepared statement — no raw POST input in the query string.
+    $stmt = mysqli_prepare($con,
+        "UPDATE appointmenttb SET payment = ? WHERE contact = ?"
+    );
+    mysqli_stmt_bind_param($stmt, "ss", $status, $contact);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("Location:updated.php");
+    exit();
 }
-
-
 
 
 function display_docs()

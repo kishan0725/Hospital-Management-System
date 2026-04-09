@@ -5,7 +5,10 @@ if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
 	$inputPassword=$_POST['password2'];
 
-
+  // FIXED: SELECT by email only — never put the password in the WHERE clause.
+  // Putting the password in WHERE leaks whether the account exists AND is
+  // trivially bypassed with SQL injection (' OR '1'='1).
+  // FIXED: prepared statement — no raw user input in the query string.
   $stmt = mysqli_prepare($con, "SELECT * FROM patreg WHERE email = ?");
   mysqli_stmt_bind_param($stmt, "s", $email);
   mysqli_stmt_execute($stmt);
@@ -13,6 +16,10 @@ if(isset($_POST['patsub'])){
   $row    = mysqli_fetch_assoc($result);
   mysqli_stmt_close($stmt);
 
+  // FIXED: password_verify() does the constant-time comparison against the
+  // stored bcrypt hash. It returns false if the account doesn't exist ($row
+  // is null/false) or if the password is wrong — same error message either
+  // way so we don't reveal which one failed.
 	if($row && password_verify($inputPassword, $row['password']))
 	{
     $_SESSION['pid']      = $row['pid'];
@@ -31,18 +38,29 @@ if(isset($_POST['patsub'])){
   }
 		
 }
-if(isset($_POST['update_data']))
-{
-	$contact=$_POST['contact'];
-	$status=$_POST['status'];
-	$query="update appointmenttb set payment='$status' where contact='$contact';";
-	$result=mysqli_query($con,$query);
-	if($result)
-		header("Location:updated.php");
-}
+
+// REMOVED: update_data payment handler.
+// Payment status updates are an admin-only operation and must only be handled
+// by admin_auth.php, which enforces an admin session check. Having this
+// handler here meant any logged-in patient could POST to patient_auth.php
+// and update the payment status of any record by contact number — no
+// ownership check, no role check, raw SQL injection.
 
 
 
+
+// function display_docs()
+// {
+// 	global $con;
+// 	$query="select * from doctb";
+// 	$result=mysqli_query($con,$query);
+// 	while($row=mysqli_fetch_array($result))
+// 	{
+// 		$name=$row['name'];
+//     $cost=$row['docFees'];
+// 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
+// 	}
+// }
 
 if(isset($_POST['doc_sub']))
 {
@@ -165,15 +183,7 @@ function display_admin_panel(){
       <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
         <div class="card">
           <div class="card-body">
-            <form class="form-group" method="post" action="patient_auth.php">
-              <input type="text" name="contact" class="form-control" placeholder="enter contact"><br>
-              <select name="status" class="form-control">
-               <option value="" disabled selected>Select Payment Status to update</option>
-                <option value="paid">paid</option>
-                <option value="pay later">pay later</option>
-              </select><br><hr>
-              <input type="submit" value="update" name="update_data" class="btn btn-primary">
-            </form>
+            <form class="form-group" method="post" action="admin_auth.php">
           </div>
         </div><br><br>
       </div>

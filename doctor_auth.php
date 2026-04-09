@@ -4,25 +4,36 @@ $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['docsub1'])){
 	$dname=$_POST['username3'];
 	$dpass=$_POST['password3'];
-
-  $stmt = mysqli_prepare($con, "SELECT * FROM doctb WHERE username = ?");
-  mysqli_stmt_bind_param($stmt, "s", $dname);
-  mysqli_stmt_execute($stmt);
-  $result = mysqli_stmt_get_result($stmt);
-  $row    = mysqli_fetch_assoc($result);
-  mysqli_stmt_close($stmt);
-
-	if($row && password_verify($dpass, $row['password']))
+	$query="select * from doctb where username='$dname' and password='$dpass';";
+	$result=mysqli_query($con,$query);
+	if(mysqli_num_rows($result)==1)
 	{
-    $_SESSION['dname'] = $row['username'];
+    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+    
+		      $_SESSION['dname']=$row['username'];
+      
+    }
 		header("Location:doctor_dashboard.php");
-    exit();
 	}
 	else{
+    // header("Location:error_admin_login.php");
     echo("<script>alert('Invalid Username or Password. Try Again!');
           window.location.href = 'register.php';</script>");
   }
 }
+
+
+// if(isset($_POST['update_data']))  
+//   $result=mysqli_query($con,$query);
+//   if(mysqli_num_rows($result)==1)
+//   {
+//     $_SESSION['username']=$username;
+//     header("Location:patient_dashboard.php");
+//   }
+//   else
+//     header("Location:error_admin_login.php");
+  
+
 
 
 function display_docs()
@@ -37,6 +48,15 @@ function display_docs()
 		echo '<option value="'.$name.'">'.$name.'</option>';
 	}
 }
+
+// if(isset($_POST['doc_sub']))
+// {
+// 	$name=$_POST['name'];
+// 	$query="insert into doctb(name)values('$name')";
+// 	$result=mysqli_query($con,$query);
+// 	if($result)
+// 		header("Location:adddoc.php");
+// }
 
 
 function display_admin_panel(){

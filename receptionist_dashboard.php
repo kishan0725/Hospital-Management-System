@@ -2,6 +2,11 @@
 <?php 
 $con=mysqli_connect("localhost","root","","myhmsdb");
 
+// Shorthand escape helper — every DB value passes through this before output
+function escape(string $v): string {
+    return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
+}
+
 include('newpatient_auth.php');
 
 if(isset($_POST['docsub']))
@@ -459,17 +464,17 @@ if(isset($_POST['docsub1']))
                     while ($row = mysqli_fetch_array($result)){
                   ?>
                       <tr>
-                        <td><?php echo $row['ID'];?></td>
-                        <td><?php echo $row['pid'];?></td>
-                        <td><?php echo $row['fname'];?></td>
-                        <td><?php echo $row['lname'];?></td>
-                        <td><?php echo $row['gender'];?></td>
-                        <td><?php echo $row['email'];?></td>
-                        <td><?php echo $row['contact'];?></td>
-                        <td><?php echo $row['doctor'];?></td>
-                        <td><?php echo $row['docFees'];?></td>
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
+                        <td><?php echo escape((string)$row['ID']);?></td>
+                        <td><?php echo escape((string)$row['pid']);?></td>
+                        <td><?php echo escape($row['fname']);?></td>
+                        <td><?php echo escape($row['lname']);?></td>
+                        <td><?php echo escape($row['gender']);?></td>
+                        <td><?php echo escape($row['email']);?></td>
+                        <td><?php echo escape($row['contact']);?></td>
+                        <td><?php echo escape($row['doctor']);?></td>
+                        <td><?php echo escape((string)$row['docFees']);?></td>
+                        <td><?php echo escape($row['appdate']);?></td>
+                        <td><?php echo escape($row['apptime']);?></td>
                         <td>
                     <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                     {
@@ -574,10 +579,10 @@ if(isset($_POST['docsub1']))
                       #$contact = $row['contact'];
                   ?>
                       <tr>
-                        <td><?php echo $row['name'];?></td>
-                        <td><?php echo $row['email'];?></td>
-                        <td><?php echo $row['contact'];?></td>
-                        <td><?php echo $row['message'];?></td>
+                        <td><?php echo escape($row['name']);?></td>
+                        <td><?php echo escape($row['email']);?></td>
+                        <td><?php echo escape($row['contact']);?></td>
+                        <td><?php echo escape($row['message']);?></td>
                       </tr>
                     <?php } ?>
                 </tbody>
