@@ -1,6 +1,7 @@
 {
     "name": "global-hospital/hms",
     "description": "Hospital Management System",
+    "license": "proprietary",
     "require-dev": {
         "phpunit/phpunit": "^10.0"
     },
