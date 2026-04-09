@@ -33,12 +33,13 @@ if(isset($_POST['search_submit'])){
   <tbody>
   ';
   while($row=mysqli_fetch_array($result)){
-    $fname=$row['fname'];
-    $lname=$row['lname'];
-    $email=$row['email'];
-    $contact=$row['contact'];
-    $appdate=$row['appdate'];
-    $apptime=$row['apptime'];
+    // FIXED: every DB value escaped before output to prevent stored XSS
+    $fname   = htmlspecialchars($row['fname'],   ENT_QUOTES, 'UTF-8');
+    $lname   = htmlspecialchars($row['lname'],   ENT_QUOTES, 'UTF-8');
+    $email   = htmlspecialchars($row['email'],   ENT_QUOTES, 'UTF-8');
+    $contact = htmlspecialchars($row['contact'], ENT_QUOTES, 'UTF-8');
+    $appdate = htmlspecialchars($row['appdate'], ENT_QUOTES, 'UTF-8');
+    $apptime = htmlspecialchars($row['apptime'], ENT_QUOTES, 'UTF-8');
     echo '<tr>
       <td>'.$fname.'</td>
       <td>'.$lname.'</td>
@@ -49,7 +50,7 @@ if(isset($_POST['search_submit'])){
     </tr>';
   }
 echo '</tbody></table></div> 
-<div><a href="doctor-panel.php" class="btn btn-light">Go Back</a></div>
+<div><a href="doctor_dashboard.php" class="btn btn-light">Go Back</a></div>
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
