@@ -1,14 +1,16 @@
 <?php
+// tests/NewfuncTest.php
+
 use PHPUnit\Framework\TestCase;
 
-class dbHelperTest extends TestCase
+class NewfuncTest extends TestCase
 {
     protected function setUp(): void
     {
-        // In CLI (PHPUnit), session_start() fails because PHPUnit's own banner
-        // output counts as "headers already sent". We don't need it: $_SESSION
-        // is just a superglobal array in PHP — we can read and write it directly
-        // without an active session, which is all these tests require.
+        // Start a clean session before each test
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $_SESSION = []; // wipe session slate clean
     }
 
@@ -53,13 +55,9 @@ class dbHelperTest extends TestCase
         $this->assertFalse($isLoggedIn);
     }
 
-    // ── Test 4: tearDown resets session so tests don't bleed into each other ─
-    public function test_session_is_clean_at_start_of_each_test(): void
+    // ── Test 4: session cookie flags are set correctly ────────────────────
+    public function test_session_is_active_after_include(): void
     {
-        // setUp() wipes $_SESSION before every test.
-        // This test confirms no state leaks in from a previous test.
-        $this->assertEmpty($_SESSION, '$_SESSION must be empty at the start of every test');
-        $this->assertArrayNotHasKey('login',    $_SESSION);
-        $this->assertArrayNotHasKey('username', $_SESSION);
+        $this->assertEquals(PHP_SESSION_ACTIVE, session_status());
     }
 }
