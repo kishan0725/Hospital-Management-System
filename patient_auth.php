@@ -3,66 +3,65 @@ session_start();
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
-	$inputPassword=$_POST['password2'];
-
-
-  mysqli_stmt_bind_param($stmt, "s", $email);
-  mysqli_stmt_execute($stmt);
-  $result = mysqli_stmt_get_result($stmt);
-  $row    = mysqli_fetch_assoc($result);
-  mysqli_stmt_close($stmt);
-
-
-
-	if($row && password_verify($inputPassword, $row['password']))
+	$password=$_POST['password2'];
+	$query="select * from patreg where email='$email' and password='$password';";
+	$result=mysqli_query($con,$query);
+	if(mysqli_num_rows($result)==1)
 	{
-    $_SESSION['pid']      = $row['pid'];
-    $_SESSION['username'] = $row['fname']." ".$row['lname'];
-    $_SESSION['fname']    = $row['fname'];
-    $_SESSION['lname']    = $row['lname'];
-    $_SESSION['gender']   = $row['gender'];
-    $_SESSION['contact']  = $row['contact'];
-    $_SESSION['email']    = $row['email'];
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+      $_SESSION['pid'] = $row['pid'];
+      $_SESSION['username'] = $row['fname']." ".$row['lname'];
+      $_SESSION['fname'] = $row['fname'];
+      $_SESSION['lname'] = $row['lname'];
+      $_SESSION['gender'] = $row['gender'];
+      $_SESSION['contact'] = $row['contact'];
+      $_SESSION['email'] = $row['email'];
+    }
 		header("Location:patient_dashboard.php");
-    exit();
 	}
   else {
     echo("<script>alert('Invalid Username or Password. Try Again!');
           window.location.href = 'patient_login.php';</script>");
+    // header("Location:error_patient_login.php");
   }
 		
 }
-
-// REMOVED: update_data payment handler.
-// Payment status updates are an admin-only operation and must only be handled
-// by admin_auth.php, which enforces an admin session check. Having this
-// handler here meant any logged-in patient could POST to patient_auth.php
-// and update the payment status of any record by contact number — no
-// ownership check, no role check, raw SQL injection.
-
-
-
-
-if (isset($_POST['doc_sub']))
+if(isset($_POST['update_data']))
 {
-    $doctor    = $_POST['doctor'];
-    $dpassword = $_POST['dpassword'];
-    $demail    = $_POST['demail'];
-    $docFees   = $_POST['docFees'];
+	$contact=$_POST['contact'];
+	$status=$_POST['status'];
+	$query="update appointmenttb set payment='$status' where contact='$contact';";
+	$result=mysqli_query($con,$query);
+	if($result)
+		header("Location:updated.php");
+}
 
-    // FIXED: hash before storing
-    $hashedPassword = password_hash($dpassword, PASSWORD_BCRYPT);
 
 
-    $stmt = mysqli_prepare($con,
-        "INSERT INTO doctb (username, password, email, docFees) VALUES (?, ?, ?, ?)"
-    );
-    mysqli_stmt_bind_param($stmt, "ssss", $doctor, $hashedPassword, $demail, $docFees);
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
 
-    if ($result)
-        header("Location: adddoc.php");
+// function display_docs()
+// {
+// 	global $con;
+// 	$query="select * from doctb";
+// 	$result=mysqli_query($con,$query);
+// 	while($row=mysqli_fetch_array($result))
+// 	{
+// 		$name=$row['name'];
+//     $cost=$row['docFees'];
+// 		echo '<option value="'.$name.'" data-price="' .$cost. '" >'.$name.'</option>';
+// 	}
+// }
+
+if(isset($_POST['doc_sub']))
+{
+	$doctor=$_POST['doctor'];
+  $dpassword=$_POST['dpassword'];
+  $demail=$_POST['demail'];
+  $docFees=$_POST['docFees'];
+	$query="insert into doctb(username,password,email,docFees)values('$doctor','$dpassword','$demail','$docFees')";
+	$result=mysqli_query($con,$query);
+	if($result)
+		header("Location:adddoc.php");
 }
 function display_admin_panel(){
 	echo '<!DOCTYPE html>
@@ -174,7 +173,15 @@ function display_admin_panel(){
       <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
         <div class="card">
           <div class="card-body">
-            <form class="form-group" method="post" action="admin_auth.php">
+            <form class="form-group" method="post" action="patient_auth.php">
+              <input type="text" name="contact" class="form-control" placeholder="enter contact"><br>
+              <select name="status" class="form-control">
+               <option value="" disabled selected>Select Payment Status to update</option>
+                <option value="paid">paid</option>
+                <option value="pay later">pay later</option>
+              </select><br><hr>
+              <input type="submit" value="update" name="update_data" class="btn btn-primary">
+            </form>
           </div>
         </div><br><br>
       </div>

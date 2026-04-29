@@ -3,11 +3,6 @@
 include('doctor_auth.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
 $doctor = $_SESSION['dname'];
-
-// Shorthand escape helper — used on every DB value before it touches HTML
-function escape(string $v): string {
-    return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
-}
 if(isset($_GET['cancel']))
   {
     $appointmentID = $_GET['ID'];
@@ -28,26 +23,6 @@ if(isset($_GET['cancel']))
         echo "<script>alert('Cancellation failed: appointment not found.');</script>";
     }
   }
-
-  // if(isset($_GET['prescribe'])){
-    
-  //   $pid = $_GET['pid'];
-  //   $ID = $_GET['ID'];
-  //   $appdate = $_GET['appdate'];
-  //   $apptime = $_GET['apptime'];
-  //   $disease = $_GET['disease'];
-  //   $allergy = $_GET['allergy'];
-  //   $prescription = $_GET['prescription'];
-  //   $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$doctor',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
-  //   if($query)
-  //   {
-  //     echo "<script>alert('Prescribed successfully!');</script>";
-  //   }
-  //   else{
-  //     echo "<script>alert('Unable to process your request. Try again!');</script>";
-  //   }
-  // }
-
 
 ?>
 <html lang="en">
@@ -204,15 +179,15 @@ if(isset($_GET['cancel']))
                     while ($row = mysqli_fetch_array($result)){
                       ?>
                       <tr>
-                      <td><?php echo escape((string)$row['pid']);?></td>
-                        <td><?php echo escape((string)$row['ID']);?></td>
-                        <td><?php echo escape($row['fname']);?></td>
-                        <td><?php echo escape($row['lname']);?></td>
-                        <td><?php echo escape($row['gender']);?></td>
-                        <td><?php echo escape($row['email']);?></td>
-                        <td><?php echo escape($row['contact']);?></td>
-                        <td><?php echo escape($row['appdate']);?></td>
-                        <td><?php echo escape($row['apptime']);?></td>
+                      <td><?php echo $row['pid'];?></td>
+                        <td><?php echo $row['ID'];?></td>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['gender'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                        <td><?php echo $row['contact'];?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
                         <td>
                     <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                     {
@@ -234,7 +209,7 @@ if(isset($_GET['cancel']))
                         { ?>
 
 													
-                        <a href="doctor_dashboard.php?ID=<?php echo escape((string)$row['ID'])?>&cancel=update" 
+	                        <a href="doctor_dashboard.php?ID=<?php echo $row['ID']?>&cancel=update" 
                               onClick="return confirm('Are you sure you want to cancel this appointment ?')"
                               title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
 	                        <?php } else {
@@ -249,7 +224,7 @@ if(isset($_GET['cancel']))
                         <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                         { ?>
 
-                        <a href="prescription_form.php?pid=<?php echo escape((string)$row['pid'])?>&ID=<?php echo escape((string)$row['ID'])?>&fname=<?php echo escape($row['fname'])?>&lname=<?php echo escape($row['lname'])?>&appdate=<?php echo escape($row['appdate'])?>&apptime=<?php echo escape($row['apptime'])?>"
+                        <a href="prescription_form.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
                         tooltip-placement="top" tooltip="Remove" title="prescribe">
                         <button class="btn btn-success">Prescibe</button></a>
                         <?php } else {
@@ -303,16 +278,16 @@ if(isset($_GET['cancel']))
                     while ($row = mysqli_fetch_array($result)){
                   ?>
                       <tr>
-                        <td><?php echo escape((string)$row['pid']);?></td>
-                        <td><?php echo escape($row['fname']);?></td>
-                        <td><?php echo escape($row['lname']);?></td>
-                        <td><?php echo escape((string)$row['ID']);?></td>
+                        <td><?php echo $row['pid'];?></td>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['ID'];?></td>
                         
-                        <td><?php echo escape($row['appdate']);?></td>
-                        <td><?php echo escape($row['apptime']);?></td>
-                        <td><?php echo escape($row['disease']);?></td>
-                        <td><?php echo escape($row['allergy']);?></td>
-                        <td><?php echo escape($row['prescription']);?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
+                        <td><?php echo $row['disease'];?></td>
+                        <td><?php echo $row['allergy'];?></td>
+                        <td><?php echo $row['prescription'];?></td>
                     
                       </tr>
                     <?php }
@@ -355,14 +330,14 @@ if(isset($_GET['cancel']))
                       #$contact = $row['contact'];
                   ?>
                       <tr>
-                        <td><?php echo escape($row['fname']);?></td>
-                        <td><?php echo escape($row['lname']);?></td>
-                        <td><?php echo escape($row['email']);?></td>
-                        <td><?php echo escape($row['contact']);?></td>
-                        <td><?php echo escape($row['doctor']);?></td>
-                        <td><?php echo escape((string)$row['docFees']);?></td>
-                        <td><?php echo escape($row['appdate']);?></td>
-                        <td><?php echo escape($row['apptime']);?></td>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                        <td><?php echo $row['contact'];?></td>
+                        <td><?php echo $row['doctor'];?></td>
+                        <td><?php echo $row['docFees'];?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
                       </tr>
                     <?php } ?>
                 </tbody>

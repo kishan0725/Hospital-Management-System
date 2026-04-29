@@ -2,55 +2,36 @@
 <?php 
 $con=mysqli_connect("localhost","root","","myhmsdb");
 
-// Shorthand escape helper — every DB value passes through this before output
-function escape(string $v): string {
-    return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
+include('newpatient_auth.php');
+
+if(isset($_POST['docsub']))
+{
+  $doctor=$_POST['doctor'];
+  $dpassword=$_POST['dpassword'];
+  $demail=$_POST['demail'];
+  $spec=$_POST['special'];
+  $docFees=$_POST['docFees'];
+  $query="insert into doctb(username,password,email,spec,docFees)values('$doctor','$dpassword','$demail','$spec','$docFees')";
+  $result=mysqli_query($con,$query);
+  if($result)
+    {
+      echo "<script>alert('Doctor added successfully!');</script>";
+  }
 }
 
 
-include('admin_auth.php');
-
-if (isset($_POST['docsub']))
+if(isset($_POST['docsub1']))
 {
-    $doctor   = $_POST['doctor'];
-    $dpassword = $_POST['dpassword'];
-    $demail   = $_POST['demail'];
-    $spec     = $_POST['special'];
-    $docFees  = $_POST['docFees'];
-
-    // FIXED: Hash the password before storing it.
-    // Plain text in the DB means anyone who reads the DB gets every doctor's password.
-    $hashedPassword = password_hash($dpassword, PASSWORD_BCRYPT);
-
-    // FIXED: Prepared statement — no raw POST data in the SQL string.
-    $stmt = mysqli_prepare($con,
-        "INSERT INTO doctb (username, password, email, spec, docFees) VALUES (?, ?, ?, ?, ?)"
-    );
-    mysqli_stmt_bind_param($stmt, "sssss", $doctor, $hashedPassword, $demail, $spec, $docFees);
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    if ($result) {
-        echo "<script>alert('Doctor added successfully!');</script>";
-    }
-}
-
-
-if (isset($_POST['docsub1']))
-{
-    $demail = $_POST['demail'];
-
-    // FIXED: Prepared statement — email can't be used to inject SQL.
-    $stmt = mysqli_prepare($con, "DELETE FROM doctb WHERE email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $demail);
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    if ($result) {
-        echo "<script>alert('Doctor removed successfully!');</script>";
-    } else {
-        echo "<script>alert('Unable to delete!');</script>";
-    }
+  $demail=$_POST['demail'];
+  $query="delete from doctb where email='$demail';";
+  $result=mysqli_query($con,$query);
+  if($result)
+    {
+      echo "<script>alert('Doctor removed successfully!');</script>";
+  }
+  else{
+    echo "<script>alert('Unable to delete!');</script>";
+  }
 }
 
 
@@ -478,17 +459,17 @@ if (isset($_POST['docsub1']))
                     while ($row = mysqli_fetch_array($result)){
                   ?>
                       <tr>
-                        <td><?php echo escape((string)$row['ID']);?></td>
-                        <td><?php echo escape((string)$row['pid']);?></td>
-                        <td><?php echo escape($row['fname']);?></td>
-                        <td><?php echo escape($row['lname']);?></td>
-                        <td><?php echo escape($row['gender']);?></td>
-                        <td><?php echo escape($row['email']);?></td>
-                        <td><?php echo escape($row['contact']);?></td>
-                        <td><?php echo escape($row['doctor']);?></td>
-                        <td><?php echo escape((string)$row['docFees']);?></td>
-                        <td><?php echo escape($row['appdate']);?></td>
-                        <td><?php echo escape($row['apptime']);?></td>
+                        <td><?php echo $row['ID'];?></td>
+                        <td><?php echo $row['pid'];?></td>
+                        <td><?php echo $row['fname'];?></td>
+                        <td><?php echo $row['lname'];?></td>
+                        <td><?php echo $row['gender'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                        <td><?php echo $row['contact'];?></td>
+                        <td><?php echo $row['doctor'];?></td>
+                        <td><?php echo $row['docFees'];?></td>
+                        <td><?php echo $row['appdate'];?></td>
+                        <td><?php echo $row['apptime'];?></td>
                         <td>
                     <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                     {
@@ -593,10 +574,10 @@ if (isset($_POST['docsub1']))
                       #$contact = $row['contact'];
                   ?>
                       <tr>
-                        <td><?php echo escape($row['name']);?></td>
-                        <td><?php echo escape($row['email']);?></td>
-                        <td><?php echo escape($row['contact']);?></td>
-                        <td><?php echo escape($row['message']);?></td>
+                        <td><?php echo $row['name'];?></td>
+                        <td><?php echo $row['email'];?></td>
+                        <td><?php echo $row['contact'];?></td>
+                        <td><?php echo $row['message'];?></td>
                       </tr>
                     <?php } ?>
                 </tbody>
@@ -610,6 +591,8 @@ if (isset($_POST['docsub1']))
   </div>
 </div>
    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
