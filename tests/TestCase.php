@@ -23,7 +23,7 @@ abstract class TestCase extends PHPUnitTestCase
 
         ob_start();
         try {
-            require PROJECT_ROOT . '/' . ltrim($relativePath, '/');
+           require \PROJECT_ROOT . '/' . ltrim($relativePath, '/');
         } finally {
             $output = ob_get_clean();
         }
