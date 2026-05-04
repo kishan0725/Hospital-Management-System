@@ -1,5 +1,5 @@
 <?php
-//  shared base class.
+// shared base class.
 
 namespace Hospital\Tests;
 
@@ -21,9 +21,11 @@ abstract class TestCase extends PHPUnitTestCase
         $_GET     = $get;
         $_SESSION = $session;
 
+        $projectRoot = dirname(__DIR__);
+
         ob_start();
         try {
-           require \PROJECT_ROOT . '/' . ltrim($relativePath, '/');
+            require $projectRoot . '/' . ltrim($relativePath, '/');
         } finally {
             $output = ob_get_clean();
         }
