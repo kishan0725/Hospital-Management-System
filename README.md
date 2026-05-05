@@ -6,6 +6,8 @@ Video Demo : [Hospital Management System - Youtube](https://www.youtube.com/watc
 
 Live Demo : [Hospital Management System - 000webhost by Kishan](https://kishan0725.000webhostapp.com)
 
+
+
 ## Need to work on:
 
 1. Ability to accept the appointment by the doctor to acknowledge the patient that their appointment has been approved.
@@ -41,7 +43,17 @@ Live Demo : [Hospital Management System - 000webhost by Kishan](https://kishan07
 7. Import the file 'myhmsdb.sql' inside your newly created database and click ok.
 8. Open a new tab and type 'localhost/foldername' in the url of your browser
 9. Hurray! That's it!
-    
+10. Make sure to run these steps in order to hash the password in the db `
+
+/Applications/XAMPP/xamppfiles/bin/mysqldump -u root myhmsdb > ~/myhmsdb_backup.sql
+
+/Applications/XAMPP/xamppfiles/bin/php widen_password_columns.php
+
+/Applications/XAMPP/xamppfiles/bin/php widen_password_columns.php --apply
+
+/Applications/XAMPP/xamppfiles/bin/php hash_existing_passwords.php --apply`  
+
+
 ### SOFTWARES USED
   - XAMPP was installed on the Ubuntu 19.04 machine and APACHE2 Server and MySQL were initialized. And, files were built inside opt/lampp/htdocs/myhmsp
   - Sublime Text 3.2 was used as a text editor.

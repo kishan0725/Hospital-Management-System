@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'global-hospital/hms',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '777fda46b77a820977a5ba616283dbfbc40bf7e1',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'global-hospital/hms' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '777fda46b77a820977a5ba616283dbfbc40bf7e1',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
