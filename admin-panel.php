@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <?php 
-include('patient_auth.php');  
-include('newpatient_auth.php');
-require_once('newfunc.php'); // XSS FIX: provides h() escaping helper
+include('func.php');  
+include('newfunc.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
 
 
@@ -68,30 +67,13 @@ if(isset($_POST['app-submit']))
 }
 
 if(isset($_GET['cancel']))
-{
-    $appointmentID = $_GET['ID'];
-    $pid           = $_SESSION['pid'];
-
-    // FIXED: IDOR — the WHERE clause now requires BOTH the appointment ID
-    // AND the session patient's pid to match. A patient supplying someone
-    // else's appointment ID will match 0 rows and cancel nothing.
-    // FIXED: prepared statement — no raw GET input in the query string.
-    $stmt = mysqli_prepare($con,
-        "UPDATE appointmenttb SET userStatus = '0'
-         WHERE ID = ? AND pid = ?"
-    );
-    mysqli_stmt_bind_param($stmt, "si", $appointmentID, $pid);
-    mysqli_stmt_execute($stmt);
-    $affected = mysqli_stmt_affected_rows($stmt);
-    mysqli_stmt_close($stmt);
-
-    if($affected > 0) {
-        echo "<script>alert('Your appointment successfully cancelled');</script>";
-    } else {
-        // Either the ID doesn't exist or it belongs to a different patient
-        echo "<script>alert('Cancellation failed: appointment not found.');</script>";
+  {
+    $query=mysqli_query($con,"update appointmenttb set userStatus='0' where ID = '".$_GET['ID']."'");
+    if($query)
+    {
+      echo "<script>alert('Your appointment successfully cancelled');</script>";
     }
-}
+  }
 
 
 
@@ -225,7 +207,7 @@ function get_specs(){
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
-        <a class="nav-link" href="patient_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+        <a class="nav-link" href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
       </li>
        <li class="nav-item">
         <a class="nav-link" href="#"></a>
@@ -323,7 +305,7 @@ function get_specs(){
           <div class="card">
             <div class="card-body">
               <center><h4>Create an appointment</h4></center><br>
-              <form class="form-group" method="post" action="patient_dashboard.php">
+              <form class="form-group" method="post" action="admin-panel.php">
                 <div class="row">
                   
                   <!-- <?php
@@ -524,7 +506,7 @@ function get_specs(){
                         { ?>
 
 													
-	                        <a href="patient_dashboard.php?ID=<?php echo h($row['ID'])?>&cancel=update" 
+	                        <a href="admin-panel.php?ID=<?php echo h($row['ID'])?>&cancel=update" 
                               onClick="return confirm('Are you sure you want to cancel this appointment ?')"
                               title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
 	                        <?php } else {
@@ -584,12 +566,12 @@ function get_specs(){
                         <td><?php echo h($row['prescription']);?></td>
                         <td>
                           <form method="get">
-                          <!-- <a href="patient_dashboard.php?ID=" 
+                          <!-- <a href="admin-panel.php?ID=" 
                               onClick=""
                               title="Pay Bill" tooltip-placement="top" tooltip="Remove"><button class="btn btn-success">Pay</button>
                               </a></td> -->
 
-                              <a href="patient_dashboard.php?ID=<?php echo h($row['ID'])?>">
+                              <a href="admin-panel.php?ID=<?php echo h($row['ID'])?>">
                               <input type ="hidden" name="ID" value="<?php echo h($row['ID'])?>"/>
                               <input type = "submit" onclick="alert('Bill Paid Successfully');" name ="generate_bill" class = "btn btn-success" value="Pay Bill"/>
                               </a>
@@ -610,7 +592,7 @@ function get_specs(){
 
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="patient_auth.php">
+        <form class="form-group" method="post" action="func.php">
           <label>Doctors name: </label>
           <input type="text" name="name" placeholder="Enter doctors name" class="form-control">
           <br>

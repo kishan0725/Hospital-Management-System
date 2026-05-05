@@ -35,7 +35,8 @@
 									<?php $query=mysqli_query($con,"select fullName from users where id='".$_SESSION['id']."'");
 while($row=mysqli_fetch_array($query))
 {
-	echo $row['fullName'];
+	// XSS FIX: escape DB value before echoing into HTML
+	echo h($row['fullName']);
 }
 									?> <i class="ti-angle-down"></i></i></span>
 								</a>

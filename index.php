@@ -59,7 +59,7 @@ function checklen()
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item" style="margin-right: 40px;">
-            <a class="nav-link js-scroll-trigger" href="register.php" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>HOME</h6></a>
+            <a class="nav-link js-scroll-trigger" href="index.php" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>HOME</h6></a>
           </li>
   
           <li class="nav-item" style="margin-right: 40px;">
@@ -98,7 +98,7 @@ function checklen()
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <h3 class="register-heading">Register as Patient</h3>
-                                <form method="post" action="patient_register_handler.php">
+                                <form method="post" action="func2.php">
                                 <div class="row register-form">
                                     
                                     <div class="col-md-6">
@@ -123,7 +123,7 @@ function checklen()
                                                     <span>Female </span> 
                                                 </label>
                                             </div>
-                                            <a href="patient_login.php">Already have an account?</a>
+                                            <a href="index1.php">Already have an account?</a>
                                         </div>
                                     </div>
                                 
@@ -148,7 +148,7 @@ function checklen()
                             
                             <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <h3  class="register-heading">Login as Doctor</h3>
-                                <form method="post" action="doctor_auth.php">
+                                <form method="post" action="func1.php">
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -169,7 +169,7 @@ function checklen()
 
                             <div class="tab-pane fade show" id="admin" role="tabpanel" aria-labelledby="profile-tab">
                                 <h3  class="register-heading">Login as Admin</h3>
-                                <form method="post" action="admin_auth.php">
+                                <form method="post" action="func3.php">
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">

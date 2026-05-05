@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-include('doctor_auth.php');
+include('func1.php');
 require_once('newfunc.php'); // XSS FIX: provides h() escaping helper
 $pid='';
 $ID='';
@@ -95,11 +95,11 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
-        <a class="nav-link" href="doctor_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+        <a class="nav-link" href="logout1.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
         
       </li>
        <li class="nav-item">
-       <a class="nav-link" href="doctor_dashboard.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Back</a>
+       <a class="nav-link" href="doctor-panel.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Back</a>
       </li>
     </ul>
   </div>
@@ -117,7 +117,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
    </h3>
 
    <div class="tab-pane" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
-        <form class="form-group" name="prescribeform" method="post" action="prescription_form.php">
+        <form class="form-group" name="prescribeform" method="post" action="prescribe.php">
         
           <div class="row">
                   <div class="col-md-4"><label>Disease:</label></div>
