@@ -9,12 +9,12 @@ if(isset($_POST['adsub'])){
 	if(mysqli_num_rows($result)==1)
 	{
 		$_SESSION['username']=$username;
-		header("Location:receptionist_dashboard.php");
+		header("Location:admin-panel1.php");
 	}
 	else
-		// header("Location:error_admin_login.php");
+		// header("Location:error2.php");
 		echo("<script>alert('Invalid Username or Password. Try Again!');
-          window.location.href = 'register.php';</script>");
+          window.location.href = 'index.php';</script>");
 }
 if(isset($_POST['update_data']))
 {

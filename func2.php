@@ -1,64 +1,72 @@
 <?php
 session_start();
 $con=mysqli_connect("localhost","root","","myhmsdb");
-if(isset($_POST['docsub1'])){
-	$dname=$_POST['username3'];
-	$dpass=$_POST['password3'];
-	$query="select * from doctb where username='$dname' and password='$dpass';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
-	{
-    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-    
-		      $_SESSION['dname']=$row['username'];
-      
+if(isset($_POST['patsub1'])){
+	$fname=$_POST['fname'];
+  $lname=$_POST['lname'];
+  $gender=$_POST['gender'];
+  $email=$_POST['email'];
+  $contact=$_POST['contact'];
+	$password=$_POST['password'];
+  $cpassword=$_POST['cpassword'];
+  if($password==$cpassword){
+  	$query="insert into patreg(fname,lname,gender,email,contact,password,cpassword) values ('$fname','$lname','$gender','$email','$contact','$password','$cpassword');";
+    $result=mysqli_query($con,$query);
+    if($result){
+        $_SESSION['username'] = $_POST['fname']." ".$_POST['lname'];
+        $_SESSION['fname'] = $_POST['fname'];
+        $_SESSION['lname'] = $_POST['lname'];
+        $_SESSION['gender'] = $_POST['gender'];
+        $_SESSION['contact'] = $_POST['contact'];
+        $_SESSION['email'] = $_POST['email'];
+        header("Location:admin-panel.php");
+    } 
+
+    $query1 = "select * from patreg;";
+    $result1 = mysqli_query($con,$query1);
+    if($result1){
+      $_SESSION['pid'] = $row['pid'];
     }
-		header("Location:doctor_dashboard.php");
-	}
-	else{
-    // header("Location:error_admin_login.php");
-    echo("<script>alert('Invalid Username or Password. Try Again!');
-          window.location.href = 'register.php';</script>");
+
+  }
+  else{
+    header("Location:error1.php");
   }
 }
-
-
-// if(isset($_POST['update_data']))  
-//   $result=mysqli_query($con,$query);
-//   if(mysqli_num_rows($result)==1)
-//   {
-//     $_SESSION['username']=$username;
-//     header("Location:patient_dashboard.php");
-//   }
-//   else
-//     header("Location:error_admin_login.php");
-  
-
-
-
-function display_docs()
+if(isset($_POST['update_data']))
 {
-	global $con;
-	$query="select * from doctb";
+	$contact=$_POST['contact'];
+	$status=$_POST['status'];
+	$query="update appointmenttb set payment='$status' where contact='$contact';";
 	$result=mysqli_query($con,$query);
-	while($row=mysqli_fetch_array($result))
-	{
-		$name=$row['name'];
-		# echo'<option value="" disabled selected>Select Doctor</option>';
-		echo '<option value="'.$name.'">'.$name.'</option>';
-	}
+	if($result)
+		header("Location:updated.php");
 }
 
-// if(isset($_POST['doc_sub']))
+
+
+
+// function display_docs()
 // {
-// 	$name=$_POST['name'];
-// 	$query="insert into doctb(name)values('$name')";
+// 	global $con;
+// 	$query="select * from doctb";
 // 	$result=mysqli_query($con,$query);
-// 	if($result)
-// 		header("Location:adddoc.php");
+// 	while($row=mysqli_fetch_array($result))
+// 	{
+// 		$name=$row['name'];
+// 		# echo'<option value="" disabled selected>Select Doctor</option>';
+// 		echo '<option value="'.$name.'">'.$name.'</option>';
+// 	}
 // }
 
-
+if(isset($_POST['doc_sub']))
+{
+	$name=$_POST['name'];
+	$query="insert into doctb(name)values('$name')";
+	$result=mysqli_query($con,$query);
+	if($result)
+		header("Location:adddoc.php");
+}
 function display_admin_panel(){
 	echo '<!DOCTYPE html>
 <html lang="en">
@@ -75,10 +83,11 @@ function display_admin_panel(){
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
-        <a class="nav-link" href="patient_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+        <a class="nav-link" href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
       </li>
        <li class="nav-item">
         <a class="nav-link" href="#"></a>
@@ -168,7 +177,7 @@ function display_admin_panel(){
       <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
         <div class="card">
           <div class="card-body">
-            <form class="form-group" method="post" action="patient_auth.php">
+            <form class="form-group" method="post" action="func.php">
               <input type="text" name="contact" class="form-control" placeholder="enter contact"><br>
               <select name="status" class="form-control">
                <option value="" disabled selected>Select Payment Status to update</option>
@@ -182,7 +191,7 @@ function display_admin_panel(){
       </div>
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="patient_auth.php">
+        <form class="form-group" method="post" action="func.php">
           <label>Doctors name: </label>
           <input type="text" name="name" placeholder="enter doctors name" class="form-control">
           <br>

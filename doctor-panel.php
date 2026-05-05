@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <?php 
-include('doctor_auth.php');
+include('func1.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
 $doctor = $_SESSION['dname'];
 if(isset($_GET['cancel']))
   {
-    $appointmentID = $_GET['ID'];
-    $dname         = $_SESSION['dname'];
-
-    $stmt = mysqli_prepare($con,
-        "UPDATE appointmenttb SET doctorStatus = '0'
-         WHERE ID = ? AND doctor = ?"
-    );
-    mysqli_stmt_bind_param($stmt, "ss", $appointmentID, $dname);
-    mysqli_stmt_execute($stmt);
-    $affected = mysqli_stmt_affected_rows($stmt);
-    mysqli_stmt_close($stmt);
-
-    if($affected > 0) {
-        echo "<script>alert('Your appointment successfully cancelled');</script>";
-    } else {
-        echo "<script>alert('Cancellation failed: appointment not found.');</script>";
+    $query=mysqli_query($con,"update appointmenttb set doctorStatus='0' where ID = '".$_GET['ID']."'");
+    if($query)
+    {
+      echo "<script>alert('Your appointment successfully cancelled');</script>";
     }
   }
+
+  // if(isset($_GET['prescribe'])){
+    
+  //   $pid = $_GET['pid'];
+  //   $ID = $_GET['ID'];
+  //   $appdate = $_GET['appdate'];
+  //   $apptime = $_GET['apptime'];
+  //   $disease = $_GET['disease'];
+  //   $allergy = $_GET['allergy'];
+  //   $prescription = $_GET['prescription'];
+  //   $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$doctor',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
+  //   if($query)
+  //   {
+  //     echo "<script>alert('Prescribed successfully!');</script>";
+  //   }
+  //   else{
+  //     echo "<script>alert('Unable to process your request. Try again!');</script>";
+  //   }
+  // }
+
 
 ?>
 <html lang="en">
@@ -74,7 +82,7 @@ if(isset($_GET['cancel']))
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
-        <a class="nav-link" href="doctor_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+        <a class="nav-link" href="logout1.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
       </li>
        <li class="nav-item">
         <a class="nav-link" href="#"></a>
@@ -209,7 +217,7 @@ if(isset($_GET['cancel']))
                         { ?>
 
 													
-	                        <a href="doctor_dashboard.php?ID=<?php echo h($row['ID'])?>&cancel=update" 
+	                        <a href="doctor-panel.php?ID=<?php echo h($row['ID'])?>&cancel=update" 
                               onClick="return confirm('Are you sure you want to cancel this appointment ?')"
                               title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
 	                        <?php } else {
@@ -224,7 +232,7 @@ if(isset($_GET['cancel']))
                         <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                         { ?>
 
-                        <a href="prescription_form.php?pid=<?php echo h($row['pid'])?>&ID=<?php echo h($row['ID'])?>&fname=<?php echo h($row['fname'])?>&lname=<?php echo h($row['lname'])?>&appdate=<?php echo h($row['appdate'])?>&apptime=<?php echo h($row['apptime'])?>"
+                        <a href="prescribe.php?pid=<?php echo h($row['pid'])?>&ID=<?php echo h($row['ID'])?>&fname=<?php echo h($row['fname'])?>&lname=<?php echo h($row['lname'])?>&appdate=<?php echo h($row['appdate'])?>&apptime=<?php echo h($row['apptime'])?>"
                         tooltip-placement="top" tooltip="Remove" title="prescribe">
                         <button class="btn btn-success">Prescibe</button></a>
                         <?php } else {
@@ -351,7 +359,7 @@ if(isset($_GET['cancel']))
 
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="receptionist_dashboard.php">
+        <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
                   <div class="col-md-4"><label>Doctor Name:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control" name="doctor" required></div><br><br>

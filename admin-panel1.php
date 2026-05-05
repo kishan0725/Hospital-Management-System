@@ -2,8 +2,7 @@
 <?php 
 $con=mysqli_connect("localhost","root","","myhmsdb");
 
-include('newpatient_auth.php');
-require_once('newfunc.php'); // XSS FIX: provides h() escaping helper
+include('newfunc.php');
 
 if(isset($_POST['docsub']))
 {
@@ -113,7 +112,7 @@ if(isset($_POST['docsub1']))
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
      <ul class="navbar-nav mr-auto">
        <li class="nav-item">
-        <a class="nav-link" href="doctor_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+        <a class="nav-link" href="logout1.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
       </li>
        <li class="nav-item">
         <a class="nav-link" href="#"></a>
@@ -255,7 +254,7 @@ if(isset($_POST['docsub1']))
               
 
               <div class="col-md-8">
-      <form class="form-group" action="doctor_search.php" method="post">
+      <form class="form-group" action="doctorsearch.php" method="post">
         <div class="row">
         <div class="col-md-10"><input type="text" name="doctor_contact" placeholder="Enter Email ID" class = "form-control"></div>
         <div class="col-md-2"><input type="submit" name="doctor_search_submit" class="btn btn-primary" value="Search"></div></div>
@@ -284,13 +283,13 @@ if(isset($_POST['docsub1']))
                       $password = $row['password'];
                       $docFees = $row['docFees'];
                       
-                      echo "<tr>
-                        <td>$username</td>
-                        <td>$spec</td>
-                        <td>$email</td>
-                        <td>$password</td>
-                        <td>$docFees</td>
-                      </tr>";
+                      echo '<tr>
+                        <td>'.h($username).'</td>
+                        <td>'.h($spec).'</td>
+                        <td>'.h($email).'</td>
+                        <td>'.h($password).'</td>
+                        <td>'.h($docFees).'</td>
+                      </tr>';
                     }
 
                   ?>
@@ -303,7 +302,7 @@ if(isset($_POST['docsub1']))
     <div class="tab-pane fade" id="list-pat" role="tabpanel" aria-labelledby="list-pat-list">
 
        <div class="col-md-8">
-      <form class="form-group" action="patient_search.php" method="post">
+      <form class="form-group" action="patientsearch.php" method="post">
         <div class="row">
         <div class="col-md-10"><input type="text" name="patient_contact" placeholder="Enter Contact" class = "form-control"></div>
         <div class="col-md-2"><input type="submit" name="patient_search_submit" class="btn btn-primary" value="Search"></div></div>
@@ -337,15 +336,15 @@ if(isset($_POST['docsub1']))
                       $contact = $row['contact'];
                       $password = $row['password'];
                       
-                      echo "<tr>
-                        <td>$pid</td>
-                        <td>$fname</td>
-                        <td>$lname</td>
-                        <td>$gender</td>
-                        <td>$email</td>
-                        <td>$contact</td>
-                        <td>$password</td>
-                      </tr>";
+                      echo '<tr>
+                        <td>'.h($pid).'</td>
+                        <td>'.h($fname).'</td>
+                        <td>'.h($lname).'</td>
+                        <td>'.h($gender).'</td>
+                        <td>'.h($email).'</td>
+                        <td>'.h($contact).'</td>
+                        <td>'.h($password).'</td>
+                      </tr>';
                     }
 
                   ?>
@@ -397,18 +396,18 @@ if(isset($_POST['docsub1']))
                       $pres = $row['prescription'];
 
                       
-                      echo "<tr>
-                        <td>$doctor</td>
-                        <td>$pid</td>
-                        <td>$ID</td>
-                        <td>$fname</td>
-                        <td>$lname</td>
-                        <td>$appdate</td>
-                        <td>$apptime</td>
-                        <td>$disease</td>
-                        <td>$allergy</td>
-                        <td>$pres</td>
-                      </tr>";
+                      echo '<tr>
+                        <td>'.h($doctor).'</td>
+                        <td>'.h($pid).'</td>
+                        <td>'.h($ID).'</td>
+                        <td>'.h($fname).'</td>
+                        <td>'.h($lname).'</td>
+                        <td>'.h($appdate).'</td>
+                        <td>'.h($apptime).'</td>
+                        <td>'.h($disease).'</td>
+                        <td>'.h($allergy).'</td>
+                        <td>'.h($pres).'</td>
+                      </tr>';
                     }
 
                   ?>
@@ -425,7 +424,7 @@ if(isset($_POST['docsub1']))
       <div class="tab-pane fade" id="list-app" role="tabpanel" aria-labelledby="list-pat-list">
 
          <div class="col-md-8">
-      <form class="form-group" action="appointment_search.php" method="post">
+      <form class="form-group" action="appsearch.php" method="post">
         <div class="row">
         <div class="col-md-10"><input type="text" name="app_contact" placeholder="Enter Contact" class = "form-control"></div>
         <div class="col-md-2"><input type="submit" name="app_search_submit" class="btn btn-primary" value="Search"></div></div>
@@ -496,7 +495,7 @@ if(isset($_POST['docsub1']))
 <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
 
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="receptionist_dashboard.php">
+        <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
                   <div class="col-md-4"><label>Doctor Name:</label></div>
                   <div class="col-md-8"><input type="text" class="form-control" name="doctor" onkeydown="return alphaOnly(event);" required></div><br><br>
@@ -526,7 +525,7 @@ if(isset($_POST['docsub1']))
       </div>
 
       <div class="tab-pane fade" id="list-settings1" role="tabpanel" aria-labelledby="list-settings1-list">
-        <form class="form-group" method="post" action="receptionist_dashboard.php">
+        <form class="form-group" method="post" action="admin-panel1.php">
           <div class="row">
           
                   <div class="col-md-4"><label>Email ID:</label></div>
@@ -543,7 +542,7 @@ if(isset($_POST['docsub1']))
        <div class="tab-pane fade" id="list-mes" role="tabpanel" aria-labelledby="list-mes-list">
 
          <div class="col-md-8">
-      <form class="form-group" action="message_search.php" method="post">
+      <form class="form-group" action="messearch.php" method="post">
         <div class="row">
         <div class="col-md-10"><input type="text" name="mes_contact" placeholder="Enter Contact" class = "form-control"></div>
         <div class="col-md-2"><input type="submit" name="mes_search_submit" class="btn btn-primary" value="Search"></div></div>
