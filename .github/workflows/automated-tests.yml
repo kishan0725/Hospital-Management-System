@@ -2,7 +2,7 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "josias-DEV" ]
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
