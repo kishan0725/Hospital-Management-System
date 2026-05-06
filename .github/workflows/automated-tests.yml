@@ -13,23 +13,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: myhmsdb
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
 
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-php-
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Import database schema
+        run: mysql -h 127.0.0.1 -u root myhmsdb < myhmsdb.sql
+
       - name: Run test suite
-        run: composer run-script test
+        run: "@php vendor/bin/phpunit --testdox"
