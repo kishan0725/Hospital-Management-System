@@ -51,4 +51,4 @@ jobs:
         run: mysql -h 127.0.0.1 -u root myhmsdb < myhmsdb.sql
 
       - name: Run test suite
-        run: "@php vendor/bin/phpunit --testdox"
+        run: php vendor/bin/phpunit --testdox
