@@ -14,23 +14,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: ""
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: myhmsdb
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Start pre-installed MySQL
+        run: |
+          sudo systemctl start mysql
+          mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb;"
+          mysql -u root myhmsdb < myhmsdb.sql
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
+          mysql -u root myhmsdb_test < myhmsdb.sql
 
       - name: Validate composer.json
         run: composer validate --no-check-lock
@@ -46,20 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-
-      - name: Set up main database
-        run: mysql -h 127.0.0.1 -u root myhmsdb < myhmsdb.sql
-
-      - name: Set up test database
-        run: |
-          mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
-          mysql -h 127.0.0.1 -u root myhmsdb_test < myhmsdb.sql
-
-      - name: Configure PHP to use TCP instead of Unix socket
-        run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | cut -d: -f2 | xargs)
-          echo "mysqli.default_host=127.0.0.1" | sudo tee -a "$PHP_INI"
-          echo "mysqli.default_port=3306" | sudo tee -a "$PHP_INI"
 
       - name: Run test suite
         run: php vendor/bin/phpunit --testdox
