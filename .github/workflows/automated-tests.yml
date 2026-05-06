@@ -1,8 +1,15 @@
 on:
   push:
+<<<<<<< HEAD
     branches: [ "**" ]
   pull_request:
     branches: [ "**" ]
+=======
+    branches: [ "master", "josias-DEV" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+>>>>>>> origin/master
 
 permissions:
   contents: read
@@ -14,6 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+<<<<<<< HEAD
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -22,13 +30,26 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+=======
+      - name: Start pre-installed MySQL
+        run: |
+          sudo systemctl start mysql
+          mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb;"
+          mysql -u root myhmsdb < myhmsdb.sql
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
+          mysql -u root myhmsdb_test < myhmsdb.sql
+
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
+>>>>>>> origin/master
 
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-php-
 
@@ -62,4 +83,8 @@ jobs:
           SQL
 
       - name: Run test suite
+<<<<<<< HEAD
         run: php vendor/bin/phpunit
+=======
+        run: php vendor/bin/phpunit --testdox
+>>>>>>> origin/master

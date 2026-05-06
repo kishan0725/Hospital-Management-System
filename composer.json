@@ -8,5 +8,10 @@
         "psr-4": {
             "Hospital\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": [
+            "@php vendor/bin/phpunit --testdox"
+        ]
     }
 }
