@@ -9,4 +9,9 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <ini name="mysqli.default_host" value="127.0.0.1"/>
+        <ini name="mysqli.default_port" value="3306"/>
+        <ini name="mysqli.default_socket" value=""/>
+    </php>
 </phpunit>

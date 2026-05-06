@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class NewfuncTest extends TestCase
+class SearchTest extends TestCase
 {
     protected function setUp(): void
     {
