@@ -14,10 +14,10 @@ session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     http_response_code(403);
     header("Location: register.php");
-    exit();
+    return;
 }
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");

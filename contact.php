@@ -2,7 +2,7 @@
 // handles the public "contact us" form.
 
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");
@@ -15,9 +15,9 @@ if (isset($_POST['btnSubmit'])) {
     $message = $_POST['txtMsg']   ?? '';
 
     // Hard cap on message length to avoid abuse.
-    if (strlen($message) > 5000) {
+    if (strlen($message) > 200) {
         echo '<script>alert("Message too long."); window.location.href = "contact.html";</script>';
-        exit();
+        return;
     }
 
     $stmt = mysqli_prepare(
@@ -33,6 +33,5 @@ if (isset($_POST['btnSubmit'])) {
         echo 'alert("Message sent successfully!");';
         echo 'window.location.href = "contact.html";';
         echo '</script>';
-        exit();
     }
 }

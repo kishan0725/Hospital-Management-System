@@ -1,5 +1,5 @@
 <?php
-// admin_auth.php — handles receptionist/admin login and admin-only
+//  handles receptionist/admin login and admin-only
 
 session_set_cookie_params([
     'lifetime' => 0,
@@ -9,7 +9,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");
@@ -33,19 +33,20 @@ if (isset($_POST['adsub'])) {
         $_SESSION['role']           = 'admin';
         $_SESSION['admin_username'] = $row['username'];
         header("Location: receptionist_dashboard.php");
-        exit();
+        return;
     } else {
         echo "<script>alert('Invalid Username or Password. Try Again!');
               window.location.href = 'register.php';</script>";
-        exit();
+        return;
     }
 }
 
 
-if (isset($_POST['update_data'])) {
+if (isset($_POST["update_data"])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $contact = $_POST['contact'] ?? '';
@@ -58,7 +59,7 @@ if (isset($_POST['update_data'])) {
 
     if ($ok) {
         header("Location: updated.php");
-        exit();
+        return;
     }
 }
 
@@ -66,24 +67,24 @@ if (isset($_POST['update_data'])) {
 if (isset($_POST['doc_sub'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $name = $_POST['name'] ?? '';
 
-    $stmt = mysqli_prepare($con, "INSERT INTO doctb (name) VALUES (?)");
+    $stmt = mysqli_prepare($con, "INSERT INTO doctb (username) VALUES (?)");
     mysqli_stmt_bind_param($stmt, "s", $name);
     $ok = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
     if ($ok) {
         header("Location: adddoc.php");
-        exit();
+        return;
     }
 }
 
-// Kept for backward compat with the original file — pages that include
-// this file and call display_docs() will still get a dropdown.
+if (!function_exists("display_docs")) {
 function display_docs()
 {
     global $con;
@@ -94,4 +95,5 @@ function display_docs()
             echo '<option value="' . $name . '">' . $name . '</option>';
         }
     }
+}
 }
