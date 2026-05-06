@@ -59,7 +59,8 @@ CREATE TABLE `appointmenttb` (
   `appdate` date NOT NULL,
   `apptime` time NOT NULL,
   `userStatus` int(5) NOT NULL,
-  `doctorStatus` int(5) NOT NULL
+  `doctorStatus` int(5) NOT NULL,
+  `payment` varchar(20) NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -118,7 +119,7 @@ CREATE TABLE `doctb` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `spec` varchar(50) NOT NULL,
+  `spec` varchar(50) NOT NULL DEFAULT '',
   `docFees` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
