@@ -1,15 +1,11 @@
+name: PHP Composer
+
 on:
   push:
-<<<<<<< HEAD
     branches: [ "**" ]
   pull_request:
     branches: [ "**" ]
-=======
-    branches: [ "master", "josias-DEV" ]
-  pull_request:
-    branches: [ "master" ]
   workflow_dispatch:
->>>>>>> origin/master
 
 permissions:
   contents: read
@@ -21,16 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-<<<<<<< HEAD
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mysqli
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-=======
       - name: Start pre-installed MySQL
         run: |
           sudo systemctl start mysql
@@ -42,7 +28,6 @@ jobs:
 
       - name: Validate composer.json
         run: composer validate --no-check-lock
->>>>>>> origin/master
 
       - name: Cache Composer packages
         id: composer-cache
@@ -56,35 +41,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Install and start MariaDB
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mariadb-server
-          sudo systemctl start mariadb
-
-      - name: Prepare test database
-        run: |
-          sudo mariadb <<'SQL'
-          CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY '';
-          ALTER USER 'root'@'localhost' IDENTIFIED BY '';
-          GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' WITH GRANT OPTION;
-          GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-          FLUSH PRIVILEGES;
-          CREATE DATABASE IF NOT EXISTS myhmsdb_test;
-          SQL
-          mariadb -u root myhmsdb_test < myhmsdb.sql
-          mariadb -u root myhmsdb_test <<'SQL'
-          ALTER TABLE admintb MODIFY password VARCHAR(255) NOT NULL;
-          ALTER TABLE doctb MODIFY password VARCHAR(255) NOT NULL;
-          ALTER TABLE doctb MODIFY spec VARCHAR(50) NOT NULL DEFAULT '';
-          ALTER TABLE patreg MODIFY password VARCHAR(255) NOT NULL;
-          ALTER TABLE patreg MODIFY cpassword VARCHAR(255) NOT NULL;
-          ALTER TABLE appointmenttb ADD COLUMN IF NOT EXISTS payment VARCHAR(20) NOT NULL DEFAULT 'pending';
-          SQL
-
       - name: Run test suite
-<<<<<<< HEAD
-        run: php vendor/bin/phpunit
-=======
         run: php vendor/bin/phpunit --testdox
->>>>>>> origin/master
