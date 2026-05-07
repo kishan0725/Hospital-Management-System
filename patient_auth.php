@@ -1,8 +1,5 @@
 <?php
-// patient_auth.php — handles patient login and the admin-only
-// "add doctor" / "update payment" actions that were historically
-// routed through this file. Role checks prevent patients from
-// triggering those admin actions.
+
 
 session_set_cookie_params([
     'lifetime' => 0,
@@ -75,6 +72,7 @@ if (isset($_POST['update_data'])) {
     }
 }
 
+
 if (isset($_POST['doc_sub'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
@@ -86,14 +84,15 @@ if (isset($_POST['doc_sub'])) {
     $dpassword = $_POST['dpassword'] ?? '';
     $demail    = $_POST['demail']    ?? '';
     $docFees   = $_POST['docFees']   ?? '';
+    $spec      = $_POST['spec']      ?? '';
 
     $hashed = password_hash($dpassword, PASSWORD_DEFAULT);
 
     $stmt = mysqli_prepare(
         $con,
-        "INSERT INTO doctb (username, password, email, docFees) VALUES (?, ?, ?, ?)"
+        "INSERT INTO doctb (username, password, email, docFees, spec) VALUES (?, ?, ?, ?, ?)"
     );
-    mysqli_stmt_bind_param($stmt, "ssss", $doctor, $hashed, $demail, $docFees);
+    mysqli_stmt_bind_param($stmt, "sssss", $doctor, $hashed, $demail, $docFees, $spec);
     $ok = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
