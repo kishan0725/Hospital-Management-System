@@ -25,19 +25,25 @@ jobs:
           mysql -u root myhmsdb < myhmsdb.sql
           mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
           mysql -u root myhmsdb_test < myhmsdb.sql
-      - name: Validate composer.json
-        run: composer validate --no-check-lock
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
-        run: php vendor/bin/phpunit --testdox
+        run: php vendor/bin/phpunit
