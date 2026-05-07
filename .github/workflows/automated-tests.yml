@@ -25,6 +25,22 @@ jobs:
           mysql -u root myhmsdb < myhmsdb.sql
           mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
           mysql -u root myhmsdb_test < myhmsdb.sql
+      - name: Apply schema migrations
+        run: |
+          mysql -u root myhmsdb <<'SQL'
+          ALTER TABLE patreg  MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE patreg  MODIFY cpassword VARCHAR(255) NOT NULL;
+          ALTER TABLE doctb   MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE admintb MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE appointmenttb ADD COLUMN payment VARCHAR(20) DEFAULT 'pending';
+          SQL
+          mysql -u root myhmsdb_test <<'SQL'
+          ALTER TABLE patreg  MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE patreg  MODIFY cpassword VARCHAR(255) NOT NULL;
+          ALTER TABLE doctb   MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE admintb MODIFY password  VARCHAR(255) NOT NULL;
+          ALTER TABLE appointmenttb ADD COLUMN payment VARCHAR(20) DEFAULT 'pending';
+          SQL
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
