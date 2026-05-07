@@ -12,7 +12,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");
@@ -45,11 +45,11 @@ if (isset($_POST['patsub'])) {
         $_SESSION['contact']  = $row['contact'];
         $_SESSION['email']    = $row['email'];
         header("Location: patient_dashboard.php");
-        exit();
+        return;
     } else {
         echo "<script>alert('Invalid Username or Password. Try Again!');
               window.location.href = 'patient_login.php';</script>";
-        exit();
+        return;
     }
 }
 
@@ -57,7 +57,8 @@ if (isset($_POST['patsub'])) {
 if (isset($_POST['update_data'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $contact = $_POST['contact'] ?? '';
@@ -70,14 +71,15 @@ if (isset($_POST['update_data'])) {
 
     if ($ok) {
         header("Location: updated.php");
-        exit();
+        return;
     }
 }
 
 if (isset($_POST['doc_sub'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $doctor    = $_POST['doctor']    ?? '';
@@ -97,9 +99,11 @@ if (isset($_POST['doc_sub'])) {
 
     if ($ok) {
         header("Location: adddoc.php");
-        exit();
+        return;
     }
 }
 
 
+if (!function_exists("display_admin_panel")) {
 function display_admin_panel() { /* deprecated */ }
+}

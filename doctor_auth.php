@@ -10,7 +10,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");
@@ -33,15 +33,16 @@ if (isset($_POST['docsub1'])) {
         $_SESSION['role']  = 'doctor';
         $_SESSION['dname'] = $row['username'];
         header("Location: doctor_dashboard.php");
-        exit();
+        return;
     } else {
         echo "<script>alert('Invalid Username or Password. Try Again!');
               window.location.href = 'register.php';</script>";
-        exit();
+        return;
     }
 }
 
 
+if (!function_exists("display_docs")) {
 function display_docs()
 {
     global $con;
@@ -53,6 +54,9 @@ function display_docs()
         }
     }
 }
+}
 
 
+if (!function_exists("display_admin_panel")) {
 function display_admin_panel() { /* deprecated: see receptionist_dashboard.php */ }
+}

@@ -11,7 +11,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "myhmsdb");
+$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
     error_log("DB connection failed: " . mysqli_connect_error());
     die("A server error occurred. Please try again later.");
@@ -29,14 +29,14 @@ if (isset($_POST['patsub1'])) {
 
     if ($password !== $cpassword) {
         header("Location: error_password_mismatch.php");
-        exit();
+        return;
     }
 
     // Length check (client-side version can be bypassed).
     if (strlen($password) < 6) {
         echo "<script>alert('Password must be at least 6 characters long.');
               window.location.href = 'register.php';</script>";
-        exit();
+        return;
     }
 
     $hashed  = password_hash($password,  PASSWORD_DEFAULT);
@@ -68,11 +68,11 @@ if (isset($_POST['patsub1'])) {
         $_SESSION['contact']  = $contact;
         $_SESSION['email']    = $email;
         header("Location: patient_dashboard.php");
-        exit();
+        return;
     } else {
         echo "<script>alert('Registration failed. Please try again.');
               window.location.href = 'register.php';</script>";
-        exit();
+        return;
     }
 }
 
@@ -80,7 +80,8 @@ if (isset($_POST['patsub1'])) {
 if (isset($_POST['update_data'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $contact = $_POST['contact'] ?? '';
@@ -93,7 +94,7 @@ if (isset($_POST['update_data'])) {
 
     if ($ok) {
         header("Location: updated.php");
-        exit();
+        return;
     }
 }
 
@@ -101,7 +102,8 @@ if (isset($_POST['update_data'])) {
 if (isset($_POST['doc_sub'])) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         http_response_code(403);
-        die("Forbidden: admin access required.");
+        echo "Forbidden: admin access required.";
+        return;
     }
 
     $name = $_POST['name'] ?? '';
@@ -113,9 +115,11 @@ if (isset($_POST['doc_sub'])) {
 
     if ($ok) {
         header("Location: adddoc.php");
-        exit();
+        return;
     }
 }
 
 // Deprecated shim (see receptionist_dashboard.php for the real UI).
+if (!function_exists("display_admin_panel")) {
 function display_admin_panel() { /* deprecated */ }
+}
