@@ -86,6 +86,7 @@ if (isset($_POST['doc_sub'])) {
 }
 
 if (!function_exists("display_docs")) {
+<<<<<<< HEAD
 =======
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['adsub'])){
@@ -117,6 +118,8 @@ if(isset($_POST['update_data']))
 
 
 >>>>>>> master
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
 function display_docs()
 {
     global $con;
@@ -130,6 +133,7 @@ function display_docs()
 }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 if(isset($_POST['doc_sub']))
@@ -141,3 +145,5 @@ if(isset($_POST['doc_sub']))
 		header("Location:adddoc.php");
 }
 >>>>>>> master
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f

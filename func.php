@@ -1,107 +1,5 @@
 <?php
-
-
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path'     => '/',
-    'httponly' => true,
-    'samesite' => 'Strict'
-]);
 session_start();
-<<<<<<< HEAD
-
-$con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
-if (!$con) {
-    error_log("DB connection failed: " . mysqli_connect_error());
-    die("A server error occurred. Please try again later.");
-}
-
-
-if (isset($_POST['patsub'])) {
-    $email    = $_POST['email']     ?? '';
-    $password = $_POST['password2'] ?? '';
-
-    $stmt = mysqli_prepare(
-        $con,
-        "SELECT pid, fname, lname, gender, contact, email, password
-         FROM patreg WHERE email = ? LIMIT 1"
-    );
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $row = mysqli_fetch_assoc($result);
-    mysqli_stmt_close($stmt);
-
-    if ($row && password_verify($password, $row['password'])) {
-        session_regenerate_id(true);
-        $_SESSION['role']     = 'patient';
-        $_SESSION['pid']      = $row['pid'];
-        $_SESSION['username'] = $row['fname'] . " " . $row['lname'];
-        $_SESSION['fname']    = $row['fname'];
-        $_SESSION['lname']    = $row['lname'];
-        $_SESSION['gender']   = $row['gender'];
-        $_SESSION['contact']  = $row['contact'];
-        $_SESSION['email']    = $row['email'];
-        header("Location: patient_dashboard.php");
-        return;
-    } else {
-        echo "<script>alert('Invalid Username or Password. Try Again!');
-              window.location.href = 'patient_login.php';</script>";
-        return;
-    }
-}
-
-
-if (isset($_POST['update_data'])) {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        http_response_code(403);
-        echo "Forbidden: admin access required.";
-        return;
-    }
-
-    $contact = $_POST['contact'] ?? '';
-    $status  = $_POST['status']  ?? '';
-
-    $stmt = mysqli_prepare($con, "UPDATE appointmenttb SET payment = ? WHERE contact = ?");
-    mysqli_stmt_bind_param($stmt, "ss", $status, $contact);
-    $ok = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    if ($ok) {
-        header("Location: updated.php");
-        return;
-    }
-}
-
-
-if (isset($_POST['doc_sub'])) {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        http_response_code(403);
-        echo "Forbidden: admin access required.";
-        return;
-    }
-
-    $doctor    = $_POST['doctor']    ?? '';
-    $dpassword = $_POST['dpassword'] ?? '';
-    $demail    = $_POST['demail']    ?? '';
-    $docFees   = $_POST['docFees']   ?? '';
-    $spec      = $_POST['spec']      ?? '';
-
-    $hashed = password_hash($dpassword, PASSWORD_DEFAULT);
-
-    $stmt = mysqli_prepare(
-        $con,
-        "INSERT INTO doctb (username, password, email, docFees, spec) VALUES (?, ?, ?, ?, ?)"
-    );
-    mysqli_stmt_bind_param($stmt, "sssss", $doctor, $hashed, $demail, $docFees, $spec);
-    $ok = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    if ($ok) {
-        header("Location: adddoc.php");
-        return;
-    }
-=======
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
@@ -119,12 +17,12 @@ if(isset($_POST['patsub'])){
       $_SESSION['contact'] = $row['contact'];
       $_SESSION['email'] = $row['email'];
     }
-		header("Location:patient_dashboard.php");
+		header("Location:admin-panel.php");
 	}
   else {
     echo("<script>alert('Invalid Username or Password. Try Again!');
-          window.location.href = 'patient_login.php';</script>");
-    // header("Location:error_patient_login.php");
+          window.location.href = 'index1.php';</script>");
+    // header("Location:error.php");
   }
 		
 }
@@ -139,7 +37,6 @@ if(isset($_POST['update_data']))
 }
 
 
-<<<<<<< HEAD
 
 
 // function display_docs()
@@ -165,15 +62,62 @@ if(isset($_POST['doc_sub']))
 	$result=mysqli_query($con,$query);
 	if($result)
 		header("Location:adddoc.php");
->>>>>>> master
 }
+function display_admin_panel(){
+	echo '<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav mr-auto">
+       <li class="nav-item">
+        <a class="nav-link" href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0" method="post" action="search.php">
+      <input class="form-control mr-sm-2" type="text" placeholder="enter contact number" aria-label="Search" name="contact">
+      <input type="submit" class="btn btn-outline-light my-2 my-sm-0 btn btn-outline-light" id="inputbtn" name="search_submit" value="Search">
+    </form>
+  </div>
+</nav>
+  </head>
+  <style type="text/css">
+    button:hover{cursor:pointer;}
+    #inputbtn:hover{cursor:pointer;}
+  </style>
+  <body style="padding-top:50px;">
+ <div class="jumbotron" id="ab1"></div>
+   <div class="container-fluid" style="margin-top:50px;">
+    <div class="row">
+  <div class="col-md-4">
+    <div class="list-group" id="list-tab" role="tablist">
+      <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Appointment</a>
+      <a class="list-group-item list-group-item-action" href="patientdetails.php" role="tab" aria-controls="home">Patient List</a>
+      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Payment Status</a>
+      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Prescription</a>
+      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Doctors Section</a>
+       <a class="list-group-item list-group-item-action" id="list-attend-list" data-toggle="list" href="#list-attend" role="tab" aria-controls="settings">Attendance</a>
+    </div><br>
+  </div>
+
+  
 
 
-<<<<<<< HEAD
-if (!function_exists("display_admin_panel")) {
-function display_admin_panel() { /* deprecated */ }
-}
-=======
 
 
 
@@ -229,7 +173,7 @@ function display_admin_panel() { /* deprecated */ }
       <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
         <div class="card">
           <div class="card-body">
-            <form class="form-group" method="post" action="patient_auth.php">
+            <form class="form-group" method="post" action="func.php">
               <input type="text" name="contact" class="form-control" placeholder="enter contact"><br>
               <select name="status" class="form-control">
                <option value="" disabled selected>Select Payment Status to update</option>
@@ -243,7 +187,7 @@ function display_admin_panel() { /* deprecated */ }
       </div>
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="patient_auth.php">
+        <form class="form-group" method="post" action="func.php">
           <label>Doctors name: </label>
           <input type="text" name="name" placeholder="enter doctors name" class="form-control">
           <br>
@@ -277,9 +221,3 @@ function display_admin_panel() { /* deprecated */ }
 </html>';
 }
 ?>
->>>>>>> master
-=======
-if (!function_exists("display_admin_panel")) {
-function display_admin_panel() { /* deprecated */ }
-}
->>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f

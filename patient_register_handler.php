@@ -96,6 +96,7 @@ if (isset($_POST['update_data'])) {
     if ($ok) {
         header("Location: updated.php");
         return;
+<<<<<<< HEAD
 =======
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['patsub1'])){
@@ -124,6 +125,8 @@ if(isset($_POST['patsub1'])){
     if($result1){
       $_SESSION['pid'] = $row['pid'];
 >>>>>>> master
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
     }
 
   }

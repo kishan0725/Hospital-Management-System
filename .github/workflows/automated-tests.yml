@@ -25,6 +25,7 @@ jobs:
           mysql -u root myhmsdb < myhmsdb.sql
           mysql -u root -e "CREATE DATABASE IF NOT EXISTS myhmsdb_test;"
           mysql -u root myhmsdb_test < myhmsdb.sql
+<<<<<<< HEAD
       - name: Apply schema migrations
         run: |
           mysql -u root myhmsdb <<'SQL'
@@ -49,17 +50,26 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+=======
+
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
 
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-php-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
+<<<<<<< HEAD
         run: php vendor/bin/phpunit
+=======
+        run: php vendor/bin/phpunit --testdox
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f

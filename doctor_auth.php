@@ -39,6 +39,7 @@ if (isset($_POST['docsub1'])) {
         echo "<script>alert('Invalid Username or Password. Try Again!');
               window.location.href = 'register.php';</script>";
         return;
+<<<<<<< HEAD
 =======
 $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['docsub1'])){
@@ -53,6 +54,8 @@ if(isset($_POST['docsub1'])){
 		      $_SESSION['dname']=$row['username'];
       
 >>>>>>> master
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
     }
 		header("Location:doctor_dashboard.php");
 	}
@@ -65,6 +68,9 @@ if(isset($_POST['docsub1'])){
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
 if (!function_exists("display_docs")) {
 function display_docs()
 {
@@ -83,6 +89,7 @@ function display_docs()
 if (!function_exists("display_admin_panel")) {
 function display_admin_panel() { /* deprecated: see receptionist_dashboard.php */ }
 }
+<<<<<<< HEAD
 =======
 // if(isset($_POST['update_data']))  
 //   $result=mysqli_query($con,$query);
@@ -278,3 +285,5 @@ function display_admin_panel(){
 }
 ?>
 >>>>>>> master
+=======
+>>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
