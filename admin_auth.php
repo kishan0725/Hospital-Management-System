@@ -8,7 +8,6 @@ session_set_cookie_params([
     'samesite' => 'Strict'
 ]);
 session_start();
-<<<<<<< HEAD
 
 $con = mysqli_connect("localhost", "root", "", getenv("HMS_DB_NAME") ?: "myhmsdb");
 if (!$con) {
@@ -86,40 +85,6 @@ if (isset($_POST['doc_sub'])) {
 }
 
 if (!function_exists("display_docs")) {
-<<<<<<< HEAD
-=======
-$con=mysqli_connect("localhost","root","","myhmsdb");
-if(isset($_POST['adsub'])){
-	$username=$_POST['username1'];
-	$password=$_POST['password2'];
-	$query="select * from admintb where username='$username' and password='$password';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
-	{
-		$_SESSION['username']=$username;
-		header("Location:receptionist_dashboard.php");
-	}
-	else
-		// header("Location:error_admin_login.php");
-		echo("<script>alert('Invalid Username or Password. Try Again!');
-          window.location.href = 'register.php';</script>");
-}
-if(isset($_POST['update_data']))
-{
-	$contact=$_POST['contact'];
-	$status=$_POST['status'];
-	$query="update appointmenttb set payment='$status' where contact='$contact';";
-	$result=mysqli_query($con,$query);
-	if($result)
-		header("Location:updated.php");
-}
-
-
-
-
->>>>>>> master
-=======
->>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f
 function display_docs()
 {
     global $con;
@@ -132,18 +97,3 @@ function display_docs()
     }
 }
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-if(isset($_POST['doc_sub']))
-{
-	$name=$_POST['name'];
-	$query="insert into doctb(name)values('$name')";
-	$result=mysqli_query($con,$query);
-	if($result)
-		header("Location:adddoc.php");
-}
->>>>>>> master
-=======
->>>>>>> abfc8f3b52520438365bab7eb17f1b62390ea40f

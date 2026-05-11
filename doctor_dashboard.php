@@ -24,14 +24,7 @@ if (!$con) {
 }
 
 $doctor = $_SESSION['dname'];
-<<<<<<< HEAD
 
-=======
-if(isset($_GET['cancel']))
-  {
-    $appointmentID = $_GET['ID'];
-    $dname         = $_SESSION['dname'];
->>>>>>> master
 
 if (isset($_GET['cancel'], $_GET['ID'])) {
     $appID = $_GET['ID'];
@@ -50,15 +43,10 @@ if (isset($_GET['cancel'], $_GET['ID'])) {
     } else {
         echo "<script>alert('Unable to cancel: appointment not found or not yours.');</script>";
     }
-<<<<<<< HEAD
 }
 
 // HTML-escape the doctor name once for header display.
 $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
-=======
-  }
-
->>>>>>> master
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -175,7 +163,6 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
                   </tr>
                 </thead>
                 <tbody>
-<<<<<<< HEAD
                   <?php
                     $stmt = mysqli_prepare(
                         $con,
@@ -207,14 +194,23 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
                         $appd_h   = htmlspecialchars($raw_appd,        ENT_QUOTES, 'UTF-8');
                         $appt_h   = htmlspecialchars($raw_appt,        ENT_QUOTES, 'UTF-8');
 
+                        // Past appointments shouldn't show as Active, and Cancel
+                        // doesn't make sense for them. Strict <today so an appointment
+                        // scheduled later today is still considered current.
+                        $is_past = $raw_appd && strtotime($raw_appd) < strtotime(date('Y-m-d'));
+
                         // Status string.
                         $status = '';
-                        if ($row['userStatus'] == 1 && $row['doctorStatus'] == 1) $status = 'Active';
+                        if ($row['userStatus'] == 1 && $row['doctorStatus'] == 1) {
+                            $status = $is_past ? 'Past' : 'Active';
+                        }
                         if ($row['userStatus'] == 0 && $row['doctorStatus'] == 1) $status = 'Cancelled by Patient';
                         if ($row['userStatus'] == 1 && $row['doctorStatus'] == 0) $status = 'Cancelled by You';
                         $status_h = htmlspecialchars($status, ENT_QUOTES, 'UTF-8');
 
-                        $active = ($row['userStatus'] == 1 && $row['doctorStatus'] == 1);
+                        $not_cancelled = ($row['userStatus'] == 1 && $row['doctorStatus'] == 1);
+                        $can_cancel    = $not_cancelled && !$is_past;
+                        $can_prescribe = $not_cancelled;  // OK to prescribe after the visit
 
                         echo "<tr>";
                         echo "<td>{$pid_h}</td><td>{$ID_h}</td>";
@@ -225,18 +221,20 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
                         echo "<td>{$status_h}</td>";
 
                         // Cancel cell.
-                        if ($active) {
+                        if ($can_cancel) {
                             $cancel_url = 'doctor_dashboard.php?ID=' . urlencode((string)$raw_ID) . '&cancel=update';
                             echo "<td><a href='" . htmlspecialchars($cancel_url, ENT_QUOTES, 'UTF-8') . "'
                                         onClick=\"return confirm('Are you sure you want to cancel this appointment ?')\"
                                         title='Cancel Appointment'>
                                     <button class='btn btn-danger'>Cancel</button></a></td>";
+                        } elseif ($is_past && $not_cancelled) {
+                            echo "<td>-</td>";  // past appointment, nothing to cancel
                         } else {
                             echo "<td>Cancelled</td>";
                         }
 
                         // Prescribe cell.
-                        if ($active) {
+                        if ($can_prescribe) {
                             $presc_url = 'prescription_form.php'
                                 . '?pid='     . urlencode((string)$raw_pid)
                                 . '&ID='      . urlencode((string)$raw_ID)
@@ -253,75 +251,6 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
                     }
                     mysqli_stmt_close($stmt);
                   ?>
-=======
-                  <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
-                    global $con;
-                    $dname = $_SESSION['dname'];
-                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
-                    $result = mysqli_query($con,$query);
-                    while ($row = mysqli_fetch_array($result)){
-                      ?>
-                      <tr>
-                      <td><?php echo $row['pid'];?></td>
-                        <td><?php echo $row['ID'];?></td>
-                        <td><?php echo $row['fname'];?></td>
-                        <td><?php echo $row['lname'];?></td>
-                        <td><?php echo $row['gender'];?></td>
-                        <td><?php echo $row['email'];?></td>
-                        <td><?php echo $row['contact'];?></td>
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
-                        <td>
-                    <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
-                    {
-                      echo "Active";
-                    }
-                    if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
-                    {
-                      echo "Cancelled by Patient";
-                    }
-
-                    if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
-                    {
-                      echo "Cancelled by You";
-                    }
-                        ?></td>
-
-                     <td>
-                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
-                        { ?>
-
-													
-	                        <a href="doctor_dashboard.php?ID=<?php echo $row['ID']?>&cancel=update" 
-                              onClick="return confirm('Are you sure you want to cancel this appointment ?')"
-                              title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
-	                        <?php } else {
-
-                                echo "Cancelled";
-                                } ?>
-                        
-                        </td>
-
-                        <td>
-
-                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
-                        { ?>
-
-                        <a href="prescription_form.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
-                        tooltip-placement="top" tooltip="Remove" title="prescribe">
-                        <button class="btn btn-success">Prescibe</button></a>
-                        <?php } else {
-
-                            echo "-";
-                            } ?>
-                        
-                        </td>
-
-
-                      </tr></a>
-                    <?php } ?>
->>>>>>> master
                 </tbody>
               </table>
               <br>
@@ -380,24 +309,6 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
                     }
                     mysqli_stmt_close($stmt);
                   ?>
-<<<<<<< HEAD
-=======
-                      <tr>
-                        <td><?php echo $row['pid'];?></td>
-                        <td><?php echo $row['fname'];?></td>
-                        <td><?php echo $row['lname'];?></td>
-                        <td><?php echo $row['ID'];?></td>
-                        
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
-                        <td><?php echo $row['disease'];?></td>
-                        <td><?php echo $row['allergy'];?></td>
-                        <td><?php echo $row['prescription'];?></td>
-                    
-                      </tr>
-                    <?php }
-                    ?>
->>>>>>> master
                 </tbody>
               </table>
             </div>
@@ -405,80 +316,6 @@ $doctor_html = htmlspecialchars($doctor, ENT_QUOTES, 'UTF-8');
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-=======
-
-
-
-
-      <div class="tab-pane fade" id="list-app" role="tabpanel" aria-labelledby="list-pat-list">
-        
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Contact</th>
-                    <th scope="col">Doctor Name</th>
-                    <th scope="col">Consultancy Fees</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Appointment Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php 
-
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
-                    global $con;
-
-                    $query = "select * from appointmenttb;";
-                    $result = mysqli_query($con,$query);
-                    while ($row = mysqli_fetch_array($result)){
-              
-                      #$fname = $row['fname'];
-                      #$lname = $row['lname'];
-                      #$email = $row['email'];
-                      #$contact = $row['contact'];
-                  ?>
-                      <tr>
-                        <td><?php echo $row['fname'];?></td>
-                        <td><?php echo $row['lname'];?></td>
-                        <td><?php echo $row['email'];?></td>
-                        <td><?php echo $row['contact'];?></td>
-                        <td><?php echo $row['doctor'];?></td>
-                        <td><?php echo $row['docFees'];?></td>
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
-                      </tr>
-                    <?php } ?>
-                </tbody>
-              </table>
-        <br>
-      </div>
-
-
-
-
-
-      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-        <form class="form-group" method="post" action="receptionist_dashboard.php">
-          <div class="row">
-                  <div class="col-md-4"><label>Doctor Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control" name="doctor" required></div><br><br>
-                  <div class="col-md-4"><label>Password:</label></div>
-                  <div class="col-md-8"><input type="password" class="form-control"  name="dpassword" required></div><br><br>
-                  <div class="col-md-4"><label>Email ID:</label></div>
-                  <div class="col-md-8"><input type="email"  class="form-control" name="demail" required></div><br><br>
-                  <div class="col-md-4"><label>Consultancy Fees:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control"  name="docFees" required></div><br><br>
-                </div>
-          <input type="submit" name="docsub" value="Add Doctor" class="btn btn-primary">
-        </form>
-      </div>
-       <div class="tab-pane fade" id="list-attend" role="tabpanel" aria-labelledby="list-attend-list">...</div>
->>>>>>> master
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
