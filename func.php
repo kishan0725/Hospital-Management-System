@@ -4,8 +4,10 @@ $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['patsub'])){
 	$email=$_POST['email'];
 	$password=$_POST['password2'];
-	$query="select * from patreg where email='$email' and password='$password';";
-	$result=mysqli_query($con,$query);
+	$stmt=mysqli_prepare($con,"select * from patreg where email=? and password=?");
+	mysqli_stmt_bind_param($stmt,"ss",$email,$password);
+	mysqli_stmt_execute($stmt);
+	$result=mysqli_stmt_get_result($stmt);
 	if(mysqli_num_rows($result)==1)
 	{
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
