@@ -4,8 +4,10 @@ $con=mysqli_connect("localhost","root","","myhmsdb");
 if(isset($_POST['adsub'])){
 	$username=$_POST['username1'];
 	$password=$_POST['password2'];
-	$query="select * from admintb where username='$username' and password='$password';";
-	$result=mysqli_query($con,$query);
+	$stmt=mysqli_prepare($con,"select * from admintb where username=? and password=?");
+	mysqli_stmt_bind_param($stmt,"ss",$username,$password);
+	mysqli_stmt_execute($stmt);
+	$result=mysqli_stmt_get_result($stmt);
 	if(mysqli_num_rows($result)==1)
 	{
 		$_SESSION['username']=$username;
